@@ -1,0 +1,133 @@
+import { axiosInstance } from 'boot/axios'
+
+export default {
+    namespaced: true,
+    state: {
+        months: [],
+        monthData: [],
+        days: []
+    },
+    mutations: {
+        SET_MONTHS(state, payload) {
+            state.months = payload
+        },
+        SET_MONTH_DATA(state, payload) {
+            state.monthData = payload
+        },
+        REMOVE_DAY_FROM_MONTH(state, payload) {
+            state.days = state.days.filter(item => {
+                return item !== payload
+            })
+        },
+        ADD_DAY_TO_MONTH(state, payload) {
+            state.days.push(payload)
+        },
+        SET_DAYS(state, payload) {
+            state.days = payload
+        }
+    },
+    actions: {
+        all({commit}) {
+          axiosInstance.get('/months')
+                .then(response => {
+                    commit('SET_MONTHS', response.data.data)
+                })
+        },
+        async create({commit, dispatch}, report) {
+            let days = Object.keys(report.days).length === 0 ? null : report.days
+            return await axiosInstance.post('/months', {
+                days: days,
+                report: report.report
+            })
+                .then((response) => {
+                    dispatch('all')
+                    return response.data.success
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        },
+        async copy({dispatch}, id) {
+            return await axiosInstance.get(`/months/${id}/copy`)
+                .then((response) => {
+                    dispatch('all')
+                    return response.data.success
+                })
+        },
+        async update({commit, dispatch}, monthData) {
+            return await axiosInstance.patch(`/months/${monthData.id}`, {
+                'days': monthData.days,
+                'month': monthData.month,
+                'employee_id': monthData.employee_id
+            })
+                .then((response) => {
+                    dispatch('all')
+                    commit('SET_DAYS', response.data.days)
+                    return response.data.success
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        },
+        addDay({commit}, day) {
+            commit('ADD_DAY_TO_MONTH', day)
+        },
+        removeDay({commit}, id) {
+          axiosInstance.delete(`/days/${id}`)
+        },
+        removeDayFromMonth({commit, dispatch}, item) {
+            commit('REMOVE_DAY_FROM_MONTH', item)
+            dispatch('all')
+        },
+        async edit({commit}, id) {
+            await axiosInstance.get(`/months/${id}/edit`)
+                .then(response => {
+                    commit('SET_MONTH_DATA', response.data)
+                    commit('SET_DAYS', response.data.days)
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        },
+        filterById({commit}, id) {
+          axiosInstance.get(`/months/filter/${id}`)
+                .then((response) => {
+                    commit('SET_MONTHS', response.data.data)
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        },
+        filterByInterval({commit}, interval) {
+          axiosInstance.post('/months/interval', {
+                from: interval.from,
+                to: interval.to,
+                employee_id: interval.employee_id
+            })
+                .then((response) => {
+                    commit('SET_MONTHS', response.data.data)
+                })
+        },
+        remove({dispatch}, id) {
+            return axiosInstance.delete(`/months/${id}`)
+                .then((response) => {
+                    dispatch('all')
+                    return response.data.success
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        }
+    },
+    getters: {
+        getMonths(state) {
+            return state.months
+        },
+        getMonthData(state) {
+            return state.monthData
+        },
+        getDays(state) {
+            return state.days
+        }
+    }
+}
