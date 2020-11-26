@@ -34,3 +34,4 @@ yarn-error.log*
 
 #variables
 /src/global
+/src/boot/axios.js
