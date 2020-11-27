@@ -2,8 +2,8 @@
     <div class="q-pa-md">
         <div class="row justify-center q-mb-md">
             <div class="col-3">
-                <span v-for="cmp in company">
-                    <q-img height="200px" :src="image(cmp.logo)" native-context-menu>
+                <span v-for="cmp in company" class="fit">
+                    <q-img :src="image(cmp.logo)" native-context-menu>
                            <q-icon class="absolute all-pointer-events" size="22px" name="info" color="grey" style="top: 8px; left: 8px">
                             <q-tooltip>
                               Logotip podjetja
