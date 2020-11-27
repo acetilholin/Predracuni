@@ -16,6 +16,37 @@ export default {
         },
     },
     actions: {
+        async login({dispatch}, credentials) {
+          await axiosInstance.post('/login',
+            {
+              email: credentials.email,
+              password: credentials.password
+            })
+                .then((response) => {
+                   return dispatch('loginAttempt', response.data.access_token)
+                })
+                .catch((e) => {
+                    throw (e.response.data.error);
+                })
+        },
+        async loginAttempt({commit, state}, token) {
+            if (token) {
+                commit('SET_TOKEN', token)
+            }
+
+            if (!state.token) {
+                return
+            }
+
+            try {
+                let response = await axiosInstance.get('/me')
+                commit('SET_USER', response.data)
+            } catch (e) {
+                commit('SET_USER', null)
+                commit('SET_TOKEN', null)
+            }
+
+        },
         async register({context}, credentials) {
             let newUser = {
                 'email': credentials.email,
