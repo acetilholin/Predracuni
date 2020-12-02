@@ -26,7 +26,7 @@ export default {
                 })
         },
         interval({commit}, interval) {
-          axiosInstance.post(`/interval`, {
+          axiosInstance.post('/interval', {
                 datefrom: interval.from,
                 dateto: interval.to
             })

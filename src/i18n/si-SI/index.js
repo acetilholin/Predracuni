@@ -75,6 +75,9 @@ export default {
     klavzulaDesc: 'Vnesite Opis',
     editKlavzula: 'Uredi klavzulo'
   },
+  error: {
+    message: 'Prišlo je do napake',
+  },
   customers: {
     editCustomer: 'Uredi stranko',
     newUser: 'Nov uporabnik',

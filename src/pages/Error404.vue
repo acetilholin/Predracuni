@@ -1,12 +1,12 @@
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
-      <div style="font-size: 30vh">
-        404
+      <div style="font-size: 10vh">
+        <q-icon name="sentiment_very_dissatisfied"></q-icon>
       </div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+      <div class="text-h4" style="opacity:.4">
+        {{ $t("error.message") }}
       </div>
 
       <q-btn
@@ -15,7 +15,7 @@
         text-color="blue"
         unelevated
         to="/"
-        label="Go Home"
+        label="Domov"
         no-caps
       />
     </div>
