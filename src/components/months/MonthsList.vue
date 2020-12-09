@@ -11,6 +11,7 @@
             row-key="name"
             :loading="loading"
             :filter="filter"
+            :pagination.sync="pagination"
         >
             <template v-slot:top-right>
                 <q-input borderless dense debounce="300" v-model="filter" placeholder="Išči">
@@ -82,6 +83,9 @@ export default {
         return {
             filter: '',
             loading:true,
+            pagination: {
+              rowsPerPage: 50
+            },
             columns: [
                 {
                     name: 'index',
