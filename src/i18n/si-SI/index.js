@@ -6,7 +6,7 @@ export default {
     export: 'Izvozi',
     total: 'Promet',
     delete: 'Izbriši',
-    helloMessage: 'Pozdravljeni :)',
+    helloMessage: 'Pozdravljen',
     deleteMessage: 'Želite izbrisati vnos?',
     deleteALL: 'Želite izbrisati predračun?',
     deleteMessageWarning: 'Izbrisani bodo vsi strankini predračuni in računi!',

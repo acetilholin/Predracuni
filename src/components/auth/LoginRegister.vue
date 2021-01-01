@@ -138,7 +138,7 @@
 
 <script>
 
-    import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
     import { logRegTitle } from 'src/global/variables.js'
 
     export default {
@@ -161,11 +161,16 @@
                 isPwd2: true
             }
         },
+        computed: {
+          ...mapGetters({
+            user: 'auth/user'
+          })
+        },
         methods: {
-            ...mapActions({
-               loginAction: 'auth/login',
-               registerAction: 'auth/register'
-            }),
+          ...mapActions({
+            loginAction: 'auth/login',
+            registerAction: 'auth/register'
+          }),
             isValidEmail (val) {
                 const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
                 return emailPattern.test(val) || `${this.$t("general.wrongEmail")}`;
@@ -174,7 +179,7 @@
                 this.$q.notify({
                     message: message,
                     position: 'top',
-                    timeout: 1500,
+                    timeout: 2500,
                     type: type
                 })
             },
@@ -187,7 +192,7 @@
             loginUser() {
                 this.loginAction(this.loginForm)
                 .then((response) => {
-                    this.showNotif(`${this.$t('general.helloMessage')}`,'positive')
+                    this.showNotif(`${this.$t('general.helloMessage')}` + ' ' + this.user.username + '!', 'positive')
                     this.$router.push('/')
                 })
                 .catch((e) => {
