@@ -108,8 +108,11 @@ export default {
             ]
         }
     },
-    created() {
-        this.$store.dispatch('final/all')
+    mounted() {
+      let year = this.$moment().year()
+      this.$store.dispatch('final/finalYear', {
+        year
+      })
     },
     components: {
         Report,

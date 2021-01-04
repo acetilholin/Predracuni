@@ -78,6 +78,12 @@ export default {
                 .then((response) => {
                     commit('SET_FINAL_INVOICES', response.data.finalInvoices)
                 })
+        },
+        finalYear({commit}, payload) {
+          axiosInstance.get(`finalInvoice/${payload.year}`)
+            .then((response) => {
+              commit('SET_FINAL_INVOICES', response.data.finalInvoices)
+            })
         }
     },
     getters: {

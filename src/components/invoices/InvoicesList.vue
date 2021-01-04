@@ -207,7 +207,10 @@
             }
         },
       mounted() {
-        this.$store.dispatch('invoices/allInvoices')
+        let year = this.$moment().year()
+        this.$store.dispatch('invoices/invoicesYear', {
+          year
+        })
         this.$store.dispatch('general/settings')
       },
         computed: {

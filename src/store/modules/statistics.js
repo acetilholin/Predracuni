@@ -34,8 +34,8 @@ export default {
                     commit('SET_DATA', response.data)
                 })
         },
-        total({commit}) {
-          axiosInstance.get('total')
+        total({commit}, payload) {
+          axiosInstance.get(`/total/${payload.year}`)
                 .then(response => {
                     commit('SET_TOTAL', response.data)
                 })

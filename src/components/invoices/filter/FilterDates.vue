@@ -39,6 +39,14 @@
             </template>
         </q-input>
 
+      <q-select class="col-2 q-ml-sm"
+                v-model="year"
+                :options="years"
+                label="Leto"
+                @input="selectYear"
+                v-if="allInvoicesRoute()"
+      />
+
         <q-select v-model="employee"
                   v-if="monthRoute()"
                   :options="employees"
@@ -80,6 +88,7 @@
 <script>
 
 import {mapGetters} from 'vuex'
+import {Years} from "src/global/variables";
 
 export default {
     name: "FilterDates",
@@ -87,7 +96,9 @@ export default {
         return {
             fromDate: null,
             toDate: null,
-            employee: null
+            employee: null,
+            year: this.$moment().year(),
+            years: Years
         }
     },
     created() {
@@ -173,6 +184,9 @@ export default {
         customerReport() {
             this.$store.dispatch('general/customerReportDialog', true)
         },
+        allInvoicesRoute() {
+          return this.$router.currentRoute.fullPath === '/' || this.$router.currentRoute.fullPath === '/final-invoices'
+        },
         filterDataByDates() {
            let interval = {
                from: this.fromDate,
@@ -180,6 +194,14 @@ export default {
                employee_id: 0
            }
            this.$emit('interval', interval)
+        },
+        selectYear() {
+          let interval = {
+            from: this.year.value + '-01-01',
+            to: this.year.value + '-12-31',
+            employee_id: 0
+          }
+          this.$emit('interval', interval)
         }
     }
 }

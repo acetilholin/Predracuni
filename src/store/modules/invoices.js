@@ -102,6 +102,12 @@ export default {
                     commit('SET_INVOICES', response.data.invoices)
                 })
         },
+        invoicesYear({commit}, payload) {
+          axiosInstance.get(`invoice/${payload.year}`)
+            .then((response) => {
+              commit('SET_INVOICES', response.data.invoices)
+            })
+        },
         async export({commit, dispatch}, id) {
             return await axiosInstance.get(`invoice/${id}/export`)
                 .then((response) => {
