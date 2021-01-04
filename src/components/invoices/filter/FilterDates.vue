@@ -196,12 +196,7 @@ export default {
            this.$emit('interval', interval)
         },
         selectYear() {
-          let interval = {
-            from: this.year.value + '-01-01',
-            to: this.year.value + '-12-31',
-            employee_id: 0
-          }
-          this.$emit('interval', interval)
+          this.$emit('year', this.year.value)
         }
     }
 }

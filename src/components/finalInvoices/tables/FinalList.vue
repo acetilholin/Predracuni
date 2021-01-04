@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md">
-        <filter-dates @interval="filterDataByInterval"></filter-dates>
+        <filter-dates @interval="filterDataByInterval" @year="filterByYear"></filter-dates>
         <q-table
             title="Računi"
             :data="final"
@@ -173,6 +173,11 @@ export default {
                     })
             })
         },
+      filterByYear(year) {
+        this.$store.dispatch('final/finalYear', {
+          year
+        })
+      }
     },
     watch: {
         final: {

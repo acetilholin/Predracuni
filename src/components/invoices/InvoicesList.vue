@@ -1,7 +1,7 @@
 <template>
     <div class="q-pa-md">
         <CreateInvoice class="q-mt-sm q-mb-md"></CreateInvoice>
-        <filter-dates @interval="filterDataByInterval"></filter-dates>
+        <filter-dates @interval="filterDataByInterval" @year="filterByYear"></filter-dates>
         <q-table
             title="Predračuni"
             :data="invoices"
@@ -204,6 +204,11 @@
                     .catch((e) => {
                         this.showNotif(e, 'negative')
                     })
+            },
+            filterByYear(year) {
+              this.$store.dispatch('invoices/invoicesYear', {
+                year
+              })
             }
         },
       mounted() {
