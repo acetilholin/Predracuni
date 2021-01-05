@@ -229,7 +229,7 @@ export default {
         addNewDay(day) {
             day.id = null
             this.days.push(day)
-            localStorage.setItem('days', JSON.stringify(this.days));
+            localStorage.setItem('days', JSON.stringify(this.days))
             this.showNotif(`${this.$t('hours.dayAdded')}`, 'positive')
         }
     },

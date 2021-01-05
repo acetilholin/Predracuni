@@ -97,7 +97,7 @@ export default {
             fromDate: null,
             toDate: null,
             employee: null,
-            year: this.$moment().year(),
+            year: null,
             years: Years
         }
     },
@@ -196,6 +196,12 @@ export default {
            this.$emit('interval', interval)
         },
         selectYear() {
+          if (this.$router.currentRoute.fullPath === '/') {
+            localStorage.setItem('year', JSON.stringify(this.year.value));
+          } else {
+            localStorage.setItem('year-final', JSON.stringify(this.year.value));
+          }
+
           this.$emit('year', this.year.value)
         }
     }
