@@ -1,4 +1,7 @@
 import { axiosInstance } from 'boot/axios'
+import moment from "moment";
+
+let year = moment().format('YYYY')
 
 export default {
     namespaced: true,
@@ -133,7 +136,7 @@ export default {
         async copy({commit, dispatch}, id) {
             return await axiosInstance.get(`invoice/${id}/copy`)
                 .then((response) => {
-                    dispatch('allInvoices')
+                    dispatch('invoicesYear', {year})
                     return response.data.success
                 })
         },
@@ -146,7 +149,7 @@ export default {
                 recipient: recipient
             })
                 .then((response) => {
-                    dispatch('allInvoices')
+                    dispatch('invoicesYear', {year})
                     return response.data.success
                 })
                 .catch((e) => {
@@ -181,7 +184,7 @@ export default {
         async remove({commit, dispatch}, id) {
             return await axiosInstance.delete(`/invoices/${id}`)
                 .then((response) => {
-                    dispatch('allInvoices')
+                    dispatch('invoicesYear', {year})
                     return response.data.success
                 })
                 .catch((e) => {

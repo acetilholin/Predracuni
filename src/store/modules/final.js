@@ -1,4 +1,7 @@
 import { axiosInstance } from 'boot/axios'
+import moment from "moment";
+
+let year = moment().format('YYYY')
 
 export default {
     namespaced: true,
@@ -54,7 +57,7 @@ export default {
         async remove({dispatch}, id) {
             return await axiosInstance.delete(`/finalInvoices/${id}`)
                 .then((response) => {
-                    dispatch('all')
+                    dispatch('finalYear', {year})
                     return response.data.success
                 })
                 .catch((e) => {
