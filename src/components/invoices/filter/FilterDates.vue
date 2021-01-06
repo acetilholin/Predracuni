@@ -140,6 +140,7 @@ export default {
             this.fromDate = null
             this.toDate = null
             this.employee = null
+            this.year = null
 
           switch (true) {
             case this.$router.currentRoute.fullPath === '/':
