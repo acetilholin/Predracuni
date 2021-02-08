@@ -74,9 +74,11 @@
 
 import {mapGetters, mapActions} from 'vuex'
 import EditEmployee from "./dialogs/EditEmployee";
+import mixin from "src/global/mixin";
 
 export default {
     name: "EmployeeList",
+    mixins: [mixin],
     components: {EditEmployee},
     data() {
         return {
@@ -108,14 +110,6 @@ export default {
         }),
         tableIndex(row) {
             return this.employees.indexOf(row) + 1
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         edit(id) {
             this.$store.dispatch('general/editEmployeeModal', true)

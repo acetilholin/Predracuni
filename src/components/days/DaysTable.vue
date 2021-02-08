@@ -71,9 +71,11 @@
 <script>
 
 import { DayTypesShort } from 'src/global/variables'
+import mixin from "src/global/mixin";
 
 export default {
     name: "DaysTable",
+    mixins: [mixin],
     data() {
         return {
             pagination: {
@@ -138,14 +140,6 @@ export default {
                 default:
                     this.info = this.$t("hours.festival")
             }
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                timeout: 1500,
-                position: 'top',
-                type: type
-            })
         },
         checkWeekend(date) {
             var dt = new Date(date)

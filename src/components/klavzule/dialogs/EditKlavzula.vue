@@ -68,9 +68,11 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import mixin from "src/global/mixin";
 
 export default {
     name: "EditKlavzula",
+    mixins: [mixin],
     data() {
         return {
             submitting: false
@@ -87,14 +89,6 @@ export default {
             closeEditDialog: 'general/editKlavzulaDialog',
             editKlavzula: 'klavzule/edit'
         }),
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
-        },
         closeDialog() {
             this.closeEditDialog(false)
         },

@@ -39,9 +39,11 @@
 
     import {mapActions} from "vuex";
     import {picturesPath} from "src/global/variables";
+    import mixin from "src/global/mixin";
 
     export default {
         name: "Picture",
+        mixins: [mixin],
         data() {
             return {
                 file: null
@@ -52,14 +54,6 @@
             ...mapActions({
                 newImage: 'users/changeImage'
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             changePicture() {
                 let photoData = {
                     'id': this.currentUser.id,

@@ -69,9 +69,11 @@ import {mapGetters, mapActions} from 'vuex'
 import FilterDates from "../../invoices/filter/FilterDates";
 import PrintFinalInvoice from "../dialogs/PrintFinalInvoice";
 import Report from "../dialogs/Report";
+import mixin from "src/global/mixin";
 
 export default {
     name: "FinalList",
+    mixins: [mixin],
     data() {
         return {
             loading: true,
@@ -135,14 +137,6 @@ export default {
             updateFinal: 'final/update',
             filterData: 'final/filterByInterval'
         }),
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
-        },
         filterDataByInterval(interval) {
             this.filterData(interval)
         },

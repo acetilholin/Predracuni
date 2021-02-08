@@ -76,9 +76,11 @@ import CreateMonthDialog from "./dialogs/CreateMonthDialog";
 import EditMonth from "./dialogs/EditMonth";
 import PrintMonth from "./dialogs/PrintMonth";
 import FilterDates from "../invoices/filter/FilterDates";
+import mixin from "src/global/mixin";
 
 export default {
     name: "MonthsList",
+    mixins: [mixin],
     data() {
         return {
             filter: '',
@@ -136,14 +138,6 @@ export default {
         },
         showEmployees() {
           this.$store.dispatch('general/EmployeesDialog', true)
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         filterData(interval) {
             this.filterByInterval(interval)

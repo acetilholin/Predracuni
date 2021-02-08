@@ -139,10 +139,12 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
-    import { logRegTitle } from 'src/global/variables.js'
+import { logRegTitle } from 'src/global/variables.js'
+import mixin from "src/global/mixin";
 
     export default {
         name: "LoginRegister",
+        mixins: [mixin],
         data() {
             return {
                 title: logRegTitle,
@@ -171,18 +173,6 @@ import {mapActions, mapGetters} from 'vuex'
             loginAction: 'auth/login',
             registerAction: 'auth/register'
           }),
-            isValidEmail (val) {
-                const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-                return emailPattern.test(val) || `${this.$t("general.wrongEmail")}`;
-            },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 2500,
-                    type: type
-                })
-            },
             clearLogin() {
                 this.loginForm = {}
             },

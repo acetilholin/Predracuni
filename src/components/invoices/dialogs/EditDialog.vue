@@ -219,9 +219,11 @@
     import AddItem from "./AddItem";
     import {mapActions, mapGetters} from 'vuex'
     import EditRecipient from "./EditRecipient";
+    import mixin from "src/global/mixin";
 
     export default {
         name: "EditDialog",
+        mixins: [mixin],
         data() {
             return {
                 submitting: false,
@@ -354,14 +356,6 @@
                     this.options = this.customers.filter(
                         v => v.naziv_partnerja.toLowerCase().indexOf(needle) > -1
                     )
-                })
-            },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
                 })
             },
             update(id) {

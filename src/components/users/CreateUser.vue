@@ -70,9 +70,11 @@
 
     import {mapActions} from 'vuex'
     import Create from "src/components/App/Create";
+    import mixin from "src/global/mixin";
 
     export default {
         name: "CreateUser",
+        mixins: [mixin],
         data() {
             return {
                 medium: false,
@@ -96,18 +98,6 @@
             },
             clearForm() {
                 this.user = {}
-            },
-            isValidEmail (val) {
-                const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-                return emailPattern.test(val) || `${this.$t("general.wrongEmail")}`;
-            },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
             },
             createNew() {
                 this.submitting = true

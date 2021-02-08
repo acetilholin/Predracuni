@@ -46,9 +46,11 @@
 import {mapGetters, mapActions} from 'vuex'
 import CreateKlavzula from "../dialogs/CreateKlavzula";
 import EditKlavzula from "../dialogs/EditKlavzula";
+import mixin from "src/global/mixin";
 
 export default {
     name: "KlavzuleList",
+    mixins: [mixin],
     components: {
         CreateKlavzula,
         EditKlavzula
@@ -95,14 +97,6 @@ export default {
         editKlavzula(id) {
             this.$store.dispatch('general/editKlavzulaDialog', true)
             this.$store.dispatch('klavzule/show', id)
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         confirm(id) {
             this.$q.dialog({

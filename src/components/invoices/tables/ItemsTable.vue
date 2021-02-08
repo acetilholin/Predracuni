@@ -130,8 +130,12 @@
 </template>
 
 <script>
+
+import mixin from "src/global/mixin";
+
  export default {
         name: "ItemsTable",
+        mixins: [mixin],
         props: ['invoice', 'items'],
         data() {
             return {
@@ -253,14 +257,6 @@
 
                 this.invoice.total = (total * this.invoice.vat / 100) + total
                 return this.invoice.total
-            },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                  timeout: 1500,
-                    type: type
-                })
             },
           confirm(row) {
             this.$q.dialog({

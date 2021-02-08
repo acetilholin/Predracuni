@@ -98,9 +98,11 @@ import {mapActions, mapGetters} from 'vuex'
 import { Months } from 'src/global/variables'
 import AddDay from "../../days/dialogs/AddDay";
 import DaysTable from "../../days/DaysTable";
+import mixin from "src/global/mixin";
 
 export default {
     name: "CreateMonthDialog",
+    mixins: [mixin],
     components: {DaysTable, AddDay},
     data() {
         return {
@@ -150,14 +152,6 @@ export default {
             addDayDialog: 'general/addDayDialog',
             createMonthReport: 'months/create'
         }),
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                timeout: 1500,
-                position: 'top',
-                type: type
-            })
-        },
         removeFromDays(val) {
             this.days = this.days.filter(item => {
                 return item !== val

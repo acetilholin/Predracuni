@@ -86,9 +86,11 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import mixin from "src/global/mixin";
 
 export default {
     name: "EditRecipient",
+    mixins: [mixin],
     data() {
         return {
             submitting: false,
@@ -128,13 +130,6 @@ export default {
         },
         closeDialog() {
             this.close(false)
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                type: type
-            })
         },
         onReset() {
             this.recipient.title = ''

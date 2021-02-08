@@ -97,12 +97,14 @@ import {mapActions, mapGetters} from 'vuex'
 import DaysTable from "../../days/DaysTable";
 import { Months } from 'src/global/variables'
 import AddDay from "../../days/dialogs/AddDay";
+import mixin from "src/global/mixin";
 
 const d = new Date();
 const year = d.getFullYear();
 
 export default {
     name: "EditMonth",
+    mixins: [mixin],
     data() {
         return {
             maximizedToggle: true,
@@ -153,14 +155,6 @@ export default {
         },
         removeFromDays(item) {
             this.removeDay(item)
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         addDay() {
             this.addDayDialog(true)

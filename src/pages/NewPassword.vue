@@ -126,9 +126,11 @@
 
     import {mapActions} from 'vuex'
     import { logRegTitle } from '../global/variables.js'
+    import mixin from "src/global/mixin";
 
     export default {
         name: "NewPassword",
+        mixins: [mixin],
         data() {
             return {
                 title: logRegTitle,
@@ -149,18 +151,6 @@
                sendResetEmail: 'auth/resetEmail',
                changePassword: 'auth/changePassword'
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
-            isValidEmail (val) {
-                const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-                return emailPattern.test(val) || `${this.$t("general.wrongEmail")}`;
-            },
             sendEmail() {
                 this.sendResetEmail(this.email)
                 .then((response) => {

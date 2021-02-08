@@ -20,9 +20,11 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
+import mixin from "src/global/mixin";
 
 export default {
     name: "Settings",
+    mixins: [mixin],
     computed: {
         ...mapGetters({
             company: 'general/getCompany',
@@ -33,14 +35,6 @@ export default {
         ...mapActions({
             changeSetting: 'general/changeSetting'
         }),
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
-        },
         changeCompany() {
             let settings = {
                 status: !this.company,

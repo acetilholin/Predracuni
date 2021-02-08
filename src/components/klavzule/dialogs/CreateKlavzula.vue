@@ -75,9 +75,11 @@
 
 import Create from "src/components/App/Create";
 import {mapActions} from 'vuex'
+import mixin from "src/global/mixin";
 
 export default {
     name: "CreateKlavzula",
+    mixins: [mixin],
     data() {
         return {
             medium: false,
@@ -95,14 +97,6 @@ export default {
         ...mapActions({
            create: 'klavzule/create'
         }),
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
-        },
         modal(param) {
             this.medium = param
         },

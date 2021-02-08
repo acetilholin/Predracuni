@@ -80,9 +80,11 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
+import mixin from "src/global/mixin";
 
 export default {
     name: "EditEmployee",
+    mixins: [mixin],
     data() {
         return {
             submitting: false,
@@ -110,14 +112,6 @@ export default {
                 this.options = this.posts.filter(
                     v => v.posta.toLowerCase().indexOf(needle) > -1
                 )
-            })
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
             })
         },
         closeDialog() {

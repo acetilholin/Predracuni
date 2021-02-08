@@ -89,9 +89,11 @@
 
 import {mapGetters} from 'vuex'
 import {Years} from "src/global/variables";
+import mixin from "src/global/mixin";
 
 export default {
     name: "FilterDates",
+    mixins: [mixin],
     data() {
         return {
             fromDate: null,
@@ -111,14 +113,6 @@ export default {
         })
     },
     methods: {
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                timeout: 1500,
-                position: 'top',
-                type: type
-            })
-        },
         employeeSelected() {
             let interval = {
                 from: this.fromDate,

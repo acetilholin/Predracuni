@@ -70,10 +70,12 @@
 
     import CreateUser from "./CreateUser";
     import {mapGetters, mapActions} from "vuex";
-    import { countriesPath, picturesPath } from 'src/global/variables'
+    import { countriesPath, picturesPath } from 'src/global/variables';
+    import mixin from "src/global/mixin";
 
     export default {
         name: "UsersList",
+        mixins: [mixin],
         data() {
             return {
                 loading: true,
@@ -120,14 +122,6 @@
                 changeDetail: 'users/changeSingleDetail',
                 remove: 'users/removeUser'
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             countryImage(img) {
                 return countriesPath + img + '.svg'
             },

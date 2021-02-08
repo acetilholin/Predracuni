@@ -202,9 +202,11 @@ import {mapActions, mapGetters} from "vuex";
 import AddItem from "./AddItem";
 import ItemsTable from "../tables/ItemsTable";
 import AddNewRecipient from "./AddNewRecipient";
+import mixin from "src/global/mixin";
 
 export default {
     name: "CreateInvoice",
+    mixins: [mixin],
     data() {
         return {
             saved: false,
@@ -329,14 +331,6 @@ export default {
                 this.options = this.customers.filter(
                     v => v.naziv_partnerja.toLowerCase().indexOf(needle) > -1
                 )
-            })
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                timeout: 1500,
-                position: 'top',
-                type: type
             })
         },
         mandatoryFields() {

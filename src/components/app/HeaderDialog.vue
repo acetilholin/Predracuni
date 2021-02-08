@@ -69,14 +69,6 @@
             closeDialog() {
                 this.triggerModal(false)
             },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             signOut() {
                 this.signoutAction()
                     .then(() => {

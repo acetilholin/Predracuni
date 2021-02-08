@@ -81,9 +81,11 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
+import mixin from "src/global/mixin";
 
 export default {
     name: "CreateEmployee",
+    mixins: [mixin],
     data() {
         return {
             employee: {
@@ -115,14 +117,6 @@ export default {
                 this.options = this.posts.filter(
                     v => v.posta.toLowerCase().indexOf(needle) > -1
                 )
-            })
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
             })
         },
         closeDialog() {

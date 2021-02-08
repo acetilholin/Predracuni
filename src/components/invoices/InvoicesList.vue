@@ -86,9 +86,11 @@
     import FilterDates from "./filter/FilterDates";
     import PrintInvoice from "./dialogs/PrintInvoice";
     import {mapGetters, mapActions} from 'vuex'
+    import mixin from "src/global/mixin";
 
     export default {
         name: "InvoicesList",
+        mixins: [mixin],
         data() {
             return {
                 loading: true,
@@ -133,7 +135,7 @@
           FilterDates,
           PrintInvoice
         },
-        filters: {
+      filters: {
             decimals(value) {
                 return Math.round(value * 100) / 100 + ' €'
             }
@@ -145,14 +147,6 @@
                 copy: 'invoices/copy',
                 export: 'invoices/export'
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             tableIndex(row) {
                 return this.invoices.indexOf(row) + 1
             },

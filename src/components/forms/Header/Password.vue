@@ -73,9 +73,11 @@
 <script>
 
     import {mapActions} from 'vuex'
+    import mixin from "src/global/mixin";
 
     export default {
         name: "Password",
+        mixins: [mixin],
         data() {
             return {
                 newPass: {
@@ -93,14 +95,6 @@
             ...mapActions({
                 newPassword: 'users/changePassword',
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             changePassword() {
                 this.submitting = true
                 let data = {

@@ -72,9 +72,11 @@
     import CustomerTotal from "./dialogs/CustomerTotal";
     import EditCustomer from "./dialogs/EditCustomer";
     import {mapGetters, mapActions} from "vuex";
+    import mixin from "src/global/mixin";
 
     export default {
         name: "CustomersList",
+        mixins: [mixin],
         data() {
           return {
               loading: true,
@@ -123,14 +125,6 @@
             ...mapActions({
                 remove: 'customers/remove'
             }),
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
-            },
             tableIndex(row) {
                 return this.customers.indexOf(row) + 1
             },

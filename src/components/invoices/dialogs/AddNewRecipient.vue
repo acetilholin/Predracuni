@@ -86,9 +86,11 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import mixin from "src/global/mixin";
 
 export default {
     name: "AddNewRecipient",
+    mixins: [mixin],
     data() {
         return {
             submitting: false,
@@ -123,14 +125,6 @@ export default {
         },
         closeDialog() {
             this.close(false)
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         onReset() {
             this.recipient = {}

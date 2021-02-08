@@ -138,9 +138,11 @@
 
     import {mapGetters, mapActions} from 'vuex'
     import Create from "src/components/App/Create";
+    import mixin from "src/global/mixin";
 
     export default {
         name: "CreateCustomer",
+        mixins: [mixin],
         data() {
             return {
                 submitting: false,
@@ -183,22 +185,8 @@
                     )
                 })
             },
-            isValidEmail(val) {
-                if (val.length > 0) {
-                    const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-                    return emailPattern.test(val) || `${this.$t("general.wrongEmail")}`;
-                }
-            },
             onReset() {
                 this.customer = {}
-            },
-            showNotif(message, type) {
-                this.$q.notify({
-                    message: message,
-                    position: 'top',
-                    timeout: 1500,
-                    type: type
-                })
             },
             createNew() {
                 this.submitting = true

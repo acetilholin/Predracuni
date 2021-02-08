@@ -127,9 +127,11 @@
 
 import {mapGetters, mapActions} from 'vuex'
 import {picturesPath} from "../global/variables";
+import mixin from "src/global/mixin";
 
 export default {
     name: "Company",
+    mixins: [mixin],
     data(){
         return {
             submitting: false,
@@ -180,14 +182,6 @@ export default {
         }),
         image(img) {
             return picturesPath + img
-        },
-        showNotif(message, type) {
-            this.$q.notify({
-                message: message,
-                position: 'top',
-                timeout: 1500,
-                type: type
-            })
         },
         update() {
             this.submitting = true
