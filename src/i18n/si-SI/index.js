@@ -134,7 +134,9 @@ export default {
   statistics: {
     allVisits: 'Vseh obiskov',
     avg: 'Povprečno',
-    totalEarnings: 'Promet za obdobje'
+    totalEarnings: 'Promet za obdobje',
+    year: 'Leto',
+    chooseYear: 'Izberite leto'
   },
   drawer: {
     invoices: 'Predračuni',
