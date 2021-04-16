@@ -2,26 +2,34 @@
     <div class="statistics">
         <div class="text-center q-mt-xl text-subtitle1" v-if="totalInfo">
           <div class="row">
-            <q-select class="col-2 q-ml-sm"
-                      v-model="year"
-                      :options="options"
-                      label="Leto"
-                      @input="selectYear"
-            />
+            <div style="min-width: 250px; max-width: 300px">
+              <q-select
+                v-model="yearMultiple"
+                multiple
+                :options="options"
+                use-chips
+                stack-label
+                label="Leto"
+                @input="selectYear"
+              />
+            </div>
           </div>
-            {{ $t("statistics.totalEarnings") }}: <span class="text-primary">{{ total.interval }}</span>
-            <br>
-            <div>&Sigma;: <span class="text-green-10">{{ total.grandTotal | decimals | euro }}</span></div>
+          <div class="text-center" v-for="tot in total" v-if="yearMultiple.length > 0">
+             {{ $t("statistics.year") }}: {{ tot.year }}, &Sigma;: <span class="text-green-10">{{ tot.grandTotal | decimals | euro }}</span>
+          </div>
         </div>
-        <div class="small q-mt-lg">
+        <div class="small q-mt-lg" v-if="yearMultiple.length > 0">
             <total :total="total"></total>
+        </div>
+        <div v-else class="absolute-center">
+          {{ $t("statistics.chooseYear") }}
         </div>
     </div>
 </template>
 
 <script>
 
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 import Total from "../components/statistics/charts/Total";
 import {Years} from "src/global/variables";
 
@@ -29,8 +37,13 @@ export default {
     name: "Statistics",
     data() {
       return {
-        totalInfo: false,
-        year: this.$moment().year(),
+        totalInfo: true,
+        yearMultiple: [
+          {
+            label: this.$moment().year().toString(),
+            value: this.$moment().year()
+          }
+        ],
         options: Years
       }
     },
@@ -55,15 +68,21 @@ export default {
             spinnerSize: 40
         })
         this.$store.dispatch('statistics/total', {
-          year: this.$moment().year()
+          years: [this.$moment().year()]
         })
     },
     methods: {
       selectYear() {
-          this.$store.dispatch('statistics/total', {
-            year: this.year.value
-          })
+        let years = []
+
+        for (let value of Object.values(this.yearMultiple)) {
+          years.push(value.value)
         }
+        years.sort((a, b) => a - b)
+        this.$store.dispatch('statistics/total', {
+          years: years
+        })
+      }
     },
     watch: {
         total: {

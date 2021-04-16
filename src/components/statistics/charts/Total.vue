@@ -6,7 +6,9 @@ export default {
     props: ['total'],
     data() {
         return {
-            graphData: null
+            graphData: null,
+            months: ['Januar','Februar','Marec','April','Maj','Junij','Julij','Avgust','September','Oktober', 'November', 'December'],
+            borderColor: ['#0259ac','#FF0000','#00CC00','#FFFF00']
         }
     },
     extends: Bar,
@@ -14,18 +16,10 @@ export default {
         this.graphData = this.total
     },
     methods: {
-        newGraph() {
+        newGraph(datasetsArray) {
             this.renderChart({
-                labels: this.graphData.months,
-                datasets: [
-                    {
-                        label: `${this.$t('general.totalPerMonth')}`,
-                        backgroundColor: '#ecf1f6',
-                        data: this.graphData.priceByMonth,
-                        borderWidth: 1,
-                        borderColor: '#0259ac'
-                    }
-                ]
+                labels: this.months,
+                datasets: datasetsArray
             }, {
                 scales: {
                     yAxes: [{
@@ -47,13 +41,28 @@ export default {
                 responsive: true,
                 maintainAspectRatio: false
             })
-        }
+        },
+      addDataToGraph(params) {
+        let datasets = []
+        let index = 0
+        params.forEach(param => {
+          datasets.push({
+            label: `Leto ${param.year}`,
+            backgroundColor: '#ecf1f6',
+            data: param.priceByMonth,
+            borderWidth: 1,
+            borderColor: this.borderColor[index]
+          })
+          index++
+        })
+
+        this.newGraph(datasets)
+      }
     },
     watch: {
         total: {
             handler() {
-                this.graphData = this.total
-                this.newGraph()
+                this.addDataToGraph(this.total)
             },
             deep: true
         }
