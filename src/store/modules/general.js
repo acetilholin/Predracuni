@@ -25,7 +25,8 @@ export default {
         createMonth: false,
         addDay: false,
         editMonth: false,
-        printMonth: false
+        printMonth: false,
+        skladModal: false
     },
     mutations: {
         CHANGE_DRAWER(state, payload) {
@@ -96,6 +97,9 @@ export default {
         },
         CHANGE_MONTH_PRINT(state, payload) {
             state.printMonth = payload
+        },
+        CHANGE_SKLAD_MODAL(state, payload) {
+          state.skladModal = payload
         }
     },
     actions: {
@@ -107,6 +111,9 @@ export default {
         },
         editCustomerModal({commit}, modal) {
             commit('CHANGE_EDIT_DIALOG', modal)
+        },
+        editSkladModal({commit}, modal) {
+          commit('CHANGE_SKLAD_MODAL', modal)
         },
         editInvoiceDialogAction({commit}, modal) {
             commit('CHANGE_EDIT_INVOICE_DIALOG', modal)
@@ -249,6 +256,9 @@ export default {
         },
         getPrintMonth(state) {
             return state.printMonth
+        },
+        getSkladModal(state) {
+          return state.skladModal
         }
     }
 }

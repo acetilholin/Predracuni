@@ -13,6 +13,7 @@ import company from "src/store/modules/company";
 import statistics from "src/store/modules/statistics";
 import months from "src/store/modules/months";
 import employees from "src/store/modules/employees";
+import sklad from "src/store/modules/sklad"
 
 Vue.use(Vuex)
 
@@ -29,7 +30,8 @@ const store = new Vuex.Store({
     company,
     statistics,
     months,
-    employees
+    employees,
+    sklad
   }
 })
 
