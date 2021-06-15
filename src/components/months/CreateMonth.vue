@@ -12,11 +12,6 @@ import Create from "src/components/App/Create";
 
 export default {
     name: "CreateMonth",
-    data() {
-        return {
-
-        }
-    },
     components: {
         Create
     },

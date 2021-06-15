@@ -39,7 +39,6 @@ export default {
           years: payload.years
         })
           .then(response => {
-            console.log(response.data.response)
             commit('SET_TOTAL', response.data.response)
           })
       }

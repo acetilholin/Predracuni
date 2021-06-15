@@ -9,6 +9,7 @@ import Users from "src/pages/Users";
 import Company from "src/pages/Company";
 import Klavzule from "src/pages/Klavzule";
 import Months from "src/pages/Months";
+import Sklad from "pages/Sklad";
 
 const routes = [
   {
@@ -62,6 +63,13 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresAdmin: true
+    }
+  },
+  {
+    path: '/sklad',
+    component: Sklad,
+    meta: {
+      requiresAuth: true
     }
   },
   {

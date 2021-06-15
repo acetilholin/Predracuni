@@ -138,6 +138,12 @@ export default {
     year: 'Leto',
     chooseYear: 'Izberite leto'
   },
+  sklad: {
+    newEntry: 'Nov upravičenec',
+    undone: 'Neopravljeno',
+    toBeConfirmed: 'Čaka na odobritev',
+    edit: 'Uredi upravičenca'
+  },
   drawer: {
     invoices: 'Predračuni',
     customers: 'Stranke',
@@ -147,7 +153,8 @@ export default {
     users: 'Uporabniki',
     klavzule: 'Klavzule',
     company: 'Podjetje',
-    hours: 'Ure'
+    hours: 'Ure',
+    sklad: 'Eko sklad'
   },
   header: {
     user: 'Uporabnik'

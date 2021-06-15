@@ -2,7 +2,6 @@
     <q-drawer
         v-model="drawer"
         show-if-above
-
         :mini="miniState"
         @mouseover="miniState = false"
         @mouseout="miniState = true"
@@ -79,6 +78,14 @@
                         <router-link to="/company" class="text-subtitle1">{{ $t("drawer.company") }}</router-link>
                     </q-item-section>
                 </q-item>
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon :class="{'icon-active' : currentPage === '/sklad'}" name="park" />
+                </q-item-section>
+                <q-item-section>
+                  <router-link to="/sklad" class="text-subtitle1">{{ $t("drawer.sklad") }}</router-link>
+                </q-item-section>
+              </q-item>
                 <q-item clickable v-ripple v-if="klavzule">
                     <q-item-section avatar>
                         <q-icon :class="{'icon-active' : currentPage === '/klavzule'}" name="list" />
