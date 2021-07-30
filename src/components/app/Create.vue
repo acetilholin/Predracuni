@@ -51,7 +51,7 @@
                     color="green-6"
                     text-color="white"
                     @click="trigger"
-                    icon="park"
+                    icon="compost"
                     label="Nov vnos"
                     v-show="sklad()"
       />

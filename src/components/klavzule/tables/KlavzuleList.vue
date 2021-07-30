@@ -6,6 +6,7 @@
             :data="klavzule"
             :columns="columns"
             row-key="name"
+            :pagination.sync="pagination"
         >
             <template v-slot:body="props">
                 <q-tr :props="props">
@@ -65,6 +66,9 @@ export default {
     },
     data() {
         return {
+            pagination: {
+              rowsPerPage: 20
+            },
             columns: [
                 {
                     name: 'index',

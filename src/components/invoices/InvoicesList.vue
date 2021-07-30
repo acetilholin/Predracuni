@@ -207,6 +207,7 @@
         },
       mounted() {
         let year = this.$moment().year()
+        localStorage.setItem('year', JSON.stringify(year));
         this.$store.dispatch('invoices/invoicesYear', {
           year
         })

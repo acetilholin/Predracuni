@@ -20,7 +20,7 @@
             {{ tableIndex(props.row) }}
           </q-td>
           <q-td key="customer" :props="props">
-            {{ props.row.customer.naziv_partnerja }} -
+            {{ props.row.customer.naziv_partnerja }}
             {{ props.row.customer.telefon }}
           </q-td>
           <q-td key="invoice" :props="props">
@@ -101,7 +101,7 @@ export default {
         {name: 'invoice', align: 'center', label: 'Predračun', field: 'invoice'},
         {name: 'item', label: 'Artikel', field: 'item', align: 'center'},
         {name: 'status', label: 'Status', field: 'status', align: 'center', sortable: true},
-        {name: 'created', label: 'Datum', field: 'created', align: 'center', sortable: true},
+        {name: 'created', label: 'Datum predračuna', field: 'created', align: 'center', sortable: true},
         {name: 'work_date', label: 'Datum montaže', field: 'work_date', align: 'center', sortable: true},
         {name: 'edit', label: 'Uredi', align: 'center'}
       ]

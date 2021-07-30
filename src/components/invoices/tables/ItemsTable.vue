@@ -39,8 +39,9 @@
                                       title="Spremeni opis"
                                       buttons
                                       label-set="Spremeni"
-                                      :validate="descriptionIsInserted"
+                                      label-cancel="Prekliči"
                                       @hide="descriptionIsInserted"
+                                      v-slot="scope"
                         >
                             <q-input type="text"
                                      v-model="props.row.description"
@@ -235,10 +236,7 @@ import mixin from "src/global/mixin";
                 this.showNotif(message, 'positive')
             },
             descriptionIsInserted(val) {
-                if (!val) {
-                    return false
-                }
-                this.changeDesc(` ${this.$t("general.descriptionChanged")}`)
+              this.changeDesc(` ${this.$t("general.descriptionChanged")}`)
             },
             itemsNum() {
                 let total = 0
