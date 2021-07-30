@@ -80,7 +80,7 @@
                 </q-item>
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-icon :class="{'icon-active' : currentPage === '/sklad'}" name="park" />
+                  <q-icon :class="{'icon-active' : currentPage === '/sklad'}" name="compost" />
                 </q-item-section>
                 <q-item-section>
                   <router-link to="/sklad" class="text-subtitle1">{{ $t("drawer.sklad") }}</router-link>
