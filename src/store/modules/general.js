@@ -137,7 +137,7 @@ export default {
             commit('CHANGE_PRINT_INVOICE_DIALOG', modal)
         },
         settings({commit}) {
-          axiosInstance.get('/settings/')
+          axiosInstance.get('/settings')
                 .then((response) => {
                     commit('CHANGE_COMPANY', !!response.data.company.visible)
                     commit('CHANGE_KLAVZULE', !!response.data.klavzule.visible)

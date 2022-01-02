@@ -37,14 +37,13 @@
                   <q-icon name="person"/>
                 </template>
               </q-select>
-
               <q-select
                 v-model="sklad.invoice"
                 use-input
                 hide-selected
                 fill-input
                 input-debounce="0"
-                label="Št. predračuna"
+                label="Št. računa"
                 class="col-6 q-ml-xs"
                 :options="invoicesOption"
                 @filter="filterInvoices"
@@ -126,7 +125,7 @@ export default {
   computed: {
     ...mapGetters({
       customers: 'customers/getCustomers',
-      invoices: 'invoices/getInvoices'
+      invoices: 'final/getAll'
     })
   },
   data() {
@@ -147,6 +146,7 @@ export default {
   created() {
     this.invoicesOption = this.invoices
     this.options = this.customers
+    this.$store.dispatch('final/all')
   },
   methods: {
     ...mapActions({

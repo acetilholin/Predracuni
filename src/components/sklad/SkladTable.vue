@@ -98,10 +98,10 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        {name: 'invoice', align: 'center', label: 'Predračun', field: 'invoice'},
+        {name: 'invoice', align: 'center', label: 'Račun', field: 'invoice'},
         {name: 'item', label: 'Artikel', field: 'item', align: 'center'},
         {name: 'status', label: 'Status', field: 'status', align: 'center', sortable: true},
-        {name: 'created', label: 'Datum predračuna', field: 'created', align: 'center', sortable: true},
+        {name: 'created', label: 'Datum računa', field: 'created', align: 'center', sortable: true},
         {name: 'work_date', label: 'Datum montaže', field: 'work_date', align: 'center', sortable: true},
         {name: 'edit', label: 'Uredi', align: 'center'}
       ]
