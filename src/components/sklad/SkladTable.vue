@@ -6,6 +6,7 @@
       :data="skladData"
       :columns="columns"
       row-key="name"
+      :pagination.sync="pagination"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Išči">
@@ -83,6 +84,9 @@ export default {
   data() {
     return {
       filter: '',
+      pagination: {
+        rowsPerPage: 20
+      },
       columns: [
         {
           name: 'index',
@@ -111,7 +115,6 @@ export default {
   created() {
     this.$store.dispatch('sklad/all')
     this.$store.dispatch('customers/all')
-    this.$store.dispatch('final/all')
   },
   computed: {
     ...mapGetters({

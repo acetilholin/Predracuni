@@ -35,8 +35,8 @@ export default {
         }
     },
     actions: {
-        all({commit}) {
-          axiosInstance.get('/finalInvoices')
+        async all({commit}) {
+          await axiosInstance.get('/finalInvoices')
                 .then((response) => {
                     commit('SET_FINAL_INVOICES', response.data.final)
                 })

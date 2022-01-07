@@ -16,7 +16,25 @@
             class="q-col-gutter-lg"
           >
             <div class="row">
-              <q-select
+              <q-field label="Stranka" stack-label :dense="dense" disable class="col-5 q-ml-xs">
+                <template v-slot:control>
+                  <div class="self-center full-width no-outline"
+                       tabindex="0"
+                  >{{ sklad.customer.naziv_partnerja }}
+                  </div>
+                </template>
+              </q-field>
+
+              <q-field label="Št. računa" stack-label :dense="dense" disable class="col-6 q-ml-xs">
+                <template v-slot:control>
+                  <div class="self-center full-width no-outline"
+                       tabindex="0"
+                  >{{ sklad.invoice.sifra_predracuna + " - " + sklad.invoice.ime_priimek }}
+                  </div>
+                </template>
+              </q-field>
+
+<!--              <q-select
                 v-model="sklad.customer"
                 use-input
                 hide-selected
@@ -54,17 +72,18 @@
                 <template v-slot:prepend>
                   <q-icon name="description"/>
                 </template>
-              </q-select>
+              </q-select>-->
             </div>
             <div class="row">
               <q-input v-model="sklad.item"
                        label="artikel"
-                       class="col-4"
+                       class="col-11 q-ml-xs"
               > <template v-slot:prepend>
                 <q-icon name="subject" />
               </template>
               </q-input>
-
+            </div>
+            <div class="row">
               <q-input
                 ref="date"
                 v-model="sklad.created"
@@ -184,7 +203,7 @@ export default {
           this.submitting = false
         })
     },
-    filterInvoice(val, update, abort) {
+    /*filterInvoice(val, update, abort) {
       update(() => {
         const needle = val.toLowerCase()
         this.invoiceOptions = this.invoices.filter(
@@ -199,7 +218,7 @@ export default {
           v => v.naziv_partnerja.toLowerCase().indexOf(needle) > -1
         )
       })
-    }
+    }*/
   }
 }
 </script>

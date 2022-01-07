@@ -132,7 +132,7 @@ export default {
     return {
       medium: false,
       options: '',
-      invoicesOption: '',
+      invoicesOption: [],
       submitting: false,
       sklad: {
         item: '',
@@ -144,9 +144,7 @@ export default {
     }
   },
   created() {
-    this.invoicesOption = this.invoices
     this.options = this.customers
-    this.$store.dispatch('final/all')
   },
   methods: {
     ...mapActions({
@@ -189,6 +187,13 @@ export default {
           this.showNotif(e, 'negative')
           this.submitting = false
         })
+    }
+  },
+  watch: {
+    invoicesOption: {
+      handler() {
+        this.invoicesOption = this.invoices
+      }
     }
   }
 }

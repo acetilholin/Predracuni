@@ -26,7 +26,7 @@ export default {
         'item': sklad.item,
         'created': sklad.invoice.timestamp,
         'customer_id': sklad.customer.id,
-        'invoice_id': sklad.invoice.id,
+        'final_invoice_id': sklad.invoice.id,
         'work_date': sklad.workDate
       }
       return await axiosInstance.post('/sklads', newSklad)
@@ -68,7 +68,7 @@ export default {
      return axiosInstance.patch(`/sklads/${sklad.id}`, {
        'id': sklad.id,
        'customer_id': sklad.customer.id,
-       'invoice_id': sklad.invoice.id,
+       'final_invoice_id': sklad.invoice.id,
        'item': sklad.item,
        'status': sklad.status,
        'created': sklad.created,
