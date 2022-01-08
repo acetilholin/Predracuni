@@ -30,17 +30,6 @@
           <q-td key="item" :props="props">
             {{ props.row.item }}
           </q-td>
-          <q-td key="status" :props="props">
-            <q-badge :color="statusColor(props.row.status)"
-                     class="cursor-pointer"
-                     @click="changeStatus(props.row.id, props.row.status)"
-            >
-              {{ props.row.status | status }}
-              <q-tooltip>
-                kliknite za spremembo statusa
-              </q-tooltip>
-            </q-badge>
-          </q-td>
           <q-td key="created" :props="props">
             {{ props.row.created | moment('DD-MM-Y') }}
           </q-td>
@@ -104,7 +93,6 @@ export default {
         },
         {name: 'invoice', align: 'center', label: 'Račun', field: 'invoice'},
         {name: 'item', label: 'Artikel', field: 'item', align: 'center'},
-        {name: 'status', label: 'Status', field: 'status', align: 'center', sortable: true},
         {name: 'created', label: 'Datum računa', field: 'created', align: 'center', sortable: true},
         {name: 'work_date', label: 'Datum montaže', field: 'work_date', align: 'center', sortable: true},
         {name: 'edit', label: 'Uredi', align: 'center'}
@@ -128,8 +116,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      remove: 'sklad/remove',
-      change: 'sklad/changeStatus'
+      remove: 'sklad/remove'
     }),
     tableIndex(row) {
       return this.skladData.indexOf(row) + 1
@@ -139,16 +126,6 @@ export default {
     },
     confirm(id) {
       this.remove(id)
-        .then((response) => {
-          this.showNotif(response, 'positive')
-        })
-        .catch((e) => {
-          this.showNotif(e, 'negative')
-        })
-    },
-    changeStatus(id,status) {
-      let payload = {'id': id, 'status': status + 1}
-      this.change(payload)
         .then((response) => {
           this.showNotif(response, 'positive')
         })

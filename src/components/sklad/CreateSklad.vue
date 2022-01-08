@@ -30,6 +30,7 @@
                 @filter="filterCustomers"
                 option-label="naziv_partnerja"
                 option-value="naziv_partnerja"
+                @input="getFinalInvoice(sklad.customer)"
                 type="text"
                 map-options
               >
@@ -37,25 +38,14 @@
                   <q-icon name="person"/>
                 </template>
               </q-select>
-              <q-select
-                v-model="sklad.invoice"
-                use-input
-                hide-selected
-                fill-input
-                input-debounce="0"
-                label="Št. računa"
-                class="col-6 q-ml-xs"
-                :options="invoicesOption"
-                @filter="filterInvoices"
-                :option-label='(item) => item.sifra_predracuna + " - " + item.ime_priimek'
-                option-value="sifra_predracuna"
-                type="text"
-                map-options
-              >
-                <template v-slot:prepend>
-                  <q-icon name="description"/>
+              <q-field label="Št. računa" stack-label disable class="col-6 q-ml-xs">
+                <template v-slot:control>
+                  <div class="self-center full-width no-outline"
+                       tabindex="0"
+                  >{{ sklad.invoice.sifra_predracuna }}
+                  </div>
                 </template>
-              </q-select>
+              </q-field>
             </div>
             <div class="row">
               <q-input v-model="sklad.item"
@@ -115,6 +105,7 @@
 import Create from "components/app/Create";
 import {mapActions, mapGetters} from "vuex";
 import mixin from "src/global/mixin";
+import {axiosInstance} from "boot/axios";
 
 export default {
   name: "CreateSklad",
@@ -137,7 +128,9 @@ export default {
       sklad: {
         item: '',
         date: '',
-        invoice: null,
+        invoice: {
+          sira_predracuna: ''
+        },
         customer: null,
         workDate: ''
       }
@@ -167,6 +160,16 @@ export default {
         this.invoicesOption = this.invoicesOption.filter(
           v => v.ime_priimek.toLowerCase().indexOf(needle) > -1
         )
+      })
+    },
+    getFinalInvoice(customer) {
+      axiosInstance.get(`finalInvoice/customer/${customer.id}`)
+      .then((response) => {
+        if (response.data.final.length !== 1) {
+          this.showNotif(`Stranka ima št. računov: ${response.data.final.length}`, 'negative')
+        }else {
+          this.sklad.invoice = response.data.final[0]
+        }
       })
     },
     clearForm() {

@@ -48,16 +48,6 @@ export default {
           throw (e.response.data.error);
         })
     },
-    changeStatus({dispatch}, payload) {
-     return axiosInstance.get(`/sklads/${payload.id}/${payload.status}/status`)
-        .then((response) => {
-          dispatch('all')
-          return response.data.success
-        })
-        .catch((e) => {
-          throw (e.response.data.error);
-        })
-    },
     show({commit}, id) {
       axiosInstance.get(`/sklads/${id}/edit`)
         .then((response) => {
@@ -70,7 +60,6 @@ export default {
        'customer_id': sklad.customer.id,
        'final_invoice_id': sklad.invoice.id,
        'item': sklad.item,
-       'status': sklad.status,
        'created': sklad.created,
        'work_date': sklad.work_date
      })

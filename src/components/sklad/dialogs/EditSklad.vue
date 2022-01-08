@@ -16,7 +16,7 @@
             class="q-col-gutter-lg"
           >
             <div class="row">
-              <q-field label="Stranka" stack-label :dense="dense" disable class="col-5 q-ml-xs">
+              <q-field label="Stranka" stack-label disable class="col-5 q-ml-xs">
                 <template v-slot:control>
                   <div class="self-center full-width no-outline"
                        tabindex="0"
@@ -25,7 +25,7 @@
                 </template>
               </q-field>
 
-              <q-field label="Št. računa" stack-label :dense="dense" disable class="col-6 q-ml-xs">
+              <q-field label="Št. računa" stack-label disable class="col-6 q-ml-xs">
                 <template v-slot:control>
                   <div class="self-center full-width no-outline"
                        tabindex="0"
