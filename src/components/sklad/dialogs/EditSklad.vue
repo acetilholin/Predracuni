@@ -5,7 +5,7 @@
       persistent
       ref="editSklad"
     >
-      <q-card style="width: 700px; max-width: 80vw;">
+      <q-card style="width: 800px; max-width: 90vw;">
         <q-card-section>
           <div class="text-h6">{{ $t("sklad.edit") }}</div>
         </q-card-section>
@@ -25,11 +25,19 @@
                 </template>
               </q-field>
 
-              <q-field label="Št. računa" stack-label disable class="col-6 q-ml-xs">
+              <q-field label="Št. računa" stack-label disable class="col-4 q-ml-xs">
                 <template v-slot:control>
                   <div class="self-center full-width no-outline"
                        tabindex="0"
                   >{{ sklad.invoice.sifra_predracuna + " - " + sklad.invoice.ime_priimek }}
+                  </div>
+                </template>
+              </q-field>
+              <q-field label="Datum montaže" stack-label disable class="col-2 q-ml-xs">
+                <template v-slot:control>
+                  <div class="self-center full-width no-outline"
+                       tabindex="0"
+                  >{{ sklad.work_date }}
                   </div>
                 </template>
               </q-field>
@@ -97,25 +105,6 @@
                       <q-date
                         mask="YYYY-MM-DD"
                         v-model="sklad.created"
-                      />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-
-              <q-input
-                ref="date"
-                v-model="sklad.work_date"
-                label="Datum montaže"
-                class="col-3 q-ml-sm"
-                @click="$refs.qWorkDate.show()"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qWorkDate">
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="sklad.work_date"
                       />
                     </q-popup-proxy>
                   </q-icon>

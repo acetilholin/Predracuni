@@ -4,7 +4,9 @@ export default {
   namespaced: true,
   state: {
     skladi: [],
-    sklad: []
+    sklad: [],
+    skladiPrint: [],
+    dates: []
   },
   mutations: {
     SET_SKLADI(state, payload) {
@@ -12,6 +14,12 @@ export default {
     },
     SET_SKLAD(state, payload) {
       state.sklad = payload
+    },
+    SET_SKLADI_TO_PRINT(state, payload) {
+      state.skladiPrint = payload
+    },
+    SET_PRINT_DATES(state, payload) {
+      state.dates = payload
     }
   },
   actions: {
@@ -70,6 +78,16 @@ export default {
        .catch((e) => {
          throw (e.response.data.error);
        })
+    },
+    filter({commit}, payload) {
+     axiosInstance.post('/sklads/filter', {
+       from: payload.from,
+       to: payload.to
+     })
+       .then((response) => {
+         commit('SET_SKLADI_TO_PRINT', response.data.sklads)
+         commit('SET_PRINT_DATES', payload)
+       })
     }
   },
   getters: {
@@ -78,6 +96,12 @@ export default {
     },
     getSklad(state) {
       return state.sklad
+    },
+    getSkladiForPrinting(state) {
+      return state.skladiPrint
+    },
+    getPrintDates(state) {
+      return state.dates
     }
   }
 }

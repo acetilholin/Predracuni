@@ -1,9 +1,11 @@
 <template>
   <div class="q-pa-md">
     <create-sklad class="q-mt-sm q-mb-md"></create-sklad>
+    <filter-sklad class="q-mb-sm"></filter-sklad>
     <q-table
       title="Eko sklad"
       :data="skladData"
+      :filter="filter"
       :columns="columns"
       row-key="name"
       :pagination.sync="pagination"
@@ -56,6 +58,7 @@
       </template>
     </q-table>
     <edit-sklad></edit-sklad>
+    <skladi-print></skladi-print>
   </div>
 </template>
 
@@ -63,9 +66,10 @@
 import CreateSklad from "components/sklad/CreateSklad";
 import {mapActions, mapGetters} from "vuex";
 import mixin from "src/global/mixin";
-import {i18n} from "boot/i18n";
 import EditSklad from "components/sklad/dialogs/EditSklad";
 import {statuses} from "src/global/variables";
+import FilterSklad from "components/sklad/FilterSklad";
+import SkladiPrint from "components/sklad/dialogs/SkladiPrint";
 
 export default {
   name: "SkladTable",
@@ -76,6 +80,7 @@ export default {
       pagination: {
         rowsPerPage: 20
       },
+      selected: [],
       columns: [
         {
           name: 'index',
@@ -99,7 +104,7 @@ export default {
       ]
     }
   },
-  components: {EditSklad, CreateSklad},
+  components: {SkladiPrint, FilterSklad, EditSklad, CreateSklad},
   created() {
     this.$store.dispatch('sklad/all')
     this.$store.dispatch('customers/all')
@@ -120,9 +125,6 @@ export default {
     }),
     tableIndex(row) {
       return this.skladData.indexOf(row) + 1
-    },
-    statusColor(num) {
-      return statuses[num].color
     },
     confirm(id) {
       this.remove(id)

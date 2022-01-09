@@ -142,7 +142,10 @@ export default {
     newEntry: 'Nov upravičenec',
     undone: 'Neopravljeno',
     toBeConfirmed: 'Čaka na odobritev',
-    edit: 'Uredi upravičenca'
+    edit: 'Uredi upravičenca',
+    printSkladi: 'Upravičenci EKO sklada',
+    printSkladiTitle: 'Upravičenci EKO sklada za obdobje ',
+    noData: 'Za izbrano obdobje ni upravičencev.'
   },
   drawer: {
     invoices: 'Predračuni',

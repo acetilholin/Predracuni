@@ -26,7 +26,8 @@ export default {
         addDay: false,
         editMonth: false,
         printMonth: false,
-        skladModal: false
+        skladModal: false,
+        skladPrint: false
     },
     mutations: {
         CHANGE_DRAWER(state, payload) {
@@ -100,6 +101,9 @@ export default {
         },
         CHANGE_SKLAD_MODAL(state, payload) {
           state.skladModal = payload
+        },
+        CHANGE_SKLAD_PRINT(state, payload) {
+          state.skladPrint = payload
         }
     },
     actions: {
@@ -185,6 +189,9 @@ export default {
         },
         monthPrint({commit}, modal) {
             commit('CHANGE_MONTH_PRINT', modal)
+        },
+        printSkladi({commit}, modal) {
+          commit('CHANGE_SKLAD_PRINT', modal)
         }
     },
     getters: {
@@ -259,6 +266,9 @@ export default {
         },
         getSkladModal(state) {
           return state.skladModal
+        },
+        getSkladPrint(state) {
+          return state.skladPrint
         }
     }
 }

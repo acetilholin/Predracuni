@@ -38,7 +38,7 @@
                   <q-icon name="person"/>
                 </template>
               </q-select>
-              <q-field label="Št. računa" stack-label disable class="col-6 q-ml-xs">
+              <q-field label="Št. računa" stack-label disable class="col-3 q-ml-xs">
                 <template v-slot:control>
                   <div class="self-center full-width no-outline"
                        tabindex="0"
@@ -46,33 +46,22 @@
                   </div>
                 </template>
               </q-field>
+              <q-field label="Datum montaže" stack-label disable class="col-3 q-ml-xs">
+                <template v-slot:control>
+                  <div class="self-center full-width no-outline"
+                       tabindex="0"
+                  >{{ sklad.workDate }}
+                  </div>
+                </template>
+              </q-field>
             </div>
             <div class="row">
               <q-input v-model="sklad.item"
                        label="Artikel"
-                       class="col-6"
+                       class="col-11"
               > <template v-slot:prepend>
                 <q-icon name="subject" />
               </template>
-              </q-input>
-
-              <q-input
-                ref="date"
-                v-model="sklad.workDate"
-                label="Datum montaže"
-                class="col-5 q-ml-sm"
-                @click="$refs.qDateWorkDate.show()"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateWorkDate">
-                      <q-date
-                        mask="YYYY-MM-DD"
-                        v-model="sklad.workDate"
-                      />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
               </q-input>
             </div>
             <div class="q-mt-md">
@@ -169,6 +158,7 @@ export default {
           this.showNotif(`Stranka ima št. računov: ${response.data.final.length}`, 'negative')
         }else {
           this.sklad.invoice = response.data.final[0]
+          this.sklad.workDate = response.data.final[0].work_date
         }
       })
     },
