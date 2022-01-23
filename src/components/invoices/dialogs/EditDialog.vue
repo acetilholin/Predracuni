@@ -209,7 +209,7 @@
                       label="Šifra predračuna"
                       hint="Format: zap.število/leto"
                       @blur="validateSifraRacuna"
-                      :rules="[ val => val && val.length < 9 || `${this.$t('general.wrongFormatSifraPredracuna')}`, checkFormat]"
+                      :rules="[ lengthResp, checkFormat]"
                     />
                   </div>
                 </q-card-section>
@@ -419,6 +419,13 @@
             strankaChanged() {
                 this.showNotif(`${this.$t('general.customerChanged')}`, 'positive')
             },
+          lengthResp(val) {
+              if (val.length > 8) {
+                this.disableUpdate = true
+                return this.$t('general.wrongFormatSifraPredracuna')
+              }
+            this.disableUpdate = false
+          },
           checkFormat(val) {
             const regex = /\d{1,3}\/\d{4}/
             if (!regex.test(val) || !val.includes('/')){

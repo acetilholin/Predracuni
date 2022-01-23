@@ -49,8 +49,8 @@
            Ponastavi filter za izpis vseh
          </q-tooltip>
        </q-btn>
-       <q-btn outline color="green" @click="filterSklads" :disable="checkDates()" icon="print">
-         <q-tooltip>Natisni upravičence</q-tooltip>
+       <q-btn outline color="green" @click="filterSklads" :disable="checkDates()" icon="list">
+         <q-tooltip>Prikaži in natisni seznam upravičencev</q-tooltip>
        </q-btn>
      </div>
   </div>
