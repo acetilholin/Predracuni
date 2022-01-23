@@ -183,6 +183,7 @@
                     <div class="text-center">
                         <q-btn color="secondary"
                                outline
+                               :disable="disableUpdate"
                                :loading="submitting"
                                icon="autorenew"
                                label="Posodobi"
@@ -200,7 +201,18 @@
                 <q-card-section>
                     <add-item @newItem="addNewItem"></add-item>
                 </q-card-section>
-
+                <q-card-section>
+                  <div class="row">
+                    <q-input
+                      class="col-md-2 q-ml-md"
+                      v-model="invoice.sifra_predracuna"
+                      label="Šifra predračuna"
+                      hint="Format: zap.število/leto"
+                      @blur="validateSifraRacuna"
+                      :rules="[ val => val && val.length < 9 || `${this.$t('general.wrongFormatSifraPredracuna')}`, checkFormat]"
+                    />
+                  </div>
+                </q-card-section>
                 <q-card-section class="q-pt-none">
                     <items-table :invoice="invoice" :items="items" @removeItem="removeFromItems"></items-table>
                 </q-card-section>
@@ -226,6 +238,7 @@
         mixins: [mixin],
         data() {
             return {
+                disableUpdate:false,
                 submitting: false,
                 options: this.customers,
                 maximizedToggle: true,
@@ -250,6 +263,7 @@
             ...mapGetters({
                 dialog: 'general/getEditInvoiceDialog',
                 invoice: 'invoices/getInvoice',
+                initialValue: 'invoices/getInvoice',
                 items: 'invoices/getItems',
                 klavzule: 'klavzule/getKlavzule',
                 customers: 'customers/getCustomers',
@@ -404,6 +418,35 @@
             },
             strankaChanged() {
                 this.showNotif(`${this.$t('general.customerChanged')}`, 'positive')
+            },
+          checkFormat(val) {
+            const regex = /\d{1,3}\/\d{4}/
+            if (!regex.test(val) || !val.includes('/')){
+              this.disableUpdate = true
+              return this.$t('general.wrongFormatSifraPredracuna')
+            }
+            this.disableUpdate = false
+          },
+            validateSifraRacuna() {
+             let sifraInitial = localStorage.getItem('sifra')
+             const regex = /\d{1,3}\/\d{4}/
+              if (regex.test(this.invoice.sifra_predracuna) && this.invoice.sifra_predracuna.length <= 8 && this.invoice.sifra_predracuna.includes('/')) {
+
+                if (sifraInitial !== this.invoice.sifra_predracuna) {
+                  this.$store.dispatch('invoices/checkExisting', {
+                    sifra: this.invoice.sifra_predracuna
+                  })
+                    .then(response => {
+                      if (response) {
+                        this.showNotif(`${this.$t('general.sifraExists')}`, 'negative')
+                        this.disableUpdate = true
+                      } else {
+                        this.disableUpdate = false
+                         this.showNotif(`${this.$t('general.sifraUpdated')}`, 'positive')
+                      }
+                    })
+                }
+              }
             }
         }
     }

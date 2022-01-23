@@ -191,7 +191,15 @@ export default {
                 .catch((e) => {
                     throw (e.response.data.error);
                 })
-        }
+        },
+      checkExisting({commit}, payload) {
+        return axiosInstance.post('/invoice/checkSifra', {
+          sifra: payload.sifra
+        })
+          .then((response) => {
+            return response.data.data
+          })
+      }
     },
     getters: {
         getInvoices(state) {

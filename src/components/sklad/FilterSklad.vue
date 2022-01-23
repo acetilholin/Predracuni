@@ -44,6 +44,11 @@
       </template>
     </q-input>
      <div class="q-pt-md">
+       <q-btn color="primary" outline label="Reset" @click="getAll" class="q-ml-xs q-mr-xs">
+         <q-tooltip>
+           Ponastavi filter za izpis vseh
+         </q-tooltip>
+       </q-btn>
        <q-btn outline color="green" @click="filterSklads" :disable="checkDates()" icon="print">
          <q-tooltip>Natisni upravičence</q-tooltip>
        </q-btn>
@@ -68,18 +73,23 @@ export default {
   methods: {
     filterSklads() {
      if (this.canPrint) {
-       this.$store.dispatch('sklad/filter', {
-         from: this.fromDate,
-         to: this.toDate
-       })
        this.$store.dispatch('general/printSkladi', true)
      }
+    },
+    getAll() {
+      this.$store.dispatch('sklad/all')
+      this.fromDate = ''
+      this.toDate = ''
     },
     dateChanged() {
       if (this.fromDate && this.toDate) {
         if (this.fromDate > this.toDate) {
           this.showNotif(`${this.$t('general.dateFromTo')}`,'warning');
         } else {
+          this.$store.dispatch('sklad/filter', {
+            from: this.fromDate,
+            to: this.toDate
+          })
           this.canPrint = true
         }
       }

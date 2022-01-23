@@ -1,6 +1,5 @@
 <template>
     <div class="q-pa-md" v-if="invoiceItems">
-        <span class="text-h6 text-grey-8">{{ invoice.sifra_predracuna }}</span>
         <q-table
             :data="invoiceItems"
             :columns="columns"
@@ -273,7 +272,7 @@ import mixin from "src/global/mixin";
 
                 this.showNotif(`${this.$t('general.itemRemoved')}`, 'warning')
             })
-          },
+          }
         },
         mounted() {
             this.invoiceItems = this.items

@@ -61,8 +61,8 @@
               <tbody>
               <tr v-for="(sklad, index) in skladi">
                 <th scope="row">{{ index + 1 }}</th>
-                <td>{{ sklad.ime_priimek }}</td>
-                <td>{{ sklad.sifra_predracuna }}</td>
+                <td>{{ sklad.customer.naziv_partnerja }} {{ sklad.customer.telefon }}</td>
+                <td>{{ sklad.invoice_id.sifra_predracuna }}</td>
                 <td>{{ sklad.item }}</td>
                 <td>{{ sklad.created | moment('DD-MM-Y') }}</td>
                 <td>{{ sklad.work_date | moment('DD-MM-Y')}}</td>

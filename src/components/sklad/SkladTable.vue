@@ -23,8 +23,8 @@
             {{ tableIndex(props.row) }}
           </q-td>
           <q-td key="customer" :props="props">
-            {{ props.row.customer.naziv_partnerja }}
-            {{ props.row.customer.telefon }}
+           {{ props.row.customer.naziv_partnerja }}
+           {{ props.row.customer.telefon }}
           </q-td>
           <q-td key="invoice" :props="props">
             {{ props.row.invoice_id.sifra_predracuna }}

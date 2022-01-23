@@ -67,7 +67,10 @@ export default {
     visitsOnPage: 'Obiskov na strani v obdobju',
     days: 'dni',
     totalPerMonth: 'Promet po mesecih',
-    newInsert: 'Nov vnos'
+    newInsert: 'Nov vnos',
+    wrongFormatSifraPredracuna: 'Napačen format šifre predračuna',
+    sifraExists: 'Šifra predračuna je že v uporabi',
+    sifraUpdated: 'Šifra predračuna je spremenjena'
   },
   klavzule: {
     newKlavzula: 'Nova klavzula',

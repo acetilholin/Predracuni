@@ -43,7 +43,7 @@
                     <q-td key="edit" :props="props">
                         <q-btn-dropdown color="primary" outline icon="settings">
                             <q-list>
-                                <q-item clickable v-close-popup @click="editInvoice(props.row.id)">
+                                <q-item clickable v-close-popup @click="editInvoice(props.row)">
                                     <q-item-section class="text-center">
                                         <q-item-label><q-icon name="create" class="pointer text-black action-icon"></q-icon> {{ $t("general.edit") }}</q-item-label>
                                     </q-item-section>
@@ -153,9 +153,10 @@
             today() {
                 return this.$moment().format('Y-MM-DD')
             },
-            editInvoice(id) {
+            editInvoice(row) {
                 this.$store.dispatch('general/editInvoiceDialogAction', true)
-                this.$store.dispatch('invoices/currentInvoiceAction', id)
+                this.$store.dispatch('invoices/currentInvoiceAction', row.id)
+                localStorage.setItem('sifra', row.sifra_predracuna)
             },
             confirm(id) {
                 this.$q.dialog({
