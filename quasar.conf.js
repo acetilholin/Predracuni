@@ -24,7 +24,8 @@ module.exports = function (/* ctx */) {
       'router-auth',
       'i18n',
       'token',
-      'axios'
+      'axios',
+      'particles'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

@@ -70,7 +70,8 @@ export default {
     newInsert: 'Nov vnos',
     wrongFormatSifraPredracuna: 'Napačen format šifre predračuna',
     sifraExists: 'Šifra predračuna je že v uporabi',
-    sifraUpdated: 'Šifra predračuna je spremenjena'
+    sifraUpdated: 'Šifra predračuna je spremenjena',
+    https: 'Možna je samo uporaba HTTPS. Uporabite <a href="https://www.ogrevanjejanjic.si/predracuni">HTTPS</a>'
   },
   klavzule: {
     newKlavzula: 'Nova klavzula',
