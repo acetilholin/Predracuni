@@ -60,6 +60,7 @@
                       />
                     </template>
                   </q-input>
+                  <q-checkbox v-model="loginForm.rememberMe"  label="Zapomni si me" color="primary" />
                   <div>
                     <q-btn label="Prijava" type="submit" :disable="notHttps" color="green"/>
                     <q-btn label="Počisti" type="reset" color="primary" flat class="q-ml-sm" />
@@ -157,7 +158,8 @@ import {axiosInstance} from "boot/axios";
                 title: logRegTitle,
                 loginForm: {
                     email: '',
-                    password: ''
+                    password: '',
+                    rememberMe: false
                 },
                 registerForm: {
                     email: '',

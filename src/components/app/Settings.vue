@@ -11,6 +11,14 @@
                     <div class="text-h6 q-mb-md">{{ $t("general.settings") }}</div>
                     <q-toggle :value="company" label="Prikaži podatke o podjetju" @input="changeCompany" />
                     <q-toggle :value="klavzule" label="Prikaži klavzule" @input="changeKlavzule"/>
+                    <q-toggle
+                      v-model="realm"
+                      @input="changeRealm"
+                      checked-icon="domain"
+                      color="red"
+                      :label="realmName"
+                      unchecked-icon="person"
+                    />
                 </div>
             </div>
         </q-btn-dropdown>
@@ -21,17 +29,31 @@
 
 import {mapGetters, mapActions} from 'vuex'
 import mixin from "src/global/mixin";
+import {realmData} from "src/global/variables";
 
 export default {
     name: "Settings",
     mixins: [mixin],
+    data() {
+      return {
+        realm:false
+      }
+    },
     computed: {
         ...mapGetters({
             company: 'general/getCompany',
             klavzule: 'general/getKlavzule'
-        })
+        }),
+      realmName() {
+        let realm = JSON.parse(localStorage.getItem('realm'))
+      }
     },
-    methods: {
+  created() {
+    if (!localStorage.getItem('realm')) {
+      localStorage.setItem('realm', 1)
+    }
+  },
+  methods: {
         ...mapActions({
             changeSetting: 'general/changeSetting'
         }),
@@ -60,7 +82,11 @@ export default {
                 .catch((e) => {
                     this.showNotif(e, 'negative')
                 })
-        }
+        },
+      changeRealm() {
+        let realm = JSON.parse(localStorage.getItem('realm'))
+        localStorage.setItem('realm', JSON.stringify(realm === 1 ? 2 : 1))
+      }
     }
 }
 </script>

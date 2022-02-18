@@ -20,7 +20,8 @@ export default {
           await axiosInstance.post('/login',
             {
               email: credentials.email,
-              password: credentials.password
+              password: credentials.password,
+              rememberMe: credentials.rememberMe
             })
                 .then((response) => {
                    return dispatch('loginAttempt', response.data.access_token)

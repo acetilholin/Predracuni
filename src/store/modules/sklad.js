@@ -10,7 +10,6 @@ export default {
   },
   mutations: {
     SET_SKLADI(state, payload) {
-      console.log('set skladi',payload)
       state.skladi = payload
     },
     SET_SKLAD(state, payload) {
@@ -86,7 +85,6 @@ export default {
        to: payload.to
      })
        .then((response) => {
-         console.log('commit action')
          commit('SET_SKLADI_TO_PRINT', response.data.sklads)
          commit('SET_PRINT_DATES', payload)
          commit('SET_SKLADI', response.data.sklads)

@@ -29,7 +29,7 @@
                         {{ props.row.employee }}
                     </q-td>
                     <q-td key="date" :props="props">
-                        {{ props.row.date | moment('MMMM') }}
+                        {{ props.row.date | moment('MMMM YYYY') }}
                     </q-td>
                     <q-td key="edit" :props="props">
                         <q-btn-dropdown color="primary" outline icon="settings">
