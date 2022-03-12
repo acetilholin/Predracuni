@@ -21,7 +21,7 @@
 
                 <q-tab-panels v-model="tab" animated>
                     <q-tab-panel name="email">
-                        <div class="text-h6">Ponastavitveni email</div>
+                        <div class="text-h6">Email za novo geslo</div>
                         <q-form
                             @submit="sendEmail"
                             @reset="clearSendEmail"

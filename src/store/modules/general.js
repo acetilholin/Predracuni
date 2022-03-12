@@ -16,6 +16,7 @@ export default {
         printFinal: false,
         company: false,
         klavzule: false,
+        realmStatus: null,
         editKlavzula: false,
         reportDialog: false,
         customerReportDialog: false,
@@ -65,6 +66,9 @@ export default {
         },
         CHANGE_KLAVZULE(state, payload) {
             state.klavzule = payload
+        },
+        CHANGE_REALM(state, payload) {
+          state.realmStatus = payload
         },
         CHANGE_EDIT_KLAVZULA_DIALOG(state, payload) {
             state.editKlavzula = payload
@@ -146,6 +150,10 @@ export default {
                     commit('CHANGE_COMPANY', !!response.data.company.visible)
                     commit('CHANGE_KLAVZULE', !!response.data.klavzule.visible)
                 })
+        },
+        realmStatus({commit}, status) {
+          console.log('realm status action', status)
+          commit('CHANGE_REALM', status)
         },
         changeSetting({commit, dispatch}, settings) {
             return axiosInstance.post(`/setting/update`, {
@@ -230,6 +238,9 @@ export default {
         },
         getKlavzule(state) {
             return state.klavzule
+        },
+        getRealm(state) {
+          return state.realmStatus
         },
         getEditKlavzulaDialog(state) {
             return state.editKlavzula

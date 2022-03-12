@@ -46,14 +46,6 @@
                   </div>
                 </template>
               </q-field>
-              <q-field label="Datum montaže" stack-label disable class="col-3 q-ml-xs">
-                <template v-slot:control>
-                  <div class="self-center full-width no-outline"
-                       tabindex="0"
-                  >{{ sklad.workDate }}
-                  </div>
-                </template>
-              </q-field>
             </div>
             <div class="row">
               <q-input v-model="sklad.item"

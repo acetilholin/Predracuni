@@ -60,7 +60,7 @@
                         </div>
                         <div class="float-right mt-2">
                             <b>{{ $t("invoices.final").toUpperCase() }}: </b>{{ invoice.sifra_predracuna }}<br>
-                            {{ place }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
+                            {{ placeByRealm() }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
                             <b>{{ $t("invoices.validity") }}:</b> {{ invoice.expiration | moment('DD-MM-Y') }}<br>
 
                             <span v-if="invoice.work_date">
@@ -156,8 +156,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <div id="name" style="margin-top: 1%" v-for="cmp in company">
-                            {{ author }}
+                        <div id="name" style="margin-top: 1%">
+                          {{ authorByRealm() }}<br>
                         </div>
                     </div>
                 </q-card-section>
@@ -174,16 +174,20 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-import {author, picturesPath, place} from "src/global/variables";
+import {author1,author2, picturesPath, place1, place2} from "src/global/variables";
+import mixin from "src/global/mixin";
 
 export default {
     name: "PrintFinalInvoice",
+    mixins: [mixin],
     data() {
         return {
             maximizedToggle: true,
             output: null,
-            author: author,
-            place: place
+            author1: author1,
+            author2: author2,
+            place1: place1,
+            place2: place2
         }
     },
     computed: {
@@ -194,10 +198,12 @@ export default {
             items: 'final/getItems',
             customer: 'final/getCustomer',
             recipient: 'final/getRecipient',
-            klavzula: 'final/getKlavzula'
+            klavzula: 'final/getKlavzula',
+            realm: 'general/getRealm'
         })
     },
     created() {
+        this.$store.dispatch('general/settings')
         this.$store.dispatch('company/all')
     },
     filters: {
@@ -265,6 +271,12 @@ export default {
         },
         invoicePath() {
             return this.$router.currentRoute.fullPath === '/'
+        },
+        placeByRealm() {
+          return this.getRealmValuData() ? place2 : place1
+        },
+        authorByRealm() {
+          return this.getRealmValuData() ? author2 : author1
         }
     }
 }

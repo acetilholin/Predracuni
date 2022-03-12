@@ -4,6 +4,7 @@
             <q-toolbar>
                 <q-btn flat @click="changeDrawerState" round dense icon="menu" />
                 <q-toolbar-title>{{ title }}</q-toolbar-title>
+                <span class="q-mr-xl text-subtitle1">{{ realmStatus ? 'D.O.O.' : 'S.P.' }}</span>
                 <span v-if="role" class="q-mr-sm">
                     <settings></settings>
                 </span>
@@ -45,8 +46,9 @@
             ...mapGetters({
                 currentUser: 'auth/user',
                 authenticated: 'auth/authenticated',
-                drawer: 'general/getDrawer'
-            })
+                drawer: 'general/getDrawer',
+                realmStatus: 'general/getRealm'
+            }),
         },
         methods: {
             ...mapActions({

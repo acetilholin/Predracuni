@@ -89,143 +89,142 @@
     import mixin from "src/global/mixin";
 
     export default {
-        name: "InvoicesList",
-        mixins: [mixin],
-        data() {
-            return {
-                loading: true,
-                id: null,
-                pagination: {
-                    rowsPerPage: 50
-                },
-                filter: '',
-                columns: [
-                    {
-                        name: 'index',
-                        label: '#',
-                        align: 'center'
-                    },
-                    {
-                        name: 'sifra_predracuna',
-                        required: true,
-                        label: 'Šifra',
-                        align: 'center',
-                        field: 'sifra_predracuna',
-                        format: val => `${val}`,
-                        sortable: true
-                    },
-                    {name: 'ime_priimek', align: 'center', label: 'Ime in priimek / naziv', field: 'ime_priimek'},
-                    {
-                        name: 'timestamp',
-                        align: 'center',
-                        label: 'Ustvarjen',
-                        field: 'timestamp',
-                        sortable: true,
-                        format: val => `${val}`
-                    },
-                    {name: 'total', label: 'Znesek', field: 'total', sortable: true,  align: 'center'},
-                    {name: 'expiration', label: 'Zapadlost', field: 'expiration', sortable: true,  align: 'center'},
-                    {name: 'edit', label: 'Uredi', align: 'center'}
-                ]
-            }
-        },
-        components: {
-          EditDialog,
-          CreateInvoice,
-          FilterDates,
-          PrintInvoice
-        },
+      name: "InvoicesList",
+      mixins: [mixin],
+      data() {
+        return {
+          loading: true,
+          id: null,
+          pagination: {
+            rowsPerPage: 50
+          },
+          filter: '',
+          columns: [
+            {
+              name: 'index',
+              label: '#',
+              align: 'center'
+            },
+            {
+              name: 'sifra_predracuna',
+              required: true,
+              label: 'Šifra',
+              align: 'center',
+              field: 'sifra_predracuna',
+              format: val => `${val}`,
+              sortable: true
+            },
+            {name: 'ime_priimek', align: 'center', label: 'Ime in priimek / naziv', field: 'ime_priimek'},
+            {
+              name: 'timestamp',
+              align: 'center',
+              label: 'Ustvarjen',
+              field: 'timestamp',
+              sortable: true,
+              format: val => `${val}`
+            },
+            {name: 'total', label: 'Znesek', field: 'total', sortable: true, align: 'center'},
+            {name: 'expiration', label: 'Zapadlost', field: 'expiration', sortable: true, align: 'center'},
+            {name: 'edit', label: 'Uredi', align: 'center'}
+          ]
+        }
+      },
+      components: {
+        EditDialog,
+        CreateInvoice,
+        FilterDates,
+        PrintInvoice
+      },
       filters: {
-            decimals(value) {
-                return Math.round(value * 100) / 100 + ' €'
-            }
+        decimals(value) {
+          return Math.round(value * 100) / 100 + ' €'
+        }
+      },
+      methods: {
+        ...mapActions({
+          filterData: 'invoices/filterByInterval',
+          removeInvoice: 'invoices/remove',
+          copy: 'invoices/copy',
+          export: 'invoices/export'
+        }),
+        tableIndex(row) {
+          return this.invoices.indexOf(row) + 1
         },
-        methods: {
-            ...mapActions({
-                filterData: 'invoices/filterByInterval',
-                removeInvoice: 'invoices/remove',
-                copy: 'invoices/copy',
-                export: 'invoices/export'
-            }),
-            tableIndex(row) {
-                return this.invoices.indexOf(row) + 1
-            },
-            today() {
-                return this.$moment().format('Y-MM-DD')
-            },
-            editInvoice(row) {
-                this.$store.dispatch('general/editInvoiceDialogAction', true)
-                this.$store.dispatch('invoices/currentInvoiceAction', row.id)
-                localStorage.setItem('sifra', row.sifra_predracuna)
-            },
-            confirm(id) {
-                this.$q.dialog({
-                    title: `${this.$t("general.deleteTitle")}`,
-                    message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
-                    html: true,
-                    cancel: true,
-                    persistent: true
-                }).onOk(() => {
-                    this.removeInvoice(id)
-                        .then((response) => {
-                            this.showNotif(response, 'warning')
-                        })
-                        .catch((e) => {
-                            this.showNotif(e, 'negative')
-                        })
-                })
-            },
-            viewInvoice(id) {
-                this.$store.dispatch('general/printInvoiceDialog', true)
-                this.$store.dispatch('invoices/viewInvoice', id)
-            },
-            copyInvoice(id) {
-                this.copy(id)
-                    .then((response) => {
-                        this.showNotif(response, 'positive')
-                    })
-                    .catch((e) => {
-                        this.showNotif(e, 'negative')
-                    })
-            },
-            filterDataByInterval(interval) {
-                this.filterData(interval)
-            },
-            exportInvoice(id) {
-                this.export(id)
-                    .then((response) => {
-                        this.showNotif(response, 'positive')
-                    })
-                    .catch((e) => {
-                        this.showNotif(e, 'negative')
-                    })
-            },
-            filterByYear(year) {
-              this.$store.dispatch('invoices/invoicesYear', {
-                year
+        today() {
+          return this.$moment().format('Y-MM-DD')
+        },
+        editInvoice(row) {
+          this.$store.dispatch('general/editInvoiceDialogAction', true)
+          this.$store.dispatch('invoices/currentInvoiceAction', row.id)
+          localStorage.setItem('sifra', row.sifra_predracuna)
+        },
+        confirm(id) {
+          this.$q.dialog({
+            title: `${this.$t("general.deleteTitle")}`,
+            message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
+            html: true,
+            cancel: true,
+            persistent: true
+          }).onOk(() => {
+            this.removeInvoice(id)
+              .then((response) => {
+                this.showNotif(response, 'warning')
               })
-            }
+              .catch((e) => {
+                this.showNotif(e, 'negative')
+              })
+          })
         },
+        viewInvoice(id) {
+          this.$store.dispatch('general/printInvoiceDialog', true)
+          this.$store.dispatch('invoices/viewInvoice', id)
+        },
+        copyInvoice(id) {
+          this.copy(id)
+            .then((response) => {
+              this.showNotif(response, 'positive')
+            })
+            .catch((e) => {
+              this.showNotif(e, 'negative')
+            })
+        },
+        filterDataByInterval(interval) {
+          this.filterData(interval)
+        },
+        exportInvoice(id) {
+          this.export(id)
+            .then((response) => {
+              this.showNotif(response, 'positive')
+            })
+            .catch((e) => {
+              this.showNotif(e, 'negative')
+            })
+        },
+        filterByYear(year) {
+          this.$store.dispatch('invoices/invoicesYear', {
+            year
+          })
+        }
+      },
       mounted() {
         let year = this.$moment().year()
         localStorage.setItem('year', JSON.stringify(year));
         this.$store.dispatch('invoices/invoicesYear', {
           year
         })
-        this.$store.dispatch('general/settings')
       },
-        computed: {
-            ...mapGetters({
-                invoices: 'invoices/getInvoices'
-            })
-        },
-        watch: {
-            invoices: {
-               handler() {
-                   this.loading = false
-               }
-            }
+      computed: {
+        ...mapGetters({
+          invoices: 'invoices/getInvoices'
+        })
+      },
+      watch: {
+        invoices: {
+          handler() {
+            this.loading = false
+          }
         }
+      }
     }
 </script>
 

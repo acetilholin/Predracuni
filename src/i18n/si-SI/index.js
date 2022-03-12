@@ -48,6 +48,7 @@ export default {
     enterUsername: 'Vnesite uporabniško ime',
     editRecipient: 'Urejanje prejemnika',
     dateFromTo: 'Datum od je večji od datuma do',
+    allFiledsRequired: 'Vsa polja so obvezna',
     biggerThan0: 'Mora biti večje od 0',
     EMChanged: 'Enota mere je spremenjena',
     pricePerItemChanged: 'Cena/kos spremenjena',
@@ -71,7 +72,8 @@ export default {
     wrongFormatSifraPredracuna: 'Napačen format šifre predračuna',
     sifraExists: 'Šifra predračuna je že v uporabi',
     sifraUpdated: 'Šifra predračuna je spremenjena',
-    https: 'Možna je samo uporaba HTTPS. Uporabite <a href="https://www.ogrevanjejanjic.si/predracuni">HTTPS</a>'
+    https: 'Možna je samo uporaba HTTPS. Uporabite <a href="https://www.ogrevanjejanjic.si/predracuni">HTTPS</a>',
+    exportToRealm: 'V D.O.O'
   },
   klavzule: {
     newKlavzula: 'Nova klavzula',
@@ -199,5 +201,8 @@ export default {
     noData: 'Ni dosegljivih podatkov',
     from: 'od',
     to: 'do'
+  },
+  company: {
+    mandatoryFields: 'Polja označena z * so obvezna'
   }
 }

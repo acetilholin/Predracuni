@@ -115,6 +115,15 @@ export default {
                 .then((response) => {
                     commit('SET_CURRENT_CUSTOMER', response.data.customer)
                 })
+        },
+        async exportToRealm({commit}, id) {
+          return await axiosInstance.get(`customers/${id}/export`)
+            .then((response) => {
+              return response.data.success
+            })
+            .catch((e) => {
+              throw (e.response.data.error);
+            })
         }
     },
     getters: {

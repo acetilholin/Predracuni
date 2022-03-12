@@ -15,6 +15,7 @@
         </div>
         <q-separator />
         <div class="q-pt-md">
+            <div class="text-center text-weight-light q-my-sm">{{ $t("company.mandatoryFields") }}</div>
             <q-table
                 title="Podjetje"
                 :data="company"
@@ -38,7 +39,7 @@
                         </q-td>
                         <q-td key="posta" :props="props">
                             <div class="text-pre-wrap">{{ props.row.posta | limitText }}</div>
-                            <q-popup-edit v-model="props.row.posta">
+                            <q-popup-edit v-model="props.row.posta" title="Spremeni pošto" label-set="Spremeni" buttons>
                                 <q-input type="text" v-model="props.row.posta" dense autofocus />
                             </q-popup-edit>
                         </q-td>
@@ -139,21 +140,21 @@ export default {
                 {
                     name: 'naziv',
                     required: true,
-                    label: 'Naziv',
+                    label: 'Naziv *',
                     align: 'center',
                     field: 'naziv'
                 },
-                { name: 'naslov', align: 'center', label: 'Naslov', field: 'naslov' },
-                { name: 'posta', align: 'center', label: 'Pošta', field: 'posta' },
-                { name: 'telefon1', align: 'center', label: 'Tel 1', field: 'telefon1' },
+                { name: 'naslov', align: 'center', label: 'Naslov *', field: 'naslov' },
+                { name: 'posta', align: 'center', label: 'Pošta *', field: 'posta' },
+                { name: 'telefon1', align: 'center', label: 'Tel 1 *', field: 'telefon1' },
                 { name: 'telefon2', align: 'center', label: 'Tel 2', field: 'telefon2' },
-                { name: 'email1', align: 'center', label: 'Email 1', field: 'email1' },
+                { name: 'email1', align: 'center', label: 'Email 1 *', field: 'email1' },
                 { name: 'email2', align: 'center', label: 'Email 2', field: 'email2' },
-                { name: 'davcna_stevilka', align: 'center', label: 'Davčna', field: 'davcna_stevilka' },
-                { name: 'zavezanec_za_ddv', align: 'center', label: 'DDV', field: 'zavezanec_za_ddv' },
-                { name: 'trr1', align: 'center', label: 'TRR 1', field: 'trr1' },
+                { name: 'davcna_stevilka', align: 'center', label: 'Davčna *', field: 'davcna_stevilka' },
+                { name: 'zavezanec_za_ddv', align: 'center', label: 'DDV *', field: 'zavezanec_za_ddv' },
+                { name: 'trr1', align: 'center', label: 'TRR 1 *', field: 'trr1' },
                 { name: 'trr2', align: 'center', label: 'TRR 2', field: 'trr2' },
-                { name: 'banka1', align: 'center', label: 'IBAN 1', field: 'banka1' },
+                { name: 'banka1', align: 'center', label: 'IBAN 1 *', field: 'banka1' },
                 { name: 'banka2', align: 'center', label: 'IBAN 2', field: 'banka2' }
             ],
         }

@@ -26,7 +26,7 @@ export default {
     all({commit}) {
       axiosInstance.get('/sklads')
         .then(response => {
-          commit('SET_SKLADI', response.data.data)
+          commit('SET_SKLADI', response.data)
         })
     },
     async create({dispatch}, sklad) {

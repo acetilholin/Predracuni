@@ -89,7 +89,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {author, place, picturesPath} from "src/global/variables";
+import {picturesPath} from "src/global/variables";
 
 export default {
   name: "SkladiPrint",

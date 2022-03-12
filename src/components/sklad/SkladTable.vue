@@ -127,13 +127,21 @@ export default {
       return this.skladData.indexOf(row) + 1
     },
     confirm(id) {
-      this.remove(id)
-        .then((response) => {
-          this.showNotif(response, 'positive')
-        })
-        .catch((e) => {
-          this.showNotif(e, 'negative')
-        })
+      this.$q.dialog({
+        title: `${this.$t("general.deleteTitle")}`,
+        message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
+        html: true,
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.remove(id)
+          .then((response) => {
+            this.showNotif(response, 'positive')
+          })
+          .catch((e) => {
+            this.showNotif(e, 'negative')
+          })
+      })
     },
     editSklad(id) {
       this.$store.dispatch('general/editSkladModal', true)

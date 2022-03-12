@@ -19,7 +19,7 @@
                     <div class="text-h6">{{ $t("invoices.predracun") }}</div>
                 </q-card-section>
 
-                <q-card-section class="q-pt-none font-size-body" id="content">
+                <q-card-section class="q-pt-none font-size-body" id="content" v-if="company">
                     <div class="container c-mt">
                         <div class="row" v-for="cmp in company">
                             <div class="column left">
@@ -60,7 +60,7 @@
                         </div>
                         <div class="float-right mt-2">
                             <b>{{ $t("invoices.invoice").toUpperCase() }}: </b>{{ invoice.sifra_predracuna }}<br>
-                            {{ place }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
+                            {{ placeByRealm() }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
                             <b>{{ $t("invoices.validity") }}:</b> {{ invoice.expiration | moment('DD-MM-Y') }}<br>
 
                             <span v-if="invoice.work_date">
@@ -157,8 +157,8 @@
                             </table>
                         </div>
                         <div id="name" style="margin-top: 1%" v-for="cmp in company">
-                            {{ author }}<br>
-                            <img :src="image(cmp.stamp)" style="height: 110px;" alt="">
+                            {{ authorByRealm() }}<br>
+                            <img :src="image(cmp.stamp)" style="height: 110px;" alt="" v-show="stampRealm()">
                         </div>
                     </div>
                 </q-card-section>
@@ -175,16 +175,20 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
-import {author, place, picturesPath} from "src/global/variables";
+import {author1, author2, place1, place2, picturesPath} from "src/global/variables";
+import mixin from "src/global/mixin";
 
 export default {
     name: "PrintInvoice",
+    mixins: [mixin],
     data() {
         return {
             maximizedToggle: true,
             output: null,
-            author: author,
-            place: place
+            author1: author1,
+            author2: author2,
+            place1: place1,
+            place2: place2
         }
     },
     computed: {
@@ -195,10 +199,12 @@ export default {
             items: 'invoices/getItems',
             customer: 'invoices/getInvoiceCustomer',
             recipient: 'invoices/getRecipient',
-            klavzula: 'invoices/getKlavzula'
+            klavzula: 'invoices/getKlavzula',
+            realm: 'general/getRealm'
         })
     },
     created() {
+        this.$store.dispatch('general/settings')
         this.$store.dispatch('company/all')
     },
     filters: {
@@ -214,10 +220,14 @@ export default {
             }
         },
         titleShort(val) {
-            return val.substring(31,51)
+           if (val) {
+             return val.substring(31,51)
+           }
         },
         titleLong(val) {
+          if (val) {
             return val.substring(0,30)
+          }
         },
         sifra(val) {
             if (val) {
@@ -272,6 +282,15 @@ export default {
         },
         invoicePath() {
             return this.$router.currentRoute.fullPath === '/'
+        },
+        placeByRealm() {
+          return this.getRealmValuData() ? place2 : place1
+        },
+        authorByRealm() {
+          return this.getRealmValuData() ? author2 : author1
+        },
+        stampRealm() {
+          return this.getRealmValuData() === false
         }
     }
 }

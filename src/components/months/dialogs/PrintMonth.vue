@@ -25,9 +25,7 @@
                                 {{ cmp.posta }}
                             </div>
                             <div class="column middle">
-
                                 <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
-
                             </div>
                             <div class="column right text-right">
                                 {{ cmp.telefon1 }}<br>
@@ -90,10 +88,9 @@
                                     {{ monthData.posta }}<br>
                                 </div>
                                 <div class="column middle"></div>
-                                <div class="column right" v-for="cmp in company">
+                                <div class="column right">
                                     <span class="float-right">
-                                        {{ author }}<br>
-                                        <img :src="image(cmp.stamp)" style="height: 80px; width: 130px" alt="">
+                                        {{ authorByRealm() }}<br>
                                     </span>
                                 </div>
                             </div>
@@ -113,10 +110,12 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-import {picturesPath, author} from "src/global/variables";
+import {picturesPath, author1, author2, place1, place2} from "src/global/variables";
+import mixin from "src/global/mixin";
 
 export default {
     name: "PrintMonth",
+    mixins: [mixin],
     data() {
         return {
             maximizedToggle: true,
@@ -127,14 +126,16 @@ export default {
             nu1: 0,
             nu2: 0,
             nu3: 0,
-            author: author
+            author1: author1,
+            author2: author2
         }
     },
     computed: {
         ...mapGetters({
             dialog: 'general/getPrintMonth',
             company: 'company/getCompany',
-            monthData: 'months/getMonthData'
+            monthData: 'months/getMonthData',
+            realm: 'general/getRealm'
         })
     },
     filters: {
@@ -196,6 +197,9 @@ export default {
         },
         image(img) {
             return picturesPath + img
+        },
+        authorByRealm() {
+          return this.getRealmValuData() ? author2 : author1
         }
     }
 }

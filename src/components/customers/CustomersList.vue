@@ -50,6 +50,11 @@
                                         <q-item-label><q-icon name="euro_symbol" class="pointer text-black action-icon"></q-icon>  {{ $t("general.total") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
+                                <q-item clickable v-close-popup @click="customerExportRealm(props.row.id)" v-show="showExport">
+                                  <q-item-section class="text-center">
+                                    <q-item-label><q-icon name="input" class="pointer text-black action-icon"></q-icon>  {{ $t("general.exportToRealm") }}</q-item-label>
+                                  </q-item-section>
+                                </q-item>
                                 <q-item clickable v-close-popup @click="confirm(props.row.id)">
                                     <q-item-section class="text-center text-red">
                                         <q-item-label><q-icon name="delete_outline" class="pointer action-icon"></q-icon> {{ $t("general.delete") }}</q-item-label>
@@ -118,12 +123,17 @@
         },
         computed: {
             ...mapGetters({
-                customers: 'customers/getCustomers'
-            })
+                customers: 'customers/getCustomers',
+                realm: 'general/getRealm'
+            }),
+            showExport() {
+              return this.realm === false
+            }
         },
         methods: {
             ...mapActions({
-                remove: 'customers/remove'
+                remove: 'customers/remove',
+                export: 'customers/exportToRealm'
             }),
             tableIndex(row) {
                 return this.customers.indexOf(row) + 1
@@ -153,6 +163,15 @@
                 this.$store.dispatch('general/customerTotalDialog', true)
                 this.$store.dispatch('customers/total', id)
                 this.$store.dispatch('customers/show', id)
+            },
+            customerExportRealm(id) {
+              this.export(id)
+                .then((response) => {
+                  this.showNotif(response, 'positive')
+                })
+                .catch((e) => {
+                  this.showNotif(e, 'negative')
+                })
             }
         },
         watch: {
