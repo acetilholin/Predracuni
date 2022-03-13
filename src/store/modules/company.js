@@ -16,8 +16,6 @@ export default {
         let cid = JSON.parse(localStorage.getItem('modus-realm'))
         cid++
 
-
-        console.log('all actions', cid)
         axiosInstance.get(`/companies/${cid}`)
           .then(response => {
             commit('SET_COMPANY', response.data.company)

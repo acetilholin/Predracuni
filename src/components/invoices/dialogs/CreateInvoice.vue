@@ -57,6 +57,36 @@
                             </q-list>
                         </q-btn-dropdown>
                     </div>
+                    <div class="q-mt-sm">
+                      <q-btn-dropdown color="teal-6" outline label="Opomba">
+                        <q-list>
+                          <q-item clickable v-if="!invoice.remark" v-close-popup @click="addRemark">
+                            <q-item-section>
+                              <q-item-label>
+                                <q-icon name="add"></q-icon>
+                                Dodaj
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                          <q-item clickable v-if="invoice.remark" v-close-popup @click="editRemark">
+                            <q-item-section>
+                              <q-item-label>
+                                <q-icon name="edit"></q-icon>
+                                Uredi
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                          <q-item clickable  v-if="invoice.remark" v-close-popup @click="deleteRemark">
+                            <q-item-section>
+                              <q-item-label class="text-red">
+                                <q-icon name="delete_outline"></q-icon>
+                                Izbriši
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-btn-dropdown>
+                    </div>
                     <q-btn color="red" class="q-mt-lg" icon="delete" @click="deleteAll()" label="Izbriši">
                         <q-tooltip>
                             Izbriši celoten predračun
@@ -168,7 +198,7 @@
                         </q-btn>
                     </div>
                 </q-card-section>
-                <q-card-section>
+                <q-card-section class="q-pb-none">
                     <div class="text-center">
                         <q-btn color="secondary"
                                outline
@@ -184,6 +214,14 @@
                             </template>
                         </q-btn>
                     </div>
+                    <div class="q-ml-md" v-if="invoice.remark">
+                      <q-icon class="all-pointer-events" size="22px" name="info" color="secondary">
+                        <q-tooltip>
+                          Opomba
+                        </q-tooltip>
+                      </q-icon>
+                      {{ invoice.remark | longTxt }}
+                    </div>
                 </q-card-section>
                 <q-card-section class="q-pt-none">
                     <items-table :invoice="invoice" :items="items" @removeItem="removeFromItems"></items-table>
@@ -192,6 +230,7 @@
         </q-dialog>
         <add-new-recipient @addRecipient="addNewRecipient"></add-new-recipient>
         <add-item @newItem="addNewItem"></add-item>
+        <add-remark @remark="remark" :invoice="invoice"></add-remark>
     </div>
 </template>
 
@@ -203,6 +242,7 @@ import AddItem from "./AddItem";
 import ItemsTable from "../tables/ItemsTable";
 import AddNewRecipient from "./AddNewRecipient";
 import mixin from "src/global/mixin";
+import AddRemark from "components/invoices/dialogs/AddRemark";
 
 export default {
     name: "CreateInvoice",
@@ -220,7 +260,8 @@ export default {
                 work_date: '',
                 klavzula: '',
                 vat: 0.0,
-                customer_id: ''
+                customer_id: '',
+                remark: ''
             },
             recipient: {
                 title: '',
@@ -245,6 +286,7 @@ export default {
         }
     },
     components: {
+        AddRemark,
         Create,
         AddItem,
         ItemsTable,
@@ -285,7 +327,7 @@ export default {
             set: function (newValue) {
                 this.invoice.vat = newValue.val
             }
-        },
+        }
     },
     created() {
         this.$store.dispatch('klavzule/all')
@@ -295,6 +337,11 @@ export default {
         if (localStorage.getItem('items')) {
             this.items = JSON.parse(localStorage.getItem('items'))
         }
+    },
+    filters: {
+      longTxt(val) {
+        return val.length > 100 ? val.substring(0, 100) + " ..." : val
+      }
     },
     methods: {
         ...mapActions({
@@ -390,6 +437,7 @@ export default {
                 this.invoice.vat = 0.0
                 this.customer_id = ''
                 this.items.length = 0
+                this.invoice.remark = null
                 this.$refs.createInvoice.hide()
             })
         },
@@ -401,6 +449,7 @@ export default {
                 this.invoice.klavzula = ''
                 this.invoice.vat = 0.0
                 this.customer_id = ''
+                this.invoice.remark = null
                 this.items.length = 0
             }
         },
@@ -445,6 +494,19 @@ export default {
         },
         strankaChanged() {
             this.showNotif(`${this.$t('general.customerAdded')}`, 'positive')
+        },
+        addRemark() {
+          this.$store.dispatch('general/addRemarkDialog', true)
+        },
+        remark(val) {
+          this.invoice.remark = val
+        },
+        editRemark() {
+          this.$store.dispatch('general/addRemarkDialog', true)
+        },
+        deleteRemark() {
+          this.invoice.remark = null
+          this.showNotif(`${this.$t('general.remarkRemoved')}`, 'negative')
         }
     },
     watch: {

@@ -28,7 +28,8 @@ export default {
         editMonth: false,
         printMonth: false,
         skladModal: false,
-        skladPrint: false
+        skladPrint: false,
+        remarkDialog: false
     },
     mutations: {
         CHANGE_DRAWER(state, payload) {
@@ -108,7 +109,10 @@ export default {
         },
         CHANGE_SKLAD_PRINT(state, payload) {
           state.skladPrint = payload
-        }
+        },
+       CHANGE_REMARK_DIALOG(state, payload) {
+          state.remarkDialog = payload
+       }
     },
     actions: {
         drawerAction({commit}, drawerState) {
@@ -152,7 +156,6 @@ export default {
                 })
         },
         realmStatus({commit}, status) {
-          console.log('realm status action', status)
           commit('CHANGE_REALM', status)
         },
         changeSetting({commit, dispatch}, settings) {
@@ -200,6 +203,9 @@ export default {
         },
         printSkladi({commit}, modal) {
           commit('CHANGE_SKLAD_PRINT', modal)
+        },
+        addRemarkDialog({commit}, modal) {
+          commit('CHANGE_REMARK_DIALOG', modal)
         }
     },
     getters: {
@@ -280,6 +286,9 @@ export default {
         },
         getSkladPrint(state) {
           return state.skladPrint
+        },
+        getRemarkDialog(state) {
+          return state.remarkDialog
         }
     }
 }

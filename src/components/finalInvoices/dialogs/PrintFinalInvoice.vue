@@ -46,12 +46,15 @@
                             <div class="column middle"></div>
                             <div class="column right">
                                 <table v-for="cmp in company">
-                                    <tr>
-                                        <td>{{ $t("invoices.iban") }}: {{ $t("invoices.swift") }} {{ cmp.banka1 }}&nbsp;&nbsp;/&nbsp;&nbsp;{{ $t("invoices.swift") }} {{ cmp.banka2 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>TRR: {{ cmp.trr1 }}&nbsp;&nbsp;/&nbsp;&nbsp;{{ cmp.trr2 }}</td>
-                                    </tr>
+                                  <tr>
+                                    <td>
+                                      {{ $t("invoices.iban") }}: {{ $t("invoices.swift") }} {{ cmp.banka1 }}
+                                      <span v-if="cmp.banka2">&nbsp;&nbsp;/&nbsp;&nbsp;{{ $t("invoices.swift") }} {{ cmp.banka2 }}</span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>TRR: {{ cmp.trr1 }}&nbsp;&nbsp;<span v-if="cmp.trr2">/&nbsp;&nbsp;</span> {{ cmp.trr2 }}</td>
+                                  </tr>
                                     <tr>
                                         <td>{{ $t("invoices.sklicevanje_stev") }}: 00{{ company.sklic_st !== " " ? company.sklic_st : '' }}-{{ invoice.sifra_predracuna | sifra }}</td>
                                     </tr>
@@ -141,6 +144,9 @@
                         </div>
                     </div>
                     <div class="container" style="margin-top: 70px; margin-bottom: 5px">
+                        <p v-if="invoice.remark" class="klavzula-text">
+                          <b>{{ $t("invoices.remark") }}</b>: {{ invoice.remark }}
+                        </p>
                         <p style="margin-bottom: 3%;" v-if="klavzula" class="klavzula-text" v-html="klavzula.description"></p>
                         <div class="mt-2 mb-5" v-if="invoice.klavzula === '76A'">
                             <table class="clen">

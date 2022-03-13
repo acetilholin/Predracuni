@@ -54,6 +54,36 @@
                             </q-list>
                         </q-btn-dropdown>
                     </div>
+                    <div class="q-mt-sm">
+                      <q-btn-dropdown color="teal-6" outline label="Opomba">
+                        <q-list>
+                          <q-item clickable v-if="!invoice.remark" v-close-popup @click="addRemark">
+                            <q-item-section>
+                              <q-item-label>
+                                <q-icon name="add"></q-icon>
+                                Dodaj
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                          <q-item clickable v-if="invoice.remark" v-close-popup @click="editRemark">
+                            <q-item-section>
+                              <q-item-label>
+                                <q-icon name="edit"></q-icon>
+                                Uredi
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                          <q-item clickable  v-if="invoice.remark" v-close-popup @click="deleteRemark">
+                            <q-item-section>
+                              <q-item-label class="text-red">
+                                <q-icon name="delete_outline"></q-icon>
+                                Izbriši
+                              </q-item-label>
+                            </q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-btn-dropdown>
+                    </div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
@@ -201,7 +231,7 @@
                 <q-card-section>
                     <add-item @newItem="addNewItem"></add-item>
                 </q-card-section>
-                <q-card-section>
+                <q-card-section class="q-pb-none">
                   <div class="row">
                     <q-input
                       class="col-md-2 q-ml-md"
@@ -212,6 +242,16 @@
                       :rules="[ lengthResp, checkFormat]"
                     />
                   </div>
+                  <div class="row q-mt-sm">
+                    <div class="q-ml-md" v-if="invoice.remark">
+                      <q-icon class="all-pointer-events" size="22px" name="info" color="secondary">
+                        <q-tooltip>
+                          Opomba
+                        </q-tooltip>
+                      </q-icon>
+                      {{ invoice.remark | longTxt }}
+                    </div>
+                  </div>
                 </q-card-section>
                 <q-card-section class="q-pt-none">
                     <items-table :invoice="invoice" :items="items" @removeItem="removeFromItems"></items-table>
@@ -220,6 +260,7 @@
         </q-dialog>
         <add-recipient :invoice="invoice"></add-recipient>
         <edit-recipient v-if="recipient" :recipient="recipient"></edit-recipient>
+        <add-remark @remark="remark" :invoice="invoice"></add-remark>
     </div>
 </template>
 
@@ -232,6 +273,7 @@
     import {mapActions, mapGetters} from 'vuex'
     import EditRecipient from "./EditRecipient";
     import mixin from "src/global/mixin";
+    import AddRemark from "components/invoices/dialogs/AddRemark";
 
     export default {
         name: "EditDialog",
@@ -310,6 +352,7 @@
             }
         },
         components: {
+            AddRemark,
             AddItem,
             Create,
             ItemsTable,
@@ -319,6 +362,11 @@
         created() {
           this.$store.dispatch('klavzule/all')
           this.$store.dispatch('customers/all')
+        },
+        filters: {
+          longTxt(val) {
+            return val.length > 100 ? val.substring(0, 100) + " ..." : val
+          }
         },
         methods: {
             ...mapActions({
@@ -434,27 +482,41 @@
             }
             this.disableUpdate = false
           },
-            validateSifraRacuna() {
-             let sifraInitial = localStorage.getItem('sifra')
-             const regex = /\d{1,3}\/\d{4}/
-              if (regex.test(this.invoice.sifra_predracuna) && this.invoice.sifra_predracuna.length <= 8 && this.invoice.sifra_predracuna.includes('/')) {
+          validateSifraRacuna() {
+            let sifraInitial = localStorage.getItem('sifra')
+            const regex = /\d{1,3}\/\d{4}/
+            if (regex.test(this.invoice.sifra_predracuna) && this.invoice.sifra_predracuna.length <= 8 && this.invoice.sifra_predracuna.includes('/')) {
 
-                if (sifraInitial !== this.invoice.sifra_predracuna) {
-                  this.$store.dispatch('invoices/checkExisting', {
-                    sifra: this.invoice.sifra_predracuna
+              if (sifraInitial !== this.invoice.sifra_predracuna) {
+                this.$store.dispatch('invoices/checkExisting', {
+                  sifra: this.invoice.sifra_predracuna
+                })
+                  .then(response => {
+                    if (response) {
+                      this.showNotif(`${this.$t('general.sifraExists')}`, 'negative')
+                      this.disableUpdate = true
+                    } else {
+                      this.disableUpdate = false
+                      this.showNotif(`${this.$t('general.sifraUpdated')}`, 'positive')
+                    }
                   })
-                    .then(response => {
-                      if (response) {
-                        this.showNotif(`${this.$t('general.sifraExists')}`, 'negative')
-                        this.disableUpdate = true
-                      } else {
-                        this.disableUpdate = false
-                         this.showNotif(`${this.$t('general.sifraUpdated')}`, 'positive')
-                      }
-                    })
-                }
               }
             }
+          },
+          remark(val) {
+            console.log(val)
+            this.invoice.remark = val
+          },
+          addRemark() {
+            this.$store.dispatch('general/addRemarkDialog', true)
+          },
+          editRemark() {
+            this.$store.dispatch('general/addRemarkDialog', true)
+          },
+          deleteRemark() {
+            this.invoice.remark = null
+            this.showNotif(`${this.$t('general.remarkRemoved')}`, 'negative')
+          }
         }
     }
 </script>

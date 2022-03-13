@@ -33,6 +33,11 @@ export default {
     enterTitle: 'Vnesite naziv',
     recipientAdded: 'Prejemnik je dodan',
     recipient: 'Prejemnik',
+    remark: 'Opomba',
+    remarkAdded: 'Opomba je dodana',
+    remarkEdited: 'Opomba je spremenjena',
+    remarkRemoved: 'Opomba je odstranjena',
+    enterRemark: 'Vnesite opombo',
     itemAdded: 'Artikel je dodan',
     enterCustomerInvoice: 'Vnesite stranko',
     chooseExpDate: 'Izberite datum zapadlosti',
@@ -194,7 +199,8 @@ export default {
     forPayment: 'ZA PLAČILO',
     total76A: 'Skupaj 76.A člen',
     addItem: 'Dodaj artikel',
-    klavzula76ATrans: 'VAT is accounted by the place of immovoble property under Article 47 of Directive.'
+    klavzula76ATrans: 'VAT is accounted by the place of immovoble property under Article 47 of Directive.',
+    remark: 'OPOMBA'
   },
   report: {
     book: 'KNJIGA IZDANIH RAČUNOV - promet blaga in storitev za obdobje',
