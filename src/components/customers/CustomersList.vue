@@ -50,9 +50,9 @@
                                         <q-item-label><q-icon name="euro_symbol" class="pointer text-black action-icon"></q-icon>  {{ $t("general.total") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup @click="customerExportRealm(props.row.id)" v-show="showExport">
+                                <q-item clickable v-close-popup @click="customerExportRealm(props.row.id)" v-show="showExport()">
                                   <q-item-section class="text-center">
-                                    <q-item-label><q-icon name="input" class="pointer text-black action-icon"></q-icon>  {{ $t("general.exportToRealm") }}</q-item-label>
+                                    <q-item-label><q-icon name="input" class="pointer text-black action-icon"></q-icon> {{ $t("general.exportToRealm") }}</q-item-label>
                                   </q-item-section>
                                 </q-item>
                                 <q-item clickable v-close-popup @click="confirm(props.row.id)">
@@ -126,9 +126,6 @@
                 customers: 'customers/getCustomers',
                 realm: 'general/getRealm'
             }),
-            showExport() {
-              return this.realm === false
-            }
         },
         methods: {
             ...mapActions({
@@ -172,12 +169,16 @@
                 .catch((e) => {
                   this.showNotif(e, 'negative')
                 })
+            },
+            showExport() {
+              return !this.getRealmValueData()
             }
         },
         watch: {
             customers: {
                 handler() {
                     this.loading = false
+                    this.showExport()
                 }
             }
         }

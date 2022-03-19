@@ -23,6 +23,7 @@
                     <div class="container text-center mt-1">
                         {{ $t("report.book") }} {{ $t("report.from") }} {{ report.from | moment('DD-MM-Y') }} {{ $t("report.to") }} {{ report.to | moment('DD-MM-Y') }}
                     </div>
+                    <div class="text-center text-primary q-my-sm text-subtitle2" v-for="cmp in company">{{ cmp.naziv }}</div>
                     <table class="table text-center full-width mt-3 mb-5 table-report" style="font-size: 12.5px">
                         <thead>
                         <tr>
@@ -95,7 +96,8 @@ export default {
     computed: {
         ...mapGetters({
             dialog: 'general/getReportDialog',
-            report: 'final/getReport'
+            report: 'final/getReport',
+            company: 'company/getCompany',
         })
     },
     filters: {

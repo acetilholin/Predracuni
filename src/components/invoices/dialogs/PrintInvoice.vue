@@ -22,12 +22,12 @@
                 <q-card-section class="q-pt-none font-size-body" id="content" v-if="company">
                     <div class="container c-mt">
                         <div class="row" v-for="cmp in company">
-                            <div class="column left">
-                                {{ cmp.naziv | titleLong }}<br>
-                                {{ cmp.naziv | titleShort }}<br>
-                                {{ cmp.naslov }}<br>
-                                {{ cmp.posta }}
-                            </div>
+                          <div class="column left">
+                            <div> {{ cmp.naziv | titleLong }} <span v-if="!workDateRealm()">{{ cmp.naziv | titleShort }}</span></div>
+                            <div v-if="workDateRealm()">{{ cmp.naziv | titleShort }}</div>
+                            {{ cmp.naslov }}<br>
+                            {{ cmp.posta }}
+                          </div>
                             <div class="column middle">
 
                                 <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
@@ -290,14 +290,20 @@ export default {
             return this.$router.currentRoute.fullPath === '/'
         },
         placeByRealm() {
-          return this.getRealmValuData() ? place2 : place1
+          return this.getRealmValueData() ? place2 : place1
         },
         authorByRealm() {
-          return this.getRealmValuData() ? author2 : author1
+          return this.getRealmValueData() ? author2 : author1
         },
         stampRealm() {
-          return this.getRealmValuData() === false
+          return this.getRealmValueData() === false
+        },
+        workDateRealm() {
+          return this.invoice.work_date && !this.getRealmValueData()
         }
+    },
+    mounted() {
+      this.workDateRealm()
     }
 }
 </script>

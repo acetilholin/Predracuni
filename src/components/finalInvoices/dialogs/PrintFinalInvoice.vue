@@ -23,8 +23,8 @@
                     <div class="container c-mt">
                         <div class="row" v-for="cmp in company">
                             <div class="column left">
-                                {{ cmp.naziv | titleLong }}<br>
-                                {{ cmp.naziv | titleShort }}<br>
+                               <div> {{ cmp.naziv | titleLong }} <span v-if="!workDateRealm()">{{ cmp.naziv | titleShort }}</span></div>
+                               <div v-if="workDateRealm()">{{ cmp.naziv | titleShort }}</div>
                                 {{ cmp.naslov }}<br>
                                 {{ cmp.posta }}
                             </div>
@@ -66,7 +66,7 @@
                             {{ placeByRealm() }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
                             <b>{{ $t("invoices.validity") }}:</b> {{ invoice.expiration | moment('DD-MM-Y') }}<br>
 
-                            <span v-if="invoice.work_date">
+                            <span v-if="workDateRealm()">
                                  <b>{{ $t("invoices.work_done") }}:</b> {{ invoice.work_date | moment('DD-MM-Y') }}<br>
                             </span>
 
@@ -279,12 +279,18 @@ export default {
             return this.$router.currentRoute.fullPath === '/'
         },
         placeByRealm() {
-          return this.getRealmValuData() ? place2 : place1
+          return this.getRealmValueData() ? place2 : place1
         },
         authorByRealm() {
-          return this.getRealmValuData() ? author2 : author1
+          return this.getRealmValueData() ? author2 : author1
+        },
+        workDateRealm() {
+          return this.invoice.work_date && !this.getRealmValueData()
         }
-    }
+    },
+  mounted() {
+    this.workDateRealm()
+  }
 }
 </script>
 

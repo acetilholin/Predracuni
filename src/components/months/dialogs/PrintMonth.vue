@@ -18,12 +18,12 @@
                 <q-card-section class="q-pt-none font-size-body" id="content">
                     <div class="container c-mt">
                         <div class="row" v-for="cmp in company">
-                            <div class="column left">
-                                {{ cmp.naziv | titleLong }}<br>
-                                {{ cmp.naziv | titleShort }}<br>
-                                {{ cmp.naslov }}<br>
-                                {{ cmp.posta }}
-                            </div>
+                          <div class="column left">
+                            <div> {{ cmp.naziv | titleLong }} <span v-if="!workDateRealm()">{{ cmp.naziv | titleShort }}</span></div>
+                            <div v-if="workDateRealm()">{{ cmp.naziv | titleShort }}</div>
+                            {{ cmp.naslov }}<br>
+                            {{ cmp.posta }}
+                          </div>
                             <div class="column middle">
                                 <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
                             </div>
@@ -199,7 +199,10 @@ export default {
             return picturesPath + img
         },
         authorByRealm() {
-          return this.getRealmValuData() ? author2 : author1
+          return this.getRealmValueData() ? author2 : author1
+        },
+        workDateRealm() {
+          return !this.getRealmValueData()
         }
     }
 }
