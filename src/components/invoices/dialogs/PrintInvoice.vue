@@ -30,7 +30,7 @@
                           </div>
                             <div class="column middle">
 
-                                <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
+                                <img :src="image(cmp.logo)" style="height: 90px; width: 165px;" alt="">
 
                             </div>
                             <div class="column right text-right">
@@ -163,8 +163,8 @@
                             </table>
                         </div>
                         <div id="name" style="margin-top: 1%" v-for="cmp in company">
-                            {{ authorByRealm() }}<br>
-                            <img :src="image(cmp.stamp)" style="height: 110px;" alt="" v-show="stampRealm()">
+                            <span style="margin-left: 5px">{{ authorByRealm() }}</span> <br>
+                            <img :src="image(cmp.stamp)" style="height: 110px;" alt="">
                         </div>
                     </div>
                 </q-card-section>
@@ -294,9 +294,6 @@ export default {
         },
         authorByRealm() {
           return this.getRealmValueData() ? author2 : author1
-        },
-        stampRealm() {
-          return this.getRealmValueData() === false
         },
         workDateRealm() {
           return this.invoice.work_date && !this.getRealmValueData()

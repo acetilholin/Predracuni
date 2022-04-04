@@ -27,7 +27,7 @@
                                         <q-item-label><q-icon name="create" class="pointer text-black action-icon"></q-icon> {{ $t("general.edit") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup @click="confirm(props.row.id)">
+                                <q-item clickable v-close-popup @click="confirm(props.row.id, props.row.short_name)">
                                     <q-item-section class="text-center text-red">
                                         <q-item-label><q-icon name="delete_outline" class="pointer action-icon"></q-icon> {{ $t("general.delete") }}</q-item-label>
                                     </q-item-section>
@@ -82,14 +82,12 @@ export default {
         }
     },
     filters: {
-        limitDescription(val) {
-            let limit = 60
-            if (val.length > limit ) {
-                return val.substr(0, limit) + '...';
-            } else {
-                return val
-            }
+      limitDescription(val) {
+        if (val) {
+          let limit = 60
+          return val.length > limit ? val.substr(0, limit) + '...' : val
         }
+      }
     },
     methods: {
         ...mapActions({
@@ -102,9 +100,9 @@ export default {
             this.$store.dispatch('general/editKlavzulaDialog', true)
             this.$store.dispatch('klavzule/show', id)
         },
-        confirm(id) {
+        confirm(id, name) {
             this.$q.dialog({
-                title: `${this.$t("general.deleteTitle")}`,
+                title: `${this.$t("general.deleteTitle")} ${name}`,
                 message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
                 html: true,
                 cancel: true,

@@ -88,7 +88,7 @@
 
                 <q-card-section class="q-pt-none">
 
-                    <div class="row q-pa-md justify-center">
+                    <div class="row q-pa-xs justify-center">
 
                         <q-select
                             v-model="customer"
@@ -97,7 +97,7 @@
                             fill-input
                             input-debounce="0"
                             label="Stranka"
-                            class="col-3 q-ml-sm"
+                            class="col-2 q-ml-sm"
                             :options="options"
                             @filter="filterInput"
                             @input="strankaChanged"
@@ -187,7 +187,13 @@
                                   suffix="%"
                                   class="col-1 q-ml-sm"
                         />
-
+                      <q-input v-model="avans"
+                               bottom-slots
+                               label="Znesek avansa"
+                               class="q-ml-sm col-1"
+                               type="number"
+                               @blur="avansChanged"
+                      />
                     </div>
                 </q-card-section>
                 <q-card-section>
@@ -260,7 +266,7 @@
         </q-dialog>
         <add-recipient :invoice="invoice"></add-recipient>
         <edit-recipient v-if="recipient" :recipient="recipient"></edit-recipient>
-        <add-remark @remark="remark" :invoice="invoice"></add-remark>
+        <remark-edit :invoice="invoice" @remark="remarkEdit"></remark-edit>
     </div>
 </template>
 
@@ -273,7 +279,7 @@
     import {mapActions, mapGetters} from 'vuex'
     import EditRecipient from "./EditRecipient";
     import mixin from "src/global/mixin";
-    import AddRemark from "components/invoices/dialogs/AddRemark";
+    import RemarkEdit from "components/invoices/dialogs/RemarkEdit";
 
     export default {
         name: "EditDialog",
@@ -349,10 +355,18 @@
                     this.invoice.ime_priimek = newValue.naziv_partnerja
                     this.invoice.customer_id = newValue.id
                 }
+            },
+            avans: {
+              get: function () {
+                return this.invoice.avans_sum
+              },
+              set: function (newValue) {
+                this.invoice.avans_sum = newValue
+              }
             }
         },
         components: {
-            AddRemark,
+          RemarkEdit,
             AddItem,
             Create,
             ItemsTable,
@@ -452,6 +466,16 @@
             vChanged() {
                 this.showNotif(`${this.$t('general.VATChanged')}`, 'positive')
             },
+            avansChanged() {
+              if (this.invoice.avans_sum > 0) {
+                this.invoice.avans = 1
+                this.invoice.avans_sum.replace(/,/g, '.')
+                this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+              } else {
+                this.invoice.avans = 0
+                this.showNotif(`${this.$t('general.avansRemoved')}`, 'positive')
+              }
+            },
             timestampChanged() {
                 this.$refs.qDateTimestamp.hide()
                 this.showNotif(`${this.$t('general.createdChanged')}`, 'positive')
@@ -503,19 +527,21 @@
               }
             }
           },
-          remark(val) {
-            console.log(val)
+          remarkEdit(val) {
             this.invoice.remark = val
           },
           addRemark() {
-            this.$store.dispatch('general/addRemarkDialog', true)
+            this.$store.dispatch('general/addRemarkEditDialog', true)
           },
           editRemark() {
-            this.$store.dispatch('general/addRemarkDialog', true)
+            this.$store.dispatch('general/addRemarkEditDialog', true)
           },
           deleteRemark() {
             this.invoice.remark = null
             this.showNotif(`${this.$t('general.remarkRemoved')}`, 'negative')
+          },
+          remarkChanged() {
+            this.showNotif(`${this.$t('general.remarkEdited')}`, 'positive')
           }
         }
     }

@@ -30,7 +30,7 @@
                             </div>
                             <div class="column middle">
 
-                                <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
+                              <img :src="image(cmp.logo)" class="logo-size" alt="">
 
                             </div>
                             <div class="column right text-right">
@@ -62,7 +62,8 @@
                             </div>
                         </div>
                         <div class="float-right mt-2">
-                            <b>{{ $t("invoices.final").toUpperCase() }}: </b>{{ invoice.sifra_predracuna }}<br>
+
+                            <b>{{ invoice.avans ? $t("invoices.avans").toUpperCase() : $t("invoices.final").toUpperCase() }}: </b>{{ invoice.sifra_predracuna }}<br>
                             {{ placeByRealm() }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
                             <b>{{ $t("invoices.validity") }}:</b> {{ invoice.expiration | moment('DD-MM-Y') }}<br>
 
@@ -141,9 +142,31 @@
                                     {{ invoice.total | reformat | eur }}
                                 </span>
                             </div>
+                            <br>
+                            <br>
+                            <div class="float-right" v-if="invoice.avans">
+                              <span>{{ $t("invoices.forPaymentAvans") }} {{ invoice.sifra_predracuna }} {{ $t("invoices.isPaid") }} {{ invoice.avans_sum | reformat | eur }}</span>
+                              <br>
+                              <span>{{ $t("invoices.leftForPayment") }} {{ (invoice.total - invoice.avans_sum) | reformat | eur }}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="container" style="margin-top: 70px; margin-bottom: 5px">
+                      <span v-if="invoice.avans">{{ $t("invoices.specAvans") }}:</span>
+                      <table class="avans mb-5" v-if="invoice.avans">
+                        <tr>
+                          <td>{{ $t("invoices.ddv") }}</td>
+                          <td>{{ $t("invoices.osnova") }}</td>
+                          <td>{{ $t("invoices.znesekDDV") }}</td>
+                          <td>{{ $t("invoices.skupaj") }}</td>
+                        </tr>
+                        <tr>
+                          <td>{{ invoice.vat | procent }}</td>
+                          <td>{{ avans.osnova | reformat }}</td>
+                          <td>{{ avans.znesekDDV | reformat }}</td>
+                          <td>{{ avans.skupaj | reformat }}</td>
+                        </tr>
+                      </table>
                         <p v-if="invoice.remark" class="klavzula-text">
                           <b>{{ $t("invoices.remark") }}</b>: {{ invoice.remark }}
                         </p>
@@ -193,7 +216,12 @@ export default {
             author1: author1,
             author2: author2,
             place1: place1,
-            place2: place2
+            place2: place2,
+            avans: {
+              osnova: 0,
+              znesekDDV: 0,
+              skupaj: 0
+            }
         }
     },
     computed: {
@@ -286,10 +314,23 @@ export default {
         },
         workDateRealm() {
           return this.invoice.work_date && !this.getRealmValueData()
+        },
+        calculateAvans() {
+          let res = ((this.invoice.total - this.invoice.avans_sum) * this.invoice.vat) / (100 + this.invoice.vat)
+          this.avans.znesekDDV = res
+          this.avans.osnova = (this.invoice.total - this.invoice.avans_sum) - res
+          this.avans.skupaj = this.invoice.total - this.invoice.avans_sum
         }
     },
   mounted() {
     this.workDateRealm()
+  },
+  watch: {
+   invoice: {
+      handler() {
+       this.calculateAvans()
+      }
+    }
   }
 }
 </script>
@@ -335,7 +376,14 @@ export default {
 .clen {
     width: 80%;
 }
+.avans {
+  width: 55%;
+}
 .format-text {
     text-align: left;
+}
+.logo-size {
+  height: 85px;
+  width: 165px;
 }
 </style>

@@ -25,7 +25,7 @@
                             {{ cmp.posta }}
                           </div>
                             <div class="column middle">
-                                <img :src="image(cmp.logo)" style="height: 95px; width: 170px;" alt="">
+                                <img :src="image(cmp.logo)" style="height: 90px; width: 165px;" alt="">
                             </div>
                             <div class="column right text-right">
                                 {{ cmp.telefon1 }}<br>

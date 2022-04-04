@@ -24,7 +24,12 @@
                         {{ tableIndex(props.row) }}
                     </q-td>
                     <q-td key="sifra_predracuna" :props="props">
-                        {{ props.row.sifra_predracuna }}
+                      <q-icon class="all-pointer-events cursor-pointer" size="22px" name="font_download" color="purple-7" v-show="props.row.avans">
+                        <q-tooltip>
+                          Avans: {{ props.row.total | decimals }}  &#x2192; {{ props.row.avans_sum}} €
+                        </q-tooltip>
+                      </q-icon>
+                      {{ props.row.sifra_predracuna }}
                     </q-td>
                     <q-td key="ime_priimek" :props="props">
                         {{ props.row.ime_priimek }}
@@ -63,7 +68,7 @@
                                         <q-item-label><q-icon name="input" class="pointer text-black action-icon"></q-icon> {{ $t("general.export") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup @click="confirm(props.row.id)">
+                                <q-item clickable v-close-popup @click="confirm(props.row.id, props.row.sifra_predracuna)">
                                     <q-item-section class="text-center text-red">
                                         <q-item-label><q-icon name="delete_outline" class="pointer action-icon"></q-icon> {{ $t("general.delete") }}</q-item-label>
                                     </q-item-section>
@@ -158,9 +163,9 @@
           this.$store.dispatch('invoices/currentInvoiceAction', row.id)
           localStorage.setItem('sifra', row.sifra_predracuna)
         },
-        confirm(id) {
+        confirm(id, sifra) {
           this.$q.dialog({
-            title: `${this.$t("general.deleteTitle")}`,
+            title: `${this.$t("general.deleteTitle")} ${sifra}`,
             message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
             html: true,
             cancel: true,

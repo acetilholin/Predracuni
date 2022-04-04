@@ -49,7 +49,7 @@
                                         <q-item-label><q-icon name="pageview" target="_blank" class="pointer text-black action-icon"></q-icon> {{ $t("general.view") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup @click="confirm(props.row.id)">
+                                <q-item clickable v-close-popup @click="confirm(props.row.id, props.row.employee)">
                                     <q-item-section class="text-center text-red">
                                         <q-item-label><q-icon name="delete_outline" class="pointer action-icon"></q-icon> {{ $t("general.delete") }}</q-item-label>
                                     </q-item-section>
@@ -142,9 +142,9 @@ export default {
         filterData(interval) {
             this.filterByInterval(interval)
         },
-        confirm(id) {
+        confirm(id, employee) {
             this.$q.dialog({
-                title: `${this.$t("general.deleteTitle")}`,
+                title: `${this.$t("general.deleteTitle")} ${employee}`,
                 message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
                 html: true,
                 cancel: true,

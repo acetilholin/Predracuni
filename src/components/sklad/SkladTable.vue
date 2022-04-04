@@ -46,7 +46,7 @@
                     <q-item-label><q-icon name="create" class="pointer text-black action-icon"></q-icon> {{ $t("general.edit") }}</q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup @click="confirm(props.row.id)">
+                <q-item clickable v-close-popup @click="confirm(props.row.id, props.row.customer.naziv_partnerja)">
                   <q-item-section class="text-center text-red">
                     <q-item-label><q-icon name="delete_outline" class="pointer action-icon"></q-icon> {{ $t("general.delete") }}</q-item-label>
                   </q-item-section>
@@ -126,9 +126,9 @@ export default {
     tableIndex(row) {
       return this.skladData.indexOf(row) + 1
     },
-    confirm(id) {
+    confirm(id, partner) {
       this.$q.dialog({
-        title: `${this.$t("general.deleteTitle")}`,
+        title: `${this.$t("general.deleteTitle")} ${partner}`,
         message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
         html: true,
         cancel: true,

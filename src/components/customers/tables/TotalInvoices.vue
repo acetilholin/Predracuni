@@ -21,7 +21,12 @@
                         {{ tableIndex(props.row) }}
                     </q-td>
                     <q-td key="sifra_predracuna" :props="props">
-                        {{ props.row.sifra_predracuna }}
+                      <q-icon class="all-pointer-events cursor-pointer" size="22px" name="font_download" color="purple-7" v-show="props.row.avans">
+                        <q-tooltip>
+                          Avans: {{ props.row.total | price }}  &#x2192; {{ props.row.avans_sum}} €
+                        </q-tooltip>
+                      </q-icon>
+                      {{ props.row.sifra_predracuna }}
                     </q-td>
                     <q-td key="timestamp" :props="props">
                         {{ props.row.timestamp | moment('DD-MM-Y') }}

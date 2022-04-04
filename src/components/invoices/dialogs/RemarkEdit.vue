@@ -54,22 +54,22 @@ import {mapActions, mapGetters} from "vuex";
 import mixin from "src/global/mixin";
 
 export default {
-  name: "AddRemark",
-  mixins: [mixin],
+  name: "RemarkEdit",
   props: ['invoice'],
+  mixins: [mixin],
+  computed: {
+    ...mapGetters({
+      dialog: 'general/getRemarkEditDialog'
+    })
+  },
   data() {
     return {
       submitting: false
     }
   },
-  computed: {
-    ...mapGetters({
-      dialog: 'general/getRemarkDialog'
-    })
-  },
   methods: {
     ...mapActions({
-      close: 'general/addRemarkDialog'
+      close: 'general/addRemarkEditDialog'
     }),
     closeDialog() {
       this.close(false)

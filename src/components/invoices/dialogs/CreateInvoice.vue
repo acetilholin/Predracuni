@@ -60,7 +60,7 @@
                     <div class="q-mt-sm">
                       <q-btn-dropdown color="teal-6" outline label="Opomba">
                         <q-list>
-                          <q-item clickable v-if="!invoice.remark" v-close-popup @click="addRemark">
+                          <q-item clickable v-if="!invoice.remark" v-close-popup @click="openRemarkDialog">
                             <q-item-section>
                               <q-item-label>
                                 <q-icon name="add"></q-icon>
@@ -96,7 +96,7 @@
 
                 <q-card-section class="q-pt-none">
 
-                    <div class="row q-pa-md justify-center">
+                    <div class="row q-pa-sm justify-center">
 
                         <q-select
                             v-model="customer"
@@ -176,9 +176,14 @@
                                   suffix="%"
                                   class="col-1 q-ml-sm"
                         />
-
+                      <q-input v-model="avans"
+                               bottom-slots
+                               label="Znesek avansa"
+                               class="q-px-md col-2"
+                               type="number"
+                               @blur="avansChanged"
+                      />
                     </div>
-
                 </q-card-section>
                 <q-card-section>
                     <div class="text-center">
@@ -230,7 +235,7 @@
         </q-dialog>
         <add-new-recipient @addRecipient="addNewRecipient"></add-new-recipient>
         <add-item @newItem="addNewItem"></add-item>
-        <add-remark @remark="remark" :invoice="invoice"></add-remark>
+        <add-remark @remark="addRemark" :invoice="invoice"></add-remark>
     </div>
 </template>
 
@@ -261,7 +266,8 @@ export default {
                 klavzula: '',
                 vat: 0.0,
                 customer_id: '',
-                remark: ''
+                remark: '',
+                avans_sum: 0
             },
             recipient: {
                 title: '',
@@ -327,6 +333,14 @@ export default {
             set: function (newValue) {
                 this.invoice.vat = newValue.val
             }
+        },
+        avans: {
+          get: function () {
+            return this.invoice.avans_sum
+          },
+          set: function (newValue) {
+            this.invoice.avans_sum = newValue
+          }
         }
     },
     created() {
@@ -437,7 +451,8 @@ export default {
                 this.invoice.vat = 0.0
                 this.customer_id = ''
                 this.items.length = 0
-                this.invoice.remark = null
+                this.invoice.remark = ''
+                this.invoice.avans_sum = 0
                 this.$refs.createInvoice.hide()
             })
         },
@@ -449,8 +464,9 @@ export default {
                 this.invoice.klavzula = ''
                 this.invoice.vat = 0.0
                 this.customer_id = ''
-                this.invoice.remark = null
+                this.invoice.remark = ''
                 this.items.length = 0
+                this.invoice.avans_sum = 0
             }
         },
         addItem() {
@@ -484,6 +500,12 @@ export default {
         vChanged() {
             this.showNotif(`${this.$t('general.VATadded')}`, 'positive')
         },
+        avansChanged() {
+          if (this.invoice.avans_sum > 0) {
+            this.invoice.avans_sum.replace(/,/g, '.')
+            this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+          }
+        },
         expirationChanged() {
             this.$refs.qDateExpiration.hide()
             this.showNotif(`${this.$t('general.expidationDateAdded')}`, 'positive')
@@ -495,10 +517,10 @@ export default {
         strankaChanged() {
             this.showNotif(`${this.$t('general.customerAdded')}`, 'positive')
         },
-        addRemark() {
+        openRemarkDialog() {
           this.$store.dispatch('general/addRemarkDialog', true)
         },
-        remark(val) {
+        addRemark(val) {
           this.invoice.remark = val
         },
         editRemark() {

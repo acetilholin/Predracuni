@@ -29,7 +29,8 @@ export default {
         printMonth: false,
         skladModal: false,
         skladPrint: false,
-        remarkDialog: false
+        remarkDialog: false,
+        remarkEditDialog: false
     },
     mutations: {
         CHANGE_DRAWER(state, payload) {
@@ -112,6 +113,9 @@ export default {
         },
        CHANGE_REMARK_DIALOG(state, payload) {
           state.remarkDialog = payload
+       },
+       CHANGE_REMARK_EDIT_DIALOG(state, payload) {
+          state.remarkEditDialog = payload
        }
     },
     actions: {
@@ -206,6 +210,9 @@ export default {
         },
         addRemarkDialog({commit}, modal) {
           commit('CHANGE_REMARK_DIALOG', modal)
+        },
+        addRemarkEditDialog({commit}, modal) {
+          commit('CHANGE_REMARK_EDIT_DIALOG', modal)
         }
     },
     getters: {
@@ -289,6 +296,9 @@ export default {
         },
         getRemarkDialog(state) {
           return state.remarkDialog
+        },
+        getRemarkEditDialog(state) {
+          return state.remarkEditDialog
         }
     }
 }
