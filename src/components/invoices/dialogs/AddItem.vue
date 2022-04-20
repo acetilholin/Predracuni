@@ -33,6 +33,7 @@
                            />
                            <q-input
                                v-model="item.price"
+                               v-if="item.unit !== 'avans'"
                                label="Cena na 2 decimalki"
                                mask="#.##"
                                fill-mask="0"
@@ -46,6 +47,7 @@
                            <q-input
                                v-model.number="item.qty"
                                label="Količina"
+                               v-if="item.unit !== 'avans'"
                                type="number"
                                class="col-2 input-margin"
                                :rules="[ val => !!val && val > 0 || `${this.$t('general.biggerThan0')}`]"
@@ -53,6 +55,7 @@
                            <q-input
                                v-model.number="item.discount"
                                label="Popust"
+                               v-if="item.unit !== 'avans'"
                                type="number"
                                suffix="%"
                                class="col-2 input-margin"
@@ -92,12 +95,13 @@ export default {
                 priceItem: null,
                 unit: ""
             },
-            units: ['kos','m','ura','kg','m2']
+            units: ['avans','kos','m','ura','kg','m2']
         }
     },
     computed: {
         ...mapGetters({
-            addItemDialog: 'general/getAddItemDialog'
+            addItemDialog: 'general/getAddItemDialog',
+            invoices: 'invoices/getInvoices'
         })
     },
     methods: {
@@ -118,11 +122,11 @@ export default {
 
             let newItem = {
                 invoice_id: null,
-                qty: qty,
+                qty: this.item.unit === 'avans' ? 1 : qty,
                 unit: this.item.unit,
-                item_price: price,
-                discount: discount,
-                total_price: total_price,
+                item_price: this.item.unit === 'avans' ? 0 : price,
+                discount: this.item.unit === 'avans' ? 0 : discount,
+                total_price: this.item.unit === 'avans' ? 0 : total_price,
                 description: this.item.description
             }
             this.$emit('newItem', newItem);

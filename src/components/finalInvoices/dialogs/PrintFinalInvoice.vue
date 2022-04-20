@@ -62,7 +62,6 @@
                             </div>
                         </div>
                         <div class="float-right mt-2">
-
                             <b>{{ invoice.avans ? $t("invoices.avans").toUpperCase() : $t("invoices.final").toUpperCase() }}: </b>{{ invoice.sifra_predracuna }}<br>
                             {{ placeByRealm() }}, {{ invoice.timestamp | moment('DD-MM-Y') }}<br>
                             <b>{{ $t("invoices.validity") }}:</b> {{ invoice.expiration | moment('DD-MM-Y') }}<br>
@@ -96,24 +95,28 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col" class="format-text">{{ $t("invoices.description") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.em") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.qty") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.price") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.discount") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.ddv") }}</th>
-                                    <th scope="col" class="format-text">{{ $t("invoices.vrednost") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.em") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.qty") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.price") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.discount") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.ddv") }}</th>
+                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.vrednost") }}</th>
+                                    <th scope="col" class="format-text" v-if="invoice.avans">{{ $t("invoices.osnova") }}</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item, index) in items">
                                     <th scope="row">{{ index + 1 }}</th>
                                     <td>{{ item.description }}</td>
-                                    <td>{{ item.unit }}</td>
-                                    <td>{{ item.qty }}</td>
-                                    <td>{{ item.item_price | reformat }}</td>
-                                    <td>{{ item.discount }}</td>
-                                    <td>{{ vat() }}</td>
-                                    <td>{{ item.total_price | reformat }}</td>
+                                    <td v-if="!invoice.avans">{{ item.unit }}</td>
+                                    <td v-if="!invoice.avans">{{ item.qty }}</td>
+                                    <td v-if="!invoice.avans">{{ item.item_price | reformat }}</td>
+                                    <td v-if="!invoice.avans">{{ item.discount }}</td>
+                                    <td v-if="!invoice.avans">{{ vat() }}</td>
+                                    <td v-if="!invoice.avans">{{ item.total_price | reformat }}</td>
+                                    <td v-if="invoice.avans">{{ invoice.avans_sum | reformat }}</td>
+
                                 </tr>
                                 </tbody>
                             </table>
@@ -139,12 +142,12 @@
                                 {{ subTotal() | reformat }}
                                 </span>
                                 <span v-else>
-                                    {{ invoice.total | reformat | eur }}
+                                    {{ invoiceTotal() | reformat | eur }}
                                 </span>
                             </div>
                             <br>
                             <br>
-                            <div class="float-right" v-if="invoice.avans">
+                            <div class="float-right" v-if="invoice.avans_after_invoice">
                               <span>{{ $t("invoices.forPaymentAvans") }} {{ invoice.sifra_predracuna }} {{ $t("invoices.isPaid") }} {{ invoice.avans_sum | reformat | eur }}</span>
                               <br>
                               <span>{{ $t("invoices.leftForPayment") }} {{ (invoice.total - invoice.avans_sum) | reformat | eur }}</span>
@@ -152,8 +155,8 @@
                         </div>
                     </div>
                     <div class="container" style="margin-top: 70px; margin-bottom: 5px">
-                      <span v-if="invoice.avans">{{ $t("invoices.specAvans") }}:</span>
-                      <table class="avans mb-5" v-if="invoice.avans">
+                      <span v-if="invoice.avans_after_invoice">{{ $t("invoices.specAvans") }}:</span>
+                      <table class="avans mb-5" v-if="invoice.avans_after_invoice">
                         <tr>
                           <td>{{ $t("invoices.ddv") }}</td>
                           <td>{{ $t("invoices.osnova") }}</td>
@@ -287,7 +290,12 @@ export default {
             this.items.forEach(item => {
                 return total += item.total_price
             })
-            return total
+            return this.invoice.avans ? this.invoice.avans_sum : total
+        },
+        invoiceTotal() {
+          return this.invoice.avans ?
+            this.invoice.avans_sum + (this.invoice.vat * 0.01 * this.invoice.avans_sum) :
+            this.invoice.total
         },
         vatDifference() {
             let total = 0

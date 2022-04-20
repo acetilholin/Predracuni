@@ -87,6 +87,24 @@
                         </q-list>
                       </q-btn-dropdown>
                     </div>
+                    <div class="q-mt-sm">
+                      <div>
+                        <q-checkbox v-model="invoice.avans"
+                                    label="Avans"
+                                    color="purple"
+                                    :disable="invoice.avans_after_invoice"
+                                    @input="avansChecked"
+                        />
+                      </div>
+                      <div>
+                        <q-checkbox v-model="invoice.avans_after_invoice"
+                                    color="orange"
+                                    label="Račun po avansnem plačilu"
+                                    :disable="invoice.avans"
+                                    @input="avansAfterChecked"
+                        />
+                      </div>
+                    </div>
                     <q-btn color="red" class="q-mt-lg" icon="delete" @click="deleteAll()" label="Izbriši">
                         <q-tooltip>
                             Izbriši celoten predračun
@@ -267,7 +285,9 @@ export default {
                 vat: 0.0,
                 customer_id: '',
                 remark: '',
-                avans_sum: 0
+                avans_sum: 0,
+                avans: false,
+                avans_after_invoice: false
             },
             recipient: {
                 title: '',
@@ -408,6 +428,9 @@ export default {
                 case !this.invoice.klavzula:
                     this.showNotif(`${this.$t('general.chooseKlavzula')}`,'warning');
                     return true
+                case (!this.invoice.avans && !this.invoice.avans_after_invoice) && this.invoice.avans_sum > 0:
+                  this.showNotif(`${this.$t('general.chooseAvansOrAvansAfter')}`,'warning');
+                  return true
                 default:
                     return false
             }
@@ -419,6 +442,7 @@ export default {
                     items: this.items,
                     recipient: this.recipient
                 }
+
                 this.submitting = true
                 localStorage.removeItem('items')
                 this.createInvoice(newInvoice)
@@ -453,6 +477,8 @@ export default {
                 this.items.length = 0
                 this.invoice.remark = ''
                 this.invoice.avans_sum = 0
+                this.invoice.avans = false
+                this.invoice.avans_after_invoice = false
                 this.$refs.createInvoice.hide()
             })
         },
@@ -467,6 +493,8 @@ export default {
                 this.invoice.remark = ''
                 this.items.length = 0
                 this.invoice.avans_sum = 0
+                this.invoice.avans = false
+                this.invoice.avans_after_invoice = false
             }
         },
         addItem() {
@@ -502,8 +530,11 @@ export default {
         },
         avansChanged() {
           if (this.invoice.avans_sum > 0) {
-            this.invoice.avans_sum.replace(/,/g, '.')
-            this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+            if (!this.invoice.avans && !this.invoice.avans_after_invoice) {
+              this.showNotif(`${this.$t('general.chooseAvansOrAvansAfter')}`, 'warning')
+            } else {
+              this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+            }
           }
         },
         expirationChanged() {
@@ -529,6 +560,20 @@ export default {
         deleteRemark() {
           this.invoice.remark = null
           this.showNotif(`${this.$t('general.remarkRemoved')}`, 'negative')
+        },
+        avansAfterChecked() {
+          if (this.invoice.avans_after_invoice) {
+            this.showNotif(`${this.$t('general.afterInvoiceMarked')}`, 'positive')
+          } else {
+            this.showNotif(`${this.$t('general.afterInvoiceRemoved')}`, 'warning')
+          }
+        },
+        avansChecked() {
+          if (this.invoice.avans) {
+            this.showNotif(`${this.$t('general.avansOptionMarked')}`, 'positive')
+          } else {
+            this.showNotif(`${this.$t('general.avansOptionRemoved')}`, 'warning')
+          }
         }
     },
     watch: {

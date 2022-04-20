@@ -21,11 +21,18 @@
                         {{ tableIndex(props.row) }}
                     </q-td>
                     <q-td key="sifra_predracuna" :props="props">
-                      <q-icon class="all-pointer-events cursor-pointer" size="22px" name="font_download" color="purple-7" v-show="props.row.avans">
-                        <q-tooltip>
-                          Avans: {{ props.row.total | price }}  &#x2192; {{ props.row.avans_sum}} €
+                        <span class="text-bold text-purple-7 pointer" v-show="props.row.avans">
+                        {{ $t("invoices.a") }}
+                      <q-tooltip>
+                          {{ $t("invoices.avans_table") }}: {{ props.row.avans_sum}} €
                         </q-tooltip>
-                      </q-icon>
+                      </span>
+                      <span class="text-bold text-orange-7 pointer" v-show="props.row.avans_after_invoice">
+                         {{ $t("invoices.r") }}
+                      <q-tooltip>
+                           {{ $t("invoices.avans_after_table") }}: {{ props.row.total | price }}  &#x2192; {{ props.row.avans_sum}} €
+                        </q-tooltip>
+                      </span>
                       {{ props.row.sifra_predracuna }}
                     </q-td>
                     <q-td key="timestamp" :props="props">
@@ -40,7 +47,7 @@
                         </q-badge>
                     </q-td>
                     <q-td key="edit" :props="props">
-                        <q-icon name="pageview" class="pointer action-icon" @click="view(props.row.id)"></q-icon>
+                        <q-icon name="pageview" class="pointer action-icon" @click="view(props.row.id)" v-if="!props.row.avans_after_invoice && !props.row.avans"></q-icon>
                     </q-td>
                 </q-tr>
             </template>

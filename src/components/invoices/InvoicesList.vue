@@ -24,11 +24,18 @@
                         {{ tableIndex(props.row) }}
                     </q-td>
                     <q-td key="sifra_predracuna" :props="props">
-                      <q-icon class="all-pointer-events cursor-pointer" size="22px" name="font_download" color="purple-7" v-show="props.row.avans">
-                        <q-tooltip>
-                          Avans: {{ props.row.total | decimals }}  &#x2192; {{ props.row.avans_sum}} €
+                      <span class="text-bold text-purple-7 pointer" v-show="props.row.avans">
+                        {{ $t("invoices.a") }}
+                      <q-tooltip>
+                          {{ $t("invoices.avans_table") }}: {{ props.row.avans_sum}} €
                         </q-tooltip>
-                      </q-icon>
+                      </span>
+                      <span class="text-bold text-orange-7 pointer" v-show="props.row.avans_after_invoice">
+                         {{ $t("invoices.r") }}
+                      <q-tooltip>
+                           {{ $t("invoices.avans_after_table") }}: {{ props.row.total | decimals }}  &#x2192; {{ props.row.avans_sum}} €
+                        </q-tooltip>
+                      </span>
                       {{ props.row.sifra_predracuna }}
                     </q-td>
                     <q-td key="ime_priimek" :props="props">
@@ -38,7 +45,8 @@
                         {{ props.row.timestamp | moment('DD-MM-Y') }}
                     </q-td>
                     <q-td key="total" :props="props">
-                        {{ props.row.total | decimals }}
+                        <span v-if="!props.row.avans_after_invoice && !props.row.avans">{{ props.row.total | decimals }}</span>
+                        <span v-else>{{ props.row.avans_sum | decimals }}</span>
                     </q-td>
                     <q-td key="expiration" :props="props">
                         <q-badge :color="$moment(today()).isBefore(props.row.expiration) ? 'green' : 'red'">
@@ -58,7 +66,7 @@
                                         <q-item-label><q-icon name="content_copy" class="pointer text-black action-icon"></q-icon> {{ $t("general.copy") }}</q-item-label>
                                     </q-item-section>
                                 </q-item>
-                                <q-item clickable v-close-popup @click="viewInvoice(props.row.id)">
+                                <q-item clickable v-close-popup @click="viewInvoice(props.row.id)" :disable="!!props.row.avans || !!props.row.avans_after_invoice">
                                     <q-item-section class="text-center">
                                         <q-item-label><q-icon name="pageview" target="_blank" class="pointer text-black action-icon"></q-icon> {{ $t("general.view") }}</q-item-label>
                                     </q-item-section>

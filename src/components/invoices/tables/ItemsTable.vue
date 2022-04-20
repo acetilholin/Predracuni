@@ -51,9 +51,10 @@
                         </q-popup-edit>
                     </q-td>
                     <q-td key="qty" :props="props" style="cursor: pointer">
-                        {{ props.row.qty }}
+                      <span v-if="props.row.unit !== 'avans'">{{ props.row.qty }}</span>
                         <q-popup-edit v-model="props.row.qty"
                                       title="Spremeni količino"
+                                      v-if="props.row.unit !== 'avans'"
                                       buttons
                                       label-set="Spremeni"
                                       @save="changeItemData(`${$t('general.QTYChanged')}`,props.row)"
@@ -67,9 +68,11 @@
                             />
                         </q-popup-edit>
                     </q-td>
-                    <q-td key="unit" :props="props" style="cursor: pointer">{{ props.row.unit }}
+                    <q-td key="unit" :props="props" style="cursor: pointer">
+                      <span v-if="props.row.unit !== 'avans'">{{ props.row.unit }}</span>
                         <q-popup-edit v-model="props.row.unit"
                                       title="Spremeni EM"
+                                      v-if="props.row.unit !== 'avans'"
                                       buttons
                                       label-set="Spremeni"
                                       @save="changeItemData(`${$t('general.EMChanged')}`,props.row)"
@@ -83,9 +86,10 @@
                       </q-popup-edit>
                     </q-td>
                     <q-td key="item_price" :props="props" style="cursor: pointer">
-                        {{ props.row.item_price | price }}
+                      <span v-if="props.row.unit !== 'avans'">{{ props.row.item_price | price }}</span>
                         <q-popup-edit v-model="props.row.item_price"
                                       title="Spremeni ceno/kos"
+                                      v-if="props.row.unit !== 'avans'"
                                       buttons
                                       label-set="Spremeni"
                                       @save="changeItemData(`${$t('general.pricePerItemChanged')}`,props.row)"
@@ -99,12 +103,13 @@
                         </q-popup-edit>
                     </q-td>
                     <q-td key="total_price" :props="props">
-                        {{ props.row.total_price | price }}
+                      <span v-if="props.row.unit !== 'avans'">{{ props.row.total_price | price }}</span>
                     </q-td>
                     <q-td key="discount" :props="props" style="cursor: pointer">
-                        {{ props.row.discount | discount }}
+                      <span v-if="props.row.unit !== 'avans'">{{ props.row.discount | discount }}</span>
                         <q-popup-edit v-model="props.row.discount"
                                       title="Spremeni popust"
+                                      v-if="props.row.unit !== 'avans'"
                                       buttons
                                       label-set="Spremeni"
                                       @save="changeItemData(`${$t('general.discountChanged')}`,props.row)"
@@ -118,7 +123,7 @@
                         </q-popup-edit>
                     </q-td>
                     <q-td key="vat" :props="props">
-                        {{ invoice.vat | discount }}
+                      <span v-if="props.row.unit !== 'avans'">{{ invoice.vat | discount }}</span>
                     </q-td>
                     <q-td key="edit" :props="props">
                         <q-icon name="delete_outline" @click="confirm(props.row)" class="pointer text-red action-icon"></q-icon>

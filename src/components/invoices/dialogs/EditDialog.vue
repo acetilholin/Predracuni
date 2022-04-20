@@ -84,6 +84,24 @@
                         </q-list>
                       </q-btn-dropdown>
                     </div>
+                    <div class="q-mt-sm">
+                      <div>
+                        <q-checkbox v-model="avansOption"
+                                    label="Avans"
+                                    color="purple"
+                                    :disable="!!this.invoice.avans_after_invoice"
+                                    @input="avansChecked"
+                        />
+                      </div>
+                      <div>
+                        <q-checkbox v-model="avansAfterInvoiceOption"
+                                    color="orange"
+                                    label="Račun po avansnem plačilu"
+                                    :disable="!!this.invoice.avans"
+                                    @input="avansAfterChecked"
+                        />
+                      </div>
+                    </div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
@@ -363,6 +381,22 @@
               set: function (newValue) {
                 this.invoice.avans_sum = newValue
               }
+            },
+            avansOption: {
+              get: function () {
+                return !!this.invoice.avans
+              },
+              set: function (newValue) {
+                this.invoice.avans = newValue
+              }
+            },
+            avansAfterInvoiceOption: {
+              get: function () {
+                return !!this.invoice.avans_after_invoice
+              },
+              set: function (newValue) {
+                this.invoice.avans_after_invoice = newValue
+              }
             }
         },
         components: {
@@ -435,24 +469,28 @@
                 })
             },
             update(id) {
-                this.submitting = true
-                let invoiceData = {
+                if ((!this.invoice.avans && !this.invoice.avans_after_invoice) && this.invoice.avans_sum > 0) {
+                  this.showNotif(`${this.$t('general.chooseAvansOrAvansAfter')}`,'warning');
+                } else {
+                  this.submitting = true
+                  let invoiceData = {
                     id: id,
                     invoice: this.invoice,
                     items: this.items
-                }
+                  }
 
-                this.updateInvoice(invoiceData)
+                  this.updateInvoice(invoiceData)
                     .then((response) => {
-                        this.showNotif(response, 'positive')
-                        setTimeout(() => {
-                            this.submitting = false
-                        }, 500)
+                      this.showNotif(response, 'positive')
+                      setTimeout(() => {
+                        this.submitting = false
+                      }, 500)
                     })
                     .catch((e) => {
-                        this.showNotif(e, 'negative')
-                        this.submitting = false
+                      this.showNotif(e, 'negative')
+                      this.submitting = false
                     })
+                }
             },
             closeDialog() {
                 this.closeEditDialog(false)
@@ -468,11 +506,14 @@
             },
             avansChanged() {
               if (this.invoice.avans_sum > 0) {
-                this.invoice.avans = 1
-                this.invoice.avans_sum.replace(/,/g, '.')
-                this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+                if (!this.invoice.avans && !this.invoice.avans_after_invoice) {
+                  this.showNotif(`${this.$t('general.chooseAvansOrAvansAfter')}`, 'warning')
+                } else {
+                  this.showNotif(`${this.$t('general.avansChanged')}`, 'positive')
+                }
               } else {
                 this.invoice.avans = 0
+                this.invoice.avans_after_invoice = 0
                 this.showNotif(`${this.$t('general.avansRemoved')}`, 'positive')
               }
             },
@@ -542,6 +583,20 @@
           },
           remarkChanged() {
             this.showNotif(`${this.$t('general.remarkEdited')}`, 'positive')
+          },
+          avansAfterChecked() {
+            if (this.invoice.avans_after_invoice) {
+              this.showNotif(`${this.$t('general.afterInvoiceMarked')}`, 'positive')
+            } else {
+              this.showNotif(`${this.$t('general.afterInvoiceRemoved')}`, 'warning')
+            }
+          },
+          avansChecked() {
+            if (this.invoice.avans) {
+              this.showNotif(`${this.$t('general.avansOptionMarked')}`, 'positive')
+            } else {
+              this.showNotif(`${this.$t('general.avansOptionRemoved')}`, 'warning')
+            }
           }
         }
     }
