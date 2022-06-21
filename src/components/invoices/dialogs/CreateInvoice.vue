@@ -196,7 +196,7 @@
                         />
                       <q-input v-model="avans"
                                bottom-slots
-                               label="Znesek avansa"
+                               label="Avans z DDV"
                                class="q-px-md col-2"
                                type="number"
                                @blur="avansChanged"
@@ -236,6 +236,22 @@
                                 />
                             </template>
                         </q-btn>
+                    </div>
+                    <div class="row">
+                      <q-input
+                        class="col-md-2 q-ml-md"
+                        v-model="invoice.sifra_predracuna"
+                        label="Šifra predračuna"
+                        hint="Format: zap.število/leto"
+                        :rules="[ lengthResp, checkFormat]"
+                      />
+                      <q-input
+                        v-if="invoice.avans_after_invoice"
+                        class="col-md-2 q-ml-md"
+                        v-model="invoice.related_to_invoice"
+                        label="Šifra po avansnem računu"
+                        :rules="[ lengthResp, checkFormat]"
+                      />
                     </div>
                     <div class="q-ml-md" v-if="invoice.remark">
                       <q-icon class="all-pointer-events" size="22px" name="info" color="secondary">
@@ -287,7 +303,9 @@ export default {
                 remark: '',
                 avans_sum: 0,
                 avans: false,
-                avans_after_invoice: false
+                avans_after_invoice: false,
+                sifra_predracuna: '',
+                related_to_invoice: ''
             },
             recipient: {
                 title: '',
@@ -402,6 +420,8 @@ export default {
         },
         addNewItem(newItem) {
             newItem.id = null
+            newItem.item_price = this.invoice.avans ? ( this.invoice.avans_sum - ((this.invoice.avans_sum * this.invoice.vat) /( 100 + this.invoice.vat))) : newItem.item_price
+            newItem.total_price = this.invoice.avans ? this.invoice.avans_sum : newItem.total_price
             this.items.push(newItem)
             localStorage.setItem('items', JSON.stringify(this.items));
             this.showNotif(`${this.$t('general.itemAdded')}`, 'positive')
@@ -479,6 +499,7 @@ export default {
                 this.invoice.avans_sum = 0
                 this.invoice.avans = false
                 this.invoice.avans_after_invoice = false
+                this.invoice.sifra_predracuna = ''
                 this.$refs.createInvoice.hide()
             })
         },
@@ -496,6 +517,7 @@ export default {
                 this.invoice.avans = false
                 this.invoice.avans_after_invoice = false
             }
+          this.invoice.sifra_predracuna = ''
         },
         addItem() {
             this.addItemDialog(true)
@@ -574,6 +596,21 @@ export default {
           } else {
             this.showNotif(`${this.$t('general.avansOptionRemoved')}`, 'warning')
           }
+        },
+        lengthResp(val) {
+          if (val.length > 8) {
+            this.disableUpdate = true
+            return this.$t('general.wrongFormatSifraPredracuna')
+          }
+          this.disableUpdate = false
+        },
+        checkFormat(val) {
+          const regex = /\d{1,3}\/\d{4}/
+          if (!regex.test(val) || !val.includes('/')){
+            this.disableUpdate = true
+            return this.$t('general.wrongFormatSifraPredracuna')
+          }
+          this.disableUpdate = false
         }
     },
     watch: {

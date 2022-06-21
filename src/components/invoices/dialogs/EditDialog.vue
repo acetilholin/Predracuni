@@ -207,7 +207,7 @@
                         />
                       <q-input v-model="avans"
                                bottom-slots
-                               label="Znesek avansa"
+                               label="Avans z DDV"
                                class="q-ml-sm col-1"
                                type="number"
                                @blur="avansChanged"
@@ -262,8 +262,13 @@
                       v-model="invoice.sifra_predracuna"
                       label="Šifra predračuna"
                       hint="Format: zap.število/leto"
-                      @blur="validateSifraRacuna"
                       :rules="[ lengthResp, checkFormat]"
+                    />
+                    <q-input
+                      v-if="invoice.avans_after_invoice"
+                      class="col-md-2 q-ml-md"
+                      v-model="invoice.related_to_invoice"
+                      label="Šifra po avansnem računu"
                     />
                   </div>
                   <div class="row q-mt-sm">
@@ -428,6 +433,8 @@
             addNewItem(newItem) {
                 newItem.id = null
                 newItem.invoice_id = this.invoice.id
+                newItem.item_price = this.invoice.avans ? ( this.invoice.avans_sum - ((this.invoice.avans_sum * this.invoice.vat) /( 100 + this.invoice.vat))) : newItem.item_price
+                newItem.total_price = this.invoice.avans ? this.invoice.avans_sum : newItem.total_price
                 this.addInvoiceItem(newItem)
                 this.showNotif(`${this.$t('general.itemAdded')}`, 'positive')
             },
@@ -443,7 +450,7 @@
             removePrejemnik() {
                 this.$q.dialog({
                     title: `${this.$t("general.deleteTitle")}`,
-                    message: `<span class='text-red'> ${this.$t("general.deleteMessage")}</span>`,
+                    message: `<span class='text-red'>${this.$t("general.deleteMessage")}</span>`,
                     html: true,
                     cancel: true,
                     persistent: true
@@ -548,25 +555,25 @@
             this.disableUpdate = false
           },
           validateSifraRacuna() {
-            let sifraInitial = localStorage.getItem('sifra')
-            const regex = /\d{1,3}\/\d{4}/
-            if (regex.test(this.invoice.sifra_predracuna) && this.invoice.sifra_predracuna.length <= 8 && this.invoice.sifra_predracuna.includes('/')) {
+               let sifraInitial = localStorage.getItem('sifra')
+               const regex = /\d{1,3}\/\d{4}/
+               if (regex.test(this.invoice.sifra_predracuna) && this.invoice.sifra_predracuna.length <= 8 && this.invoice.sifra_predracuna.includes('/')) {
 
-              if (sifraInitial !== this.invoice.sifra_predracuna) {
-                this.$store.dispatch('invoices/checkExisting', {
-                  sifra: this.invoice.sifra_predracuna
-                })
-                  .then(response => {
-                    if (response) {
-                      this.showNotif(`${this.$t('general.sifraExists')}`, 'negative')
-                      this.disableUpdate = true
-                    } else {
-                      this.disableUpdate = false
-                      this.showNotif(`${this.$t('general.sifraUpdated')}`, 'positive')
-                    }
-                  })
-              }
-            }
+                 if (sifraInitial !== this.invoice.sifra_predracuna) {
+                   this.$store.dispatch('invoices/checkExisting', {
+                     sifra: this.invoice.sifra_predracuna
+                   })
+                     .then(response => {
+                       if (response) {
+                         this.showNotif(`${this.$t('general.sifraExists')}`, 'negative')
+                         this.disableUpdate = true
+                       } else {
+                         this.disableUpdate = false
+                         this.showNotif(`${this.$t('general.sifraUpdated')}`, 'positive')
+                       }
+                     })
+                 }
+               }
           },
           remarkEdit(val) {
             this.invoice.remark = val

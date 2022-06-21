@@ -111,12 +111,11 @@
                                     <td>{{ item.description }}</td>
                                     <td v-if="!invoice.avans">{{ item.unit }}</td>
                                     <td v-if="!invoice.avans">{{ item.qty }}</td>
-                                    <td v-if="!invoice.avans">{{ item.item_price | reformat }}</td>
+                                    <td>{{ item.item_price | reformat }}</td>
                                     <td v-if="!invoice.avans">{{ item.discount }}</td>
                                     <td v-if="!invoice.avans">{{ vat() }}</td>
                                     <td v-if="!invoice.avans">{{ item.total_price | reformat }}</td>
-                                    <td v-if="invoice.avans">{{ invoice.avans_sum | reformat }}</td>
-
+                                    <td v-if="!invoice.avans">{{ invoice.avans_sum | reformat }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -148,7 +147,11 @@
                             <br>
                             <br>
                             <div class="float-right" v-if="invoice.avans_after_invoice">
-                              <span>{{ $t("invoices.forPaymentAvans") }} {{ invoice.sifra_predracuna }} {{ $t("invoices.isPaid") }} {{ invoice.avans_sum | reformat | eur }}</span>
+                              <span>
+                                {{ $t("invoices.forPaymentAvans") }}
+                                <span v-if="invoice.related_to_invoice">{{ invoice.related_to_invoice }}</span>
+                                <span v-else>{{ invoice.sifra_predracuna }}</span>
+                                {{ $t("invoices.isPaid") }} {{ invoice.avans_sum | reformat | eur }}</span>
                               <br>
                               <span>{{ $t("invoices.leftForPayment") }} {{ (invoice.total - invoice.avans_sum) | reformat | eur }}</span>
                             </div>
@@ -245,9 +248,9 @@ export default {
     },
     filters: {
         reformat(val) {
-            if (!isNaN(val)) {
-                return val.toLocaleString('de-DE', { minimumFractionDigits: 2 })
-            }
+          if (val) { //!isNaN(val)
+            return val.toLocaleString('de-DE', { minimumFractionDigits: 2 })
+          }
         },
         titleShort(val) {
             return val.substring(31,51)
@@ -286,15 +289,20 @@ export default {
             return picturesPath + img
         },
         subTotal() {
-            let total = 0
-            this.items.forEach(item => {
-                return total += item.total_price
-            })
-            return this.invoice.avans ? this.invoice.avans_sum : total
+          let total = 0
+          let totalAvans = 0
+          this.items.forEach(item => {
+            return total += item.total_price
+          })
+          this.items.forEach(item => {
+            return totalAvans += item.item_price
+          })
+
+          return this.invoice.avans && this.invoice.klavzula !=='76A' ? totalAvans : total
         },
         invoiceTotal() {
           return this.invoice.avans ?
-            this.invoice.avans_sum + (this.invoice.vat * 0.01 * this.invoice.avans_sum) :
+            this.subTotal() + (this.invoice.vat * 0.01 * this.subTotal()) :
             this.invoice.total
         },
         vatDifference() {
@@ -305,8 +313,8 @@ export default {
             return diff.toFixed(2)
         },
         vatDifference76() {
-            let subtotal = this.subTotal()
-            return subtotal * (0.01 * 22)
+           let avansVatDiff76 = ((this.invoice.avans_sum) * this.invoice.vat) / (100 + this.invoice.vat)
+            return this.invoice.avans ? avansVatDiff76 : this.subTotal() * (0.01 * 22)
         },
         vat() {
             return this.invoice.vat

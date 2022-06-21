@@ -33,7 +33,8 @@
                       <span class="text-bold text-orange-7 pointer" v-show="props.row.avans_after_invoice">
                          {{ $t("invoices.r") }}
                       <q-tooltip>
-                           {{ $t("invoices.avans_after_table") }}: {{ props.row.total | decimals }}  &#x2192; {{ props.row.avans_sum}} €
+                           {{ $t("invoices.avans_after_table") }}: {{ props.row.total | decimals }}  &#x2192; {{ props.row.avans_sum}} €<br>
+                         <span v-if="props.row.related_to_invoice">{{ $t("invoices.invoice") }}: {{ props.row.related_to_invoice }}</span>
                         </q-tooltip>
                       </span>
                       {{ props.row.sifra_predracuna }}

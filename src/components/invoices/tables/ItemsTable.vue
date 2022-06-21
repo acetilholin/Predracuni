@@ -86,7 +86,7 @@
                       </q-popup-edit>
                     </q-td>
                     <q-td key="item_price" :props="props" style="cursor: pointer">
-                      <span v-if="props.row.unit !== 'avans'">{{ props.row.item_price | price }}</span>
+                      <span>{{ props.row.item_price | price }}</span>
                         <q-popup-edit v-model="props.row.item_price"
                                       title="Spremeni ceno/kos"
                                       v-if="props.row.unit !== 'avans'"
@@ -103,7 +103,7 @@
                         </q-popup-edit>
                     </q-td>
                     <q-td key="total_price" :props="props">
-                      <span v-if="props.row.unit !== 'avans'">{{ props.row.total_price | price }}</span>
+                      <span>{{ props.row.total_price | price }}</span>
                     </q-td>
                     <q-td key="discount" :props="props" style="cursor: pointer">
                       <span v-if="props.row.unit !== 'avans'">{{ props.row.discount | discount }}</span>
@@ -123,7 +123,7 @@
                         </q-popup-edit>
                     </q-td>
                     <q-td key="vat" :props="props">
-                      <span v-if="props.row.unit !== 'avans'">{{ invoice.vat | discount }}</span>
+                      <span>{{ invoice.vat | discount }}</span>
                     </q-td>
                     <q-td key="edit" :props="props">
                         <q-icon name="delete_outline" @click="confirm(props.row)" class="pointer text-red action-icon"></q-icon>
@@ -257,8 +257,8 @@ import mixin from "src/global/mixin";
                     total += parseFloat(item.total_price)
                 })
 
-                this.invoice.total = (total * this.invoice.vat / 100) + total
-                return this.invoice.total
+               this.invoice.total = this.invoice.avans ? 0 : (total * this.invoice.vat / 100) + total
+               return this.invoice.total
             },
           confirm(row) {
             this.$q.dialog({
@@ -287,7 +287,16 @@ import mixin from "src/global/mixin";
                 handler() {
                     this.invoiceItems = this.items
                 }
+            },
+          'invoice.vat': {
+            handler() {
+              this.invoiceItems.forEach((item) => {
+                if (item.unit === 'avans') {
+                  item.item_price = (this.invoice.avans_sum - ((this.invoice.avans_sum * this.invoice.vat) / (100 + this.invoice.vat)))
+                }
+              })
             }
+          }
         }
     }
 </script>
