@@ -205,7 +205,7 @@ export default {
         deleteAll() {
             this.$q.dialog({
                 title: `${this.$t("general.deleteTitle")}`,
-                message: `<span class='text-red'> ${this.$t("general.deleteALL")}</span>`,
+                message: `<span class='text-red'> ${this.$t("general.deleteMonthReport")}</span>`,
                 html: true,
                 cancel: true,
                 persistent: true

@@ -16,7 +16,7 @@
                 </q-bar>
 
                 <q-card-section>
-                    <div class="text-h6">{{ $t("invoices.racun") }}</div>
+                    <div class="text-h6">{{ $t("invoices.racun") }} <span class="text-red">{{ invoice.sifra_predracuna }}</span></div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none font-size-body" id="content">
@@ -97,12 +97,10 @@
                                     <th scope="col" class="format-text">{{ $t("invoices.description") }}</th>
                                     <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.em") }}</th>
                                     <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.qty") }}</th>
-                                    <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.price") }}</th>
+                                    <th scope="col" class="format-text">{{ invoice.avans ? $t("invoices.osnova") : $t("invoices.price") }}</th>
                                     <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.discount") }}</th>
                                     <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.ddv") }}</th>
                                     <th scope="col" class="format-text" v-if="!invoice.avans">{{ $t("invoices.vrednost") }}</th>
-                                    <th scope="col" class="format-text" v-if="invoice.avans">{{ $t("invoices.osnova") }}</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -115,7 +113,6 @@
                                     <td v-if="!invoice.avans">{{ item.discount }}</td>
                                     <td v-if="!invoice.avans">{{ vat() }}</td>
                                     <td v-if="!invoice.avans">{{ item.total_price | reformat }}</td>
-                                    <td v-if="!invoice.avans">{{ invoice.avans_sum | reformat }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -248,8 +245,10 @@ export default {
     },
     filters: {
         reformat(val) {
-          if (val) { //!isNaN(val)
+          if (val && val !== 0) { //!isNaN(val)
             return val.toLocaleString('de-DE', { minimumFractionDigits: 2 })
+          } else if (val === 0 ) {
+            return 0
           }
         },
         titleShort(val) {

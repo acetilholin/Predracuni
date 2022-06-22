@@ -16,7 +16,7 @@
                 </q-bar>
 
                 <q-card-section>
-                    <div class="text-h6">{{ $t("invoices.predracun") }}</div>
+                    <div class="text-h6">{{ $t("invoices.predracun") }} <span class="text-red">{{ invoice.sifra_predracuna }}</span></div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none font-size-body" id="content" v-if="company">
