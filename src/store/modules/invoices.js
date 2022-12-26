@@ -118,7 +118,15 @@ export default {
                     throw (e.response.data.error);
                 })
         },
-        viewInvoice({commit}, id) {
+        changeStatus({dispatch}, payload) {
+         return axiosInstance.get(`invoice/${payload.id}/${payload.status}/status`)
+            .then((response) => {
+              let year = JSON.parse(localStorage.getItem('year'))
+              dispatch('invoicesYear', {year})
+              return response.data.success
+            })
+        },
+      viewInvoice({commit}, id) {
           axiosInstance.get(`/invoices/${id}`)
                 .then((response) => {
                     commit('SET_INVOICE', response.data.invoice)

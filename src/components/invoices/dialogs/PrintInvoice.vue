@@ -111,7 +111,7 @@
                                     <td>{{ item.qty }}</td>
                                     <td>{{ item.item_price | reformat }}</td>
                                     <td>{{ item.discount }}</td>
-                                    <td>{{ vat() }}</td>
+                                    <td>{{ vat() | reformatVAT }}</td>
                                     <td>{{ item.total_price | reformat }}</td>
                                 </tr>
                                 </tbody>
@@ -122,7 +122,7 @@
                             </div>
                             <br>
                             <div class="float-right">
-                                {{ $t("invoices.ddv") }}: {{ invoice.vat | procent }}   {{ $t("invoices.osnova") }}  {{ subTotal() | reformat }} : &nbsp;&nbsp;&nbsp;&nbsp;
+                                {{ $t("invoices.ddv") }}: {{ invoice.vat | reformatVAT | procent }}   {{ $t("invoices.osnova") }}  {{ subTotal() | reformat }} : &nbsp;&nbsp;&nbsp;&nbsp;
                                 <span v-if="invoice.klavzula === '76A'">
                                     {{ $t("invoices.zeroEUR") }}
                                 </span>
@@ -162,9 +162,15 @@
                                 </tr>
                             </table>
                         </div>
-                        <div id="name" style="margin-top: 1%" v-for="cmp in company">
+                        <div class="d-flex flex justify-between justify-content-between" style="margin-top: 2%">
+                          <div id="name" style="margin-top: 1%" v-for="cmp in company">
                             <span style="margin-left: 5px">{{ authorByRealm() }}</span> <br>
                             <img :src="image(cmp.stamp)" style="height: 110px;" alt="">
+                          </div>
+                          <div>
+                            <img :src="banner" style="height: 95px;  margin-top: 7%" alt="" v-if="displayBanner()">
+                          </div>
+                          <div class="inline-block"></div>
                         </div>
                     </div>
                 </q-card-section>
@@ -181,7 +187,7 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
-import {author1, author2, place1, place2, picturesPath} from "src/global/variables";
+import {author1, author2, place1, place2, picturesPath, banner} from "src/global/variables";
 import mixin from "src/global/mixin";
 
 export default {
@@ -194,7 +200,8 @@ export default {
             author1: author1,
             author2: author2,
             place1: place1,
-            place2: place2
+            place2: place2,
+            banner: banner
         }
     },
     computed: {
@@ -225,6 +232,11 @@ export default {
                 return val.toLocaleString('de-DE', { minimumFractionDigits: 2 })
             }
         },
+        reformatVAT(val) {
+          if (!isNaN(val)) {
+            return val === 9.5 ? val.toLocaleString('de-DE', { minimumFractionDigits: 1 }) : val
+          }
+        },
         titleShort(val) {
            if (val) {
              return val.substring(31,51)
@@ -249,7 +261,7 @@ export default {
             return val + ' EUR'
         },
         procent(val) {
-            return val + ' %'
+            return val + '%'
         }
     },
     methods: {
@@ -294,6 +306,9 @@ export default {
         },
         authorByRealm() {
           return this.getRealmValueData() ? author2 : author1
+        },
+        displayBanner() {
+          return !this.getRealmValueData()
         },
         workDateRealm() {
           return this.invoice.work_date && !this.getRealmValueData()
