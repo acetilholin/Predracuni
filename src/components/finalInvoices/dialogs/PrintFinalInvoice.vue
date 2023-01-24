@@ -111,7 +111,7 @@
                                     <td v-if="!invoice.avans">{{ item.qty }}</td>
                                     <td>{{ item.item_price | reformat }}</td>
                                     <td v-if="!invoice.avans">{{ item.discount }}</td>
-                                    <td v-if="!invoice.avans">{{ vat() }}</td>
+                                    <td v-if="!invoice.avans">{{ vat() | reformatVAT }}</td>
                                     <td v-if="!invoice.avans">{{ item.total_price | reformat }}</td>
                                 </tr>
                                 </tbody>
@@ -122,7 +122,7 @@
                             </div>
                             <br>
                             <div class="float-right">
-                                {{ $t("invoices.ddv") }}: {{ invoice.vat | procent }}   {{ $t("invoices.osnova") }}  {{ subTotal() | reformat }} : &nbsp;&nbsp;&nbsp;&nbsp;
+                                {{ $t("invoices.ddv") }}: {{ invoice.vat | reformatVAT | procent }}   {{ $t("invoices.osnova") }}  {{ subTotal() | reformat }} : &nbsp;&nbsp;&nbsp;&nbsp;
                                 <span v-if="invoice.klavzula === '76A'">
                                     {{ $t("invoices.zeroEUR") }}
                                 </span>
@@ -188,9 +188,15 @@
                                 </tr>
                             </table>
                         </div>
-                        <div id="name" style="margin-top: 1%">
+                      <div class="d-flex flex justify-between justify-content-between" style="margin-top: 2%">
+                        <div id="name" style="margin-top: 3%">
                           {{ authorByRealm() }}<br>
                         </div>
+                        <div>
+                          <img :src="banner" style="height: 95px;  margin-top: 7%" alt="" v-if="displayBanner()">
+                        </div>
+                        <div></div>
+                      </div>
                     </div>
                 </q-card-section>
                 <q-page-container>
@@ -206,7 +212,7 @@
 <script>
 
 import {mapGetters, mapActions} from 'vuex'
-import {author1,author2, picturesPath, place1, place2} from "src/global/variables";
+import {author1,author2, picturesPath, place1, place2, banner} from "src/global/variables";
 import mixin from "src/global/mixin";
 
 export default {
@@ -220,6 +226,7 @@ export default {
             author2: author2,
             place1: place1,
             place2: place2,
+            banner: banner,
             avans: {
               osnova: 0,
               znesekDDV: 0,
@@ -251,6 +258,11 @@ export default {
             return 0
           }
         },
+        reformatVAT(val) {
+          if (!isNaN(val)) {
+            return val === 9.5 ? val.toLocaleString('de-DE', { minimumFractionDigits: 1 }) : val
+          }
+        },
         titleShort(val) {
             return val.substring(31,51)
         },
@@ -271,7 +283,7 @@ export default {
             return val + ' EUR'
         },
         procent(val) {
-            return val + ' %'
+            return val + '%'
         }
     },
     methods: {
@@ -323,6 +335,9 @@ export default {
         },
         placeByRealm() {
           return this.getRealmValueData() ? place2 : place1
+        },
+        displayBanner() {
+          return !this.getRealmValueData()
         },
         authorByRealm() {
           return this.getRealmValueData() ? author2 : author1
