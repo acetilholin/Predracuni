@@ -30,6 +30,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Datum</th>
                             <th scope="col">Stranka</th>
+                            <th scope="col">A/R</th>
                             <th scope="col">Račun</th>
                             <th scope="col">ID DDV</th>
                             <th scope="col">Brez davka</th>
@@ -45,23 +46,28 @@
                             <th scope="row">{{ index + 1 }}</th>
                             <td>{{ final.timestamp | moment('DD-MM-Y') }}</td>
                             <td>{{ final.ime_priimek }}<br>
-                                {{ final.kraj_ulica }}, {{ final.posta }}</td>
+                                {{ final.kraj_ulica }}, {{ final.posta }}
+                            </td>
+                            <td>
+                              {{ Boolean(final.avans) ? 'A' : '' }}
+                              {{ Boolean(final.avans_after_invoice) ? 'R' : '' }}
+                            </td>
                             <td>{{ final.sifra_predracuna }}</td>
                             <td>{{ final.id_ddv }}</td>
-                            <td>{{ final.noVAT | reformat }}</td>
+                            <td>{{ noVAT(Boolean(final.avans), final.vat, final.noVAT) | reformat }}</td>
                             <td>{{ EU0(final.tujina, final.noVAT ) | reformat }}</td>
-                            <td>{{ price95(final.vat, final.klavzula, final.noVAT, final.total) | reformat }} </td>
+                            <td>{{ price95(Boolean(final.avans), final.vat, final.klavzula, final.noVAT, final.total) | reformat }} </td>
                             <td>{{ price22(final.vat, final.klavzula, final.noVAT, final.total) | reformat }}</td>
                             <td>{{ price76(final.klavzula, final.noVAT) | reformat }}</td>
-                            <td><b>{{ final.total | reformat }}</b></td>
+                            <td><b>{{ Boolean(final.avans) ? final.avans_sum : final.total | reformat }}</b></td>
                         </tr>
                         <tr>
-                            <th scope="col">{{ totalInvoices() }}</th>
+                            <th scope="col">#{{ totalInvoices() }}</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
-
+                            <th scope="col"></th>
 
                             <th scope="col">{{ noVATTotal() | reformat }}</th>
                             <th scope="col">{{ euTotal() | reformat }}</th>
@@ -127,15 +133,18 @@ export default {
                 return this.report.final.length === 0
             }
         },
+        noVAT(avans, vat, noVAT ) {
+          return avans ? noVAT - (noVAT * vat * 0.01): noVAT
+        },
         EU0(tujina, val) {
             if (tujina) {
                 return val
             }
         },
-        price95(vat, klavzula, noVat, total) {
+        price95(avans, vat, klavzula, noVat, total) {
             if (vat === 9.5 && klavzula !== '76A') {
                 let price = 0
-                price = total - noVat
+                price = avans ? (noVat * 0.095) : total - noVat
                 return price
             }
         },
@@ -162,7 +171,7 @@ export default {
             if (this.report.final) {
                 let total = 0
                 this.report.final.forEach(item => {
-                    total += item.noVAT
+                  total += Boolean(item.avans) ? item.noVAT - (item.noVAT * item.vat * 0.01) : item.noVAT
                 })
                 return total
             }
@@ -183,7 +192,7 @@ export default {
                 let total = 0
                 this.report.final.forEach(item => {
                     if (item.vat === 9.5 && item.klavzula !== '76A') {
-                        total += item.total - item.noVAT
+                        total += Boolean(item.avans) ? (item.avans_sum * item.vat * 0.01) : item.total - item.noVAT
                     }
                 })
                 return total
@@ -215,7 +224,7 @@ export default {
             if (this.report.final) {
                 let total = 0
                 this.report.final.forEach(item => {
-                    total += item.total
+                    total += Boolean(item.avans) ? item.avans_sum : item.total
                 })
                 return total
             }

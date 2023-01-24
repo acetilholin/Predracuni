@@ -34,10 +34,10 @@
 
                             </div>
                             <div class="column right text-right">
-                                {{ cmp.telefon1 }}<br>
-                                {{ cmp.telefon2 }}<br>
-                                {{ cmp.email1 }}<br>
-                                {{ cmp.email2 }}
+                              <div v-if="cmp.telefon1">{{ cmp.telefon1 }}</div>
+                              <div v-if="cmp.telefon2">{{ cmp.telefon2 }}</div>
+                              <div v-if="cmp.email1">{{ cmp.email1 }}</div>
+                              <div v-if="cmp.email2">{{ cmp.email2 }}</div>
                             </div>
                         </div>
                         <hr style="background: black">

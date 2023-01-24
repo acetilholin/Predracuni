@@ -34,10 +34,10 @@
 
                             </div>
                             <div class="column right text-right">
-                                {{ cmp.telefon1 }}<br>
-                                {{ cmp.telefon2 }}<br>
-                                {{ cmp.email1 }}<br>
-                                {{ cmp.email2 }}
+                              <div v-if="cmp.telefon1">{{ cmp.telefon1 }}</div>
+                              <div v-if="cmp.telefon2">{{ cmp.telefon2 }}</div>
+                              <div v-if="cmp.email1">{{ cmp.email1 }}</div>
+                              <div v-if="cmp.email2">{{ cmp.email2 }}</div>
                             </div>
                         </div>
                         <hr style="background: black">
@@ -162,9 +162,15 @@
                                 </tr>
                             </table>
                         </div>
-                        <div id="name" style="margin-top: 1%" v-for="cmp in company">
+                        <div class="d-flex flex justify-between justify-content-between">
+                          <div id="name" style="margin-top: 1%" v-for="cmp in company">
                             <span style="margin-left: 5px">{{ authorByRealm() }}</span> <br>
                             <img :src="image(cmp.stamp)" style="height: 110px;" alt="">
+                          </div>
+                          <div class="d-flex justify-content-center" style="margin-top: 4%" v-if="bannerVisible()">
+                            <img :src="banner" style="height: 100px;" alt="">
+                          </div>
+                          <div></div>
                         </div>
                     </div>
                 </q-card-section>
@@ -181,7 +187,7 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex'
-import {author1, author2, place1, place2, picturesPath} from "src/global/variables";
+import {author1, author2, place1, place2, picturesPath, banner} from "src/global/variables";
 import mixin from "src/global/mixin";
 
 export default {
@@ -194,7 +200,8 @@ export default {
             author1: author1,
             author2: author2,
             place1: place1,
-            place2: place2
+            place2: place2,
+            banner:banner
         }
     },
     computed: {
@@ -294,6 +301,9 @@ export default {
         },
         authorByRealm() {
           return this.getRealmValueData() ? author2 : author1
+        },
+        bannerVisible() {
+          return !this.getRealmValueData()
         },
         workDateRealm() {
           return this.invoice.work_date && !this.getRealmValueData()
