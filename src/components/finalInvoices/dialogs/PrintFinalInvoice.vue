@@ -193,7 +193,7 @@
                           {{ authorByRealm() }}<br>
                         </div>
                         <div>
-                          <img :src="banner" style="height: 95px;  margin-top: 7%" alt="" v-if="displayBanner()">
+                          <img :src="banner" style="height: 95px;  margin-top: 7%" alt="" v-if="bannerVisible()">
                         </div>
                         <div></div>
                       </div>
@@ -336,7 +336,7 @@ export default {
         placeByRealm() {
           return this.getRealmValueData() ? place2 : place1
         },
-        displayBanner() {
+        bannerVisible() {
           return !this.getRealmValueData()
         },
         authorByRealm() {

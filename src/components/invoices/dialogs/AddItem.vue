@@ -48,7 +48,7 @@
                                v-model.number="item.qty"
                                label="Količina"
                                v-if="item.unit !== 'avans'"
-                               type="number"
+                               type="float"
                                class="col-2 input-margin"
                                :rules="[ val => !!val && val > 0 || `${this.$t('general.biggerThan0')}`]"
                            />
@@ -115,7 +115,7 @@ export default {
         onSubmit() {
             let discount = parseInt(this.item.discount)
             let price = parseFloat(this.item.price)
-            let qty = parseInt(this.item.qty)
+            let qty = this.item.qty
             let total_price = 0
 
             total_price = discount > 0 ? price * qty - (price * qty * discount / 100) : price * qty

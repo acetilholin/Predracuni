@@ -120,7 +120,7 @@ export default {
         },
         checkWeekend(date) {
             var dt = new Date(date)
-            return dt.getDay() !== 0 && dt.getDay() !== 6
+            return dt.getDay() !== 0 && dt.getDay() !== 7
         }
     }
 }
