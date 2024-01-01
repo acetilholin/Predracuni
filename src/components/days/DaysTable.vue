@@ -59,6 +59,18 @@
                            {{ info }}
                         </q-tooltip>
                     </q-td>
+                    <q-td key="day_start" :props="props" style="cursor: pointer">
+                      {{ props.row.day_start }}
+                    </q-td>
+                    <q-td key="break_start" :props="props" style="cursor: pointer">
+                      {{ props.row.break_start }}
+                    </q-td>
+                    <q-td key="break_end" :props="props" style="cursor: pointer">
+                      {{ props.row.break_end }}
+                    </q-td>
+                    <q-td key="day_end" :props="props" style="cursor: pointer">
+                      {{ props.row.day_end }}
+                    </q-td>
                     <q-td key="edit" :props="props">
                         <q-icon name="delete_outline" @click="confirm(props.row)" class="pointer text-red action-icon"></q-icon>
                     </q-td>
@@ -101,9 +113,33 @@ export default {
                 {
                     name: 'day_type',
                     required: true,
-                    label: 'Tip dneva',
+                    label: `${this.$t("general.dayType")}`,
                     align: 'center',
                     field: row => row.day_type,
+                },
+                {
+                  name: 'day_start',
+                  required: true,
+                  label: `${this.$t("general.startWT")}`,
+                  align: 'center',
+                },
+                {
+                  name: 'break_start',
+                  required: true,
+                  label: `${this.$t("general.startLT")}`,
+                  align: 'center',
+                },
+                {
+                  name: 'break_end',
+                  required: true,
+                  label: `${this.$t("general.endLT")}`,
+                  align: 'center',
+                },
+                {
+                  name: 'day_end',
+                  required: true,
+                  label: `${this.$t("general.endWT")}`,
+                  align: 'center',
                 },
                 {name: 'edit', label: 'Uredi', align: 'center'}
             ]
@@ -118,7 +154,7 @@ export default {
            return type.value
         },
         tooltipDisplay(dayType) {
-            return dayType !== 'praznk'
+            return dayType !== 'praznik'
         },
         tooltipInfo(dayType) {
             switch (true) {

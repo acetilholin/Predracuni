@@ -89,7 +89,19 @@ export default {
     https: 'Možna je samo uporaba HTTPS. Uporabite <a href="https://www.ogrevanjejanjic.si/predracuni">HTTPS</a>',
     exportToRealm: 'V D.O.O',
     a: 'A',
-    r: 'R'
+    r: 'R',
+    wrongFormat: 'Napačen format',
+    timeStartError: 'Čas začetka dela je večji od časa konca',
+    timeEndError: 'Čas konca dela je manjši od časa začetka',
+    lunchStartError: 'Čas začetka malice je večji od časa konca',
+    lunchEndError: 'Čas konca malice je manjši od časa začetka',
+    lunchStartDayStartError: 'Čas malice je manjši od časa začetka dela',
+    lunchEndDayStartError: 'Čas konca malice je manjši od časa začetka dela',
+    startWT: 'Začetek dela',
+    endWT: 'Konec dela',
+    startLT: 'Začetek malice',
+    endLT: 'Konec malice',
+    dayType: 'Tip dneva'
   },
   klavzule: {
     newKlavzula: 'Nova klavzula',
@@ -221,7 +233,7 @@ export default {
     znesekDDV: 'znesek DDV',
     total76A: 'Skupaj 76.A člen',
     addItem: 'Dodaj artikel',
-    klavzula76ATrans: 'VAT is accounted by the place of immovoble property under Article 47 of Directive.',
+    klavzula76ATrans: 'VAT is accounted by the place of immovable property under Article 47 of Directive.',
     remark: 'OPOMBA'
   },
   report: {

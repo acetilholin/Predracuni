@@ -49,6 +49,10 @@
                                 <th scope="col" class="text-center">#</th>
                                 <th scope="col" class="text-center">{{ $t("hours.date") }}</th>
                                 <th scope="col" class="text-center">{{ $t("hours.work_day") }}</th>
+                                <th scope="col" class="text-center">{{ $t("general.startWT") }}</th>
+                                <th scope="col" class="text-center">{{ $t("general.startLT") }}</th>
+                                <th scope="col" class="text-center">{{ $t("general.endLT") }}</th>
+                                <th scope="col" class="text-center">{{ $t("general.endWT") }}</th>
                                 <th scope="col" class="text-center">{{ $t("hours.holiday") }}</th>
                                 <th scope="col" class="text-center">{{ $t("hours.festival") }}</th>
                                 <th scope="col" class="text-center">{{ $t("hours.NU1_short") }}</th>
@@ -61,6 +65,10 @@
                                 <th class="text-center" scope="row">{{ index + 1 }}</th>
                                 <td class="text-center">{{ day.date | moment('dddd DD-MM-Y') }}</td>
                                 <td class="text-center">{{ day.day_type === 'DD' ? '8' : ' ' }}</td>
+                                <td class="text-center">{{ day.day_start }}</td>
+                                <td class="text-center">{{ day.break_start }}</td>
+                                <td class="text-center">{{ day.break_end }}</td>
+                                <td class="text-center">{{ day.day_end }}</td>
                                 <td class="text-center">{{ day.day_type === 'LD' ? '8' : ' ' }}</td>
                                 <td class="text-center">{{ day.day_type === 'praznik' ? '8' : ' ' }}</td>
                                 <td class="text-center">{{ day.day_type === 'NU1' ? '8' : ' ' }}</td>
@@ -71,6 +79,10 @@
                                 <th scope="col" class="text-center">{{ totalDays  | days }}</th>
                                 <th scope="col" class="text-center"></th>
                                 <th scope="col" class="text-center">{{ workDays | hours }}</th>
+                                <th scope="col" class="text-center"></th>
+                                <th scope="col" class="text-center"></th>
+                                <th scope="col" class="text-center"></th>
+                                <th scope="col" class="text-center"></th>
                                 <th scope="col" class="text-center">{{ holidays | hours }}</th>
                                 <th scope="col" class="text-center">{{ festivals | hours }}</th>
                                 <th scope="col" class="text-center">{{ nu1 | hours }}</th>
@@ -145,7 +157,7 @@ export default {
             }
         },
         days(val) {
-          return val + ' dni'
+          return val > 1 ? `${val} dni`: `${val} dan`
         },
         hours(val) {
           return val + ' ur'
