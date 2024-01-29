@@ -33,7 +33,7 @@
                         {{ tableIndex(props.row) }}
                     </q-td>
                     <q-td key="description" :props="props" style="cursor: pointer">
-                        {{ props.row.description }}
+                        <span v-html="props.row.description"/>
                         <q-popup-edit v-model="props.row.description"
                                       title="Spremeni opis"
                                       buttons
@@ -42,7 +42,7 @@
                                       @hide="descriptionIsInserted"
                                       v-slot="scope"
                         >
-                            <q-input type="text"
+                            <q-input type="textarea"
                                      v-model="props.row.description"
                                      dense
                                      autofocus

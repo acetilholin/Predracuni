@@ -106,7 +106,7 @@
                                 <tbody>
                                 <tr v-for="(item, index) in items">
                                     <th scope="row">{{ index + 1 }}</th>
-                                    <td>{{ item.description }}</td>
+                                    <td><span v-html="item.description"></span></td>
                                     <td v-if="!invoice.avans">{{ item.unit }}</td>
                                     <td v-if="!invoice.avans">{{ item.qty }}</td>
                                     <td>{{ item.item_price | reformat }}</td>

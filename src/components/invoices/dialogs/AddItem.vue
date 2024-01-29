@@ -18,6 +18,7 @@
                        <div class="row">
                            <q-input
                                v-model="item.description"
+                               type="textarea"
                                autofocus
                                label="Opis"
                                class="col-12"
