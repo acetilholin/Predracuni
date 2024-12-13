@@ -65,10 +65,10 @@
                                 <th class="text-center" scope="row">{{ index + 1 }}</th>
                                 <td class="text-center">{{ day.date | moment('dddd DD-MM-Y') }}</td>
                                 <td class="text-center">{{ day.day_type === 'DD' ? '8' : ' ' }}</td>
-                                <td class="text-center">{{ day.day_start }}</td>
-                                <td class="text-center">{{ day.break_start }}</td>
-                                <td class="text-center">{{ day.break_end }}</td>
-                                <td class="text-center">{{ day.day_end }}</td>
+                                <td class="text-center">{{ day.day_type === 'DD' ? day.day_start : '' }}</td>
+                                <td class="text-center">{{ day.day_type === 'DD' ? day.break_start : ''}}</td>
+                                <td class="text-center">{{ day.day_type === 'DD' ? day.break_end : '' }}</td>
+                                <td class="text-center">{{ day.day_type === 'DD' ? day.day_end : '' }}</td>
                                 <td class="text-center">{{ day.day_type === 'LD' ? '8' : ' ' }}</td>
                                 <td class="text-center">{{ day.day_type === 'praznik' ? '8' : ' ' }}</td>
                                 <td class="text-center">{{ day.day_type === 'NU1' ? '8' : ' ' }}</td>

@@ -126,7 +126,7 @@
                             class="col-3 q-ml-sm"
                             :options="options"
                             @filter="filterInput"
-                            @input="strankaChanged"
+                            @input="fieldChanged($t('general.customerAdded'))"
                             option-label="naziv_partnerja"
                             option-value="naziv_partnerja"
                             type="text"
@@ -150,7 +150,7 @@
                                         <q-date
                                             mask="YYYY-MM-DD"
                                             v-model="invoice.expiration"
-                                            @input="expirationChanged"
+                                            @input="expirationWorkDateChanged('expiration',$t('general.expirationDateAdded'))"
                                         />
                                     </q-popup-proxy>
                                 </q-icon>
@@ -170,7 +170,7 @@
                                         <q-date
                                             mask="YYYY-MM-DD"
                                             v-model="invoice.work_date"
-                                            @input="workDateChanged"
+                                            @input="expirationWorkDateChanged('workDate',$t('general.workDateAdded'))"
                                         />
                                     </q-popup-proxy>
                                 </q-icon>
@@ -180,27 +180,33 @@
                         <q-select v-model="klavzula"
                                   :options="klavzule"
                                   label="Klavzula"
-                                  @input="kChanged"
+                                  @input="fieldChanged($t('general.klavzulaAdded'))"
                                   option-value="short_name"
                                   option-label="short_name"
                                   class="col-1 q-ml-sm"
                         />
                         <q-select v-model="vat"
                                   :options="vatOptions"
-                                  @input="vChanged"
+                                  @input="fieldChanged($t('general.VATadded'))"
                                   option-value="val"
                                   option-label="desc"
                                   label="DDV"
                                   suffix="%"
                                   class="col-1 q-ml-sm"
                         />
-                      <q-input v-model="avans"
-                               bottom-slots
-                               label="Avans z DDV"
-                               class="q-px-md col-2"
-                               type="number"
-                               @blur="avansChanged"
-                      />
+                        <q-input v-model="avans"
+                                 bottom-slots
+                                 label="Avans z DDV"
+                                 class="q-px-md col-1"
+                                 @blur="avansChanged"
+                        />
+                        <q-input v-model="invoice.final_discount"
+                                 bottom-slots
+                                 label="Komercialni popust"
+                                 suffix="€"
+                                 class="q-px-md col-1"
+                                 @blur="fieldChanged($t('general.finalDiscount'))"
+                        />
                     </div>
                 </q-card-section>
                 <q-card-section>
@@ -305,7 +311,8 @@ export default {
                 avans: false,
                 avans_after_invoice: false,
                 sifra_predracuna: '',
-                related_to_invoice: ''
+                related_to_invoice: '',
+                final_discount: 0
             },
             recipient: {
                 title: '',
@@ -544,12 +551,6 @@ export default {
                 this.showNotif(`${this.$t('general.recipientRemoved')}`, 'warning')
             })
         },
-        kChanged() {
-            this.showNotif(`${this.$t('general.klavzulaAdded')}`, 'positive')
-        },
-        vChanged() {
-            this.showNotif(`${this.$t('general.VATadded')}`, 'positive')
-        },
         avansChanged() {
           if (this.invoice.avans_sum > 0) {
             if (!this.invoice.avans && !this.invoice.avans_after_invoice) {
@@ -559,16 +560,16 @@ export default {
             }
           }
         },
-        expirationChanged() {
+        expirationWorkDateChanged(type, translation) {
+          if (type === 'expiration') {
             this.$refs.qDateExpiration.hide()
-            this.showNotif(`${this.$t('general.expidationDateAdded')}`, 'positive')
-        },
-        workDateChanged() {
+          } else {
             this.$refs.qDateWorkDate.hide()
-            this.showNotif(`${this.$t('general.workDateAdded')}`, 'positive')
+          }
+          this.showNotif(translation, 'positive')
         },
-        strankaChanged() {
-            this.showNotif(`${this.$t('general.customerAdded')}`, 'positive')
+        fieldChanged(translation) {
+          this.showNotif(translation, 'positive')
         },
         openRemarkDialog() {
           this.$store.dispatch('general/addRemarkDialog', true)
@@ -584,18 +585,11 @@ export default {
           this.showNotif(`${this.$t('general.remarkRemoved')}`, 'negative')
         },
         avansAfterChecked() {
-          if (this.invoice.avans_after_invoice) {
-            this.showNotif(`${this.$t('general.afterInvoiceMarked')}`, 'positive')
-          } else {
-            this.showNotif(`${this.$t('general.afterInvoiceRemoved')}`, 'warning')
-          }
+          this.showNotif(this.invoice.avans_after_invoice ? `${this.$t('general.afterInvoiceMarked')}` : `${this.$t('general.afterInvoiceRemoved')}`, this.invoice.avans_after_invoice ? 'positive' : 'warning')
+
         },
         avansChecked() {
-          if (this.invoice.avans) {
-            this.showNotif(`${this.$t('general.avansOptionMarked')}`, 'positive')
-          } else {
-            this.showNotif(`${this.$t('general.avansOptionRemoved')}`, 'warning')
-          }
+          this.showNotif(this.invoice.avans ? `${this.$t('general.avansOptionMarked')}` : `${this.$t('general.avansOptionRemoved')}`, this.invoice.avans ? 'positive' : 'warning')
         },
         lengthResp(val) {
           if (val.length > 8) {

@@ -15,7 +15,7 @@ export default {
     deleteTitle: 'Brisanje',
     wrongEmail: 'Neveljaven email',
     enterPost: 'Vnesite pošto',
-    enterCityStreet: 'Vnesite kraj/ulica',
+    enterCityStreet: 'Vnesite kraj/ulico',
     enterCustomer: 'Vnesite podjetje / ime priimek',
     createCustomer: 'Nova stranka',
     min6: 'Minimalno 6 znakov',
@@ -51,7 +51,7 @@ export default {
     avansChanged: 'Znesek avansa spremenjen',
     chooseAvansOrAvansAfter: 'Obkljukajte opcijo avans ali račun po avansnem plačilu',
     avansRemoved: 'Avans odstranjen',
-    expidationDateAdded: 'Datum zapadlosti je dodan',
+    expirationDateAdded: 'Datum zapadlosti je dodan',
     workDateAdded: 'Opravljeno dne je dodano',
     customerAdded: 'Stranka je dodana',
     afterInvoiceMarked: 'Opcija račun po avansnem plačilu je izbrana',
@@ -101,7 +101,8 @@ export default {
     endWT: 'Konec dela',
     startLT: 'Začetek malice',
     endLT: 'Konec malice',
-    dayType: 'Tip dneva'
+    dayType: 'Tip dneva',
+    finalDiscount: "Končni popust spremenjen"
   },
   klavzule: {
     newKlavzula: 'Nova klavzula',
@@ -234,7 +235,9 @@ export default {
     total76A: 'Skupaj 76.A člen',
     addItem: 'Dodaj artikel',
     klavzula76ATrans: 'VAT is accounted by the place of immovable property under Article 47 of Directive.',
-    remark: 'OPOMBA'
+    remark: 'OPOMBA',
+    commercialDiscount: "Komercialni popust",
+    finalPayment: "KONČNO PLAČILO"
   },
   report: {
     book: 'KNJIGA IZDANIH RAČUNOV - promet blaga in storitev za obdobje',

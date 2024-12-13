@@ -95,16 +95,26 @@
                             </q-input>
                         </div>
                         <div class="row">
-                            <q-input
-                                v-model="customer.sklic_st"
-                                label="Sklic št."
-                                class="col-4 input-margin"
-                                type="text"
-                            >
-                                <template v-slot:prepend>
-                                    <q-icon name="work" />
-                                </template>
-                            </q-input>
+                          <q-input
+                            v-model="customer.sklic_st"
+                            label="Sklic št."
+                            class="col-4 input-margin"
+                            type="text"
+                          >
+                            <template v-slot:prepend>
+                              <q-icon name="work" />
+                            </template>
+                          </q-input>
+                          <iframe
+                            v-if="linkForIframe"
+                            width="400"
+                            class="q-ml-lg"
+                            height="200"
+                            :src="linkForIframe"
+                            frameborder="0"
+                            style="border:0;"
+                            allowfullscreen>
+                          </iframe>
                         </div>
                         <div>
                             <q-btn label="Spremeni"
@@ -135,6 +145,7 @@
 
     import {mapGetters, mapActions} from 'vuex'
     import mixin from "src/global/mixin";
+    import { placesAPI } from 'src/global/variables'
 
     export default {
         name: "EditCustomer",
@@ -143,7 +154,8 @@
             return {
                 visible: true,
                 submitting: false,
-                options: this.posts
+                options: this.posts,
+                api: placesAPI
             }
         },
         methods: {
@@ -194,7 +206,15 @@
             }),
             customer() {
                 return this.getCustomers
-            }
+            },
+          linkForIframe() {
+              if (this.customer.kraj_ulica && this.customer.posta) {
+                let encoded = encodeURI(this.customer.kraj_ulica)
+                return `https://www.google.com/maps/embed/v1/place?key=${this.api}&q=${encoded},${this.customer.posta}`
+              } else {
+                return null
+              }
+          }
         }
     }
 </script>

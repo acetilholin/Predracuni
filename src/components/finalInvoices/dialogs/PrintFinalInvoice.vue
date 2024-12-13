@@ -133,9 +133,12 @@
                             <br>
                             <br>
                             <div class="float-right">
+                               <span v-if="invoice.final_discount > 0">
+                                  {{ $t('invoices.commercialDiscount') }} : {{ invoice.final_discount | reformat | eur }}<br>
+                                </span>
                                 <b>{{ $t("invoices.forPayment") }}</b>:
                                 <span v-if="invoice.klavzula === '76A'">
-                                {{ subTotal() | reformat }}
+                                {{ subTotal() - invoice.final_discount | reformat }}
                                 </span>
                                 <span v-else>
                                     {{ invoiceTotal() | reformat | eur }}
@@ -154,7 +157,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="container" style="margin-top: 70px; margin-bottom: 5px">
+                  <div class="container"
+                       style="margin-bottom: 5px"
+                       :style="invoice.final_discount > 0 ? 'margin-top: 100px;': 'margin-top: 70px;'"
+                  >
                       <span v-if="invoice.avans_after_invoice">{{ $t("invoices.specAvans") }}:</span>
                       <table class="avans mb-5" v-if="invoice.avans_after_invoice">
                         <tr>

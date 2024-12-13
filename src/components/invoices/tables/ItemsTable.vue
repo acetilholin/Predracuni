@@ -14,7 +14,8 @@
                    Vseh artiklov: <q-badge color="blue-7">{{ itemsNum() | zero }}</q-badge>
                </span>
                <span class="q-ml-md text-subtitle1">
-                   Skupna cena: <q-badge color="blue-14">{{ totalPrice() | price }} </q-badge>
+                   Skupna cena:
+                 <q-badge color="blue-14">{{ totalPrice()  | price }} </q-badge>
                </span>
                  <span class="q-ml-md text-subtitle1">
                    DDV: <q-badge color="blue-10">{{ invoice.vat | discount }} </q-badge>
@@ -257,7 +258,8 @@ import mixin from "src/global/mixin";
                     total += parseFloat(item.total_price)
                 })
 
-               this.invoice.total = this.invoice.avans ? 0 : (total * this.invoice.vat / 100) + total
+              this.invoice.total = total > 0 ? this.invoice.avans ? 0 : ((total * this.invoice.vat / 100) + total) - this.invoice.final_discount : 0
+
                return this.invoice.total
             },
           confirm(row) {

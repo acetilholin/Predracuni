@@ -115,7 +115,7 @@
                             fill-input
                             input-debounce="0"
                             label="Stranka"
-                            class="col-2 q-ml-sm"
+                            class="col-3 q-ml-sm"
                             :options="options"
                             @filter="filterInput"
                             @input="strankaChanged"
@@ -132,7 +132,7 @@
                             ref="date"
                             v-model="timestamp"
                             label="Ustvarjen dne"
-                            class="col-2 q-ml-sm"
+                            class="col-1 q-ml-sm"
                             @click="$refs.qDateTimestamp.show()"
                         >
                             <template v-slot:prepend>
@@ -152,7 +152,7 @@
                             ref="date"
                             v-model="expiration"
                             label="Zapade dne"
-                            class="col-2 q-ml-sm"
+                            class="col-1 q-ml-sm"
                             @click="$refs.qDateExpiration.show()"
                         >
                             <template v-slot:prepend>
@@ -172,7 +172,7 @@
                             ref="date"
                             v-model="workDate"
                             label="Opravljeno dne"
-                            class="col-2 q-ml-sm"
+                            class="col-1 q-ml-sm"
                             @click="$refs.qDateWorkDate.show()"
                         >
                             <template v-slot:prepend>
@@ -211,6 +211,14 @@
                                class="q-ml-sm col-1"
                                type="number"
                                @blur="avansChanged"
+                      />
+                      <q-input v-model="finalDiscount"
+                               bottom-slots
+                               label="Komercialni popust"
+                               class="q-ml-sm col-1"
+                               type="number"
+                               suffix="€"
+                               @blur="finalDiscountChanged"
                       />
                     </div>
                 </q-card-section>
@@ -387,6 +395,14 @@
                 this.invoice.avans_sum = newValue
               }
             },
+            finalDiscount: {
+              get: function () {
+                return this.invoice.final_discount
+              },
+              set: function (newValue) {
+                this.invoice.final_discount = newValue
+              }
+            },
             avansOption: {
               get: function () {
                 return !!this.invoice.avans
@@ -510,6 +526,9 @@
             },
             vChanged() {
                 this.showNotif(`${this.$t('general.VATChanged')}`, 'positive')
+            },
+            finalDiscountChanged() {
+              this.showNotif(`${this.$t('general.finalDiscount')}`, 'positive')
             },
             avansChanged() {
               if (this.invoice.avans_sum > 0) {

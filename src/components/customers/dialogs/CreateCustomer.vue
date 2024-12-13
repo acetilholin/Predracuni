@@ -109,6 +109,16 @@
                                     <q-icon name="work" />
                                 </template>
                             </q-input>
+                            <iframe
+                              v-if="linkForIframe"
+                              width="400"
+                              class="q-ml-lg"
+                              height="200"
+                              :src="linkForIframe"
+                              frameborder="0"
+                              style="border:0;"
+                              allowfullscreen>
+                            </iframe>
                         </div>
                         <div>
                             <q-btn label="Ustvari"
@@ -139,25 +149,30 @@
     import {mapGetters, mapActions} from 'vuex'
     import Create from "src/components/App/Create";
     import mixin from "src/global/mixin";
+    import { placesAPI } from 'src/global/variables'
 
     export default {
         name: "CreateCustomer",
         mixins: [mixin],
         data() {
-            return {
-                submitting: false,
-                medium: false,
-                customer: {
-                    company: '',
-                    street: '',
-                    post: null,
-                    telephone: '',
-                    email: '',
-                    sklic: '',
-                    id_ddv: ''
-                },
-                options: this.posts
-            }
+          return {
+            submitting: false,
+            medium: false,
+            api: placesAPI,
+            customer: {
+              company: '',
+              street: '',
+              post: null,
+              telephone: '',
+              email: '',
+              sklic: '',
+              id_ddv: ''
+            },
+            options: this.posts,
+            loadingState: false,
+            suggestions: [],
+            query: ''
+          }
         },
         components: {
             Create
@@ -165,7 +180,15 @@
         computed: {
           ...mapGetters({
               posts: 'post/getPosts'
-          })
+          }),
+          linkForIframe() {
+            if (this.customer.street && this.customer.post) {
+              let encoded = encodeURI(this.customer.street)
+              return `https://www.google.com/maps/embed/v1/place?key=${this.api}&q=${encoded},${this.customer.post.posta}`
+            } else {
+              return null
+            }
+          }
         },
         created() {
             this.$store.dispatch('post/all')
@@ -203,7 +226,6 @@
                     })
             }
         }
-
     }
 </script>
 
