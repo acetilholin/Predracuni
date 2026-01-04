@@ -50,6 +50,11 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: {
+        REALM_1:'S.P.',
+        REALM_2:'D.O.O',
+        REALM_ALL:'S.P & D.O.O'
+      },
 
       // transpile: false,
 

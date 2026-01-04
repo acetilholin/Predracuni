@@ -145,11 +145,10 @@
 </template>
 
 <script>
-
-    import {mapGetters, mapActions} from 'vuex'
-    import Create from "src/components/App/Create";
-    import mixin from "src/global/mixin";
-    import { placesAPI } from 'src/global/variables'
+import {mapGetters, mapActions} from 'vuex'
+import Create from "src/components/App/Create";
+import mixin from "src/global/mixin";
+import { placesAPI } from 'src/global/variables'
 
     export default {
         name: "CreateCustomer",

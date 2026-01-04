@@ -11,14 +11,6 @@
                     <div class="text-h6 q-mb-md">{{ $t("general.settings") }}</div>
                     <q-toggle :value="company" label="Prikaži podatke o podjetju" @input="changeCompany" />
                     <q-toggle :value="klavzule" label="Prikaži klavzule" @input="changeKlavzule"/>
-                    <q-toggle
-                      :value="realm"
-                      @input="changeRealm"
-                      checked-icon="domain"
-                      color="red"
-                      :label="realmLabel"
-                      unchecked-icon="person"
-                    />
                 </div>
             </div>
         </q-btn-dropdown>

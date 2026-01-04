@@ -4,7 +4,7 @@
             <q-toolbar>
                 <q-btn flat @click="changeDrawerState" round dense icon="menu" />
                 <q-toolbar-title>{{ title }}</q-toolbar-title>
-                <span class="q-mr-xl text-subtitle1">{{ realmStatus ? 'D.O.O.' : 'S.P.' }}</span>
+                <span class="q-mr-xl text-subtitle1">{{ realmTitle }}</span>
                 <span v-if="role" class="q-mr-sm">
                     <settings></settings>
                 </span>
@@ -33,9 +33,13 @@
 
     export default {
         name: "Header",
+        created() {
+          this.realmInfo()
+        },
         data() {
             return {
-                title: appName
+                title: appName,
+                realmTitle: null
             }
         },
         components: {
@@ -48,7 +52,7 @@
                 authenticated: 'auth/authenticated',
                 drawer: 'general/getDrawer',
                 realmStatus: 'general/getRealm'
-            }),
+            })
         },
         methods: {
             ...mapActions({
@@ -73,6 +77,9 @@
                     .then(() => {
                         this.$router.push('/login-register')
                     })
+            },
+            realmInfo() {
+              this.realmTitle = this.currentUser.realm === 'all' ? process.env.REALM_ALL : (this.currentUser.realm === 'r1' ? process.env.REALM_1 : process.env.REALM_2)
             }
         }
     }

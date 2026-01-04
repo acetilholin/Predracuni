@@ -24,6 +24,7 @@ export default {
               rememberMe: credentials.rememberMe
             })
                 .then((response) => {
+                   localStorage.setItem('identifier', response.data.identifier)
                    return dispatch('loginAttempt', response.data.access_token)
                 })
                 .catch((e) => {
